@@ -24,6 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+
                 <TextView
                     android:id="@+id/head_text"
                     android:layout_marginTop="20dp"
@@ -46,6 +48,48 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:layout_gravity="center_horizontal"/>
+
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_picture"
+                        android:src="@drawable/userphoto"
+                        android:padding="25dp"
+                        android:layout_width="125dp"
+                        android:layout_height="125dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/restaurant_picture"
+                        android:src="@drawable/restaurant_symbol"
+                        android:padding="25dp"
+                        android:layout_width="125dp"
+                        android:layout_height="125dp" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:gravity="center"
+                    android:text="Click on the left image to add the owner icon."/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:gravity="center"
+                    android:text="Click on the right one to add Restaurant Picture"/>
+
+
+
 
                 <EditText
                     android:id="@+id/text_input_username"
@@ -77,48 +121,71 @@
 
                 <EditText
                     android:id="@+id/text_input_phone_number"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
                     android:background="@drawable/edittextstyle"
                     android:hint="Contact Number / Phone Number"
-                    android:layout_marginTop="40dp"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
+                    android:inputType="phone" />
 
-                <EditText
-                    android:id="@+id/text_input_image_resource_id"
-                    android:background="@drawable/edittextstyle"
-                    android:hint="Restaurant Image Resource Link (URL)"
-                    android:layout_marginTop="40dp"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
 
-                <EditText
-                    android:id="@+id/text_input_profile_picture_id"
-                    android:background="@drawable/edittextstyle"
-                    android:hint="Restaurant Person Profile Picture Resource Link (URL)"
-                    android:layout_marginTop="40dp"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
+                <!--<EditText-->
+                    <!--android:id="@+id/text_input_image_resource_id"-->
+                    <!--android:background="@drawable/edittextstyle"-->
+                    <!--android:hint="Restaurant Image Resource Link (URL)"-->
+                    <!--android:layout_marginTop="40dp"-->
+                    <!--android:layout_width="300dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_horizontal"/>-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/text_input_profile_picture_id"-->
+                    <!--android:background="@drawable/edittextstyle"-->
+                    <!--android:hint="Restaurant Person Profile Picture Resource Link (URL)"-->
+                    <!--android:layout_marginTop="40dp"-->
+                    <!--android:layout_width="300dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_horizontal"/>-->
 
                 <EditText
                     android:id="@+id/text_input_email"
-                    android:background="@drawable/edittextstyle"
-                    android:hint="Email"
-                    android:layout_marginTop="40dp"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--app:passwordToggleEnabled="true">-->
+
+                    <!--<android.support.design.widget.TextInputEditText-->
+                        <!--android:id="@+id/text_input_password"-->
+                        <!--android:layout_marginTop="40dp"-->
+                        <!--android:layout_width="300dp"-->
+                        <!--android:layout_gravity="center_horizontal"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="@drawable/edittextstyle"-->
+                        <!--android:inputType="textPassword"-->
+                        <!--android:hint="Password" />-->
+
+                <!--</android.support.design.widget.TextInputLayout>-->
 
                 <EditText
                     android:id="@+id/text_input_password"
-                    android:background="@drawable/edittextstyle"
-                    android:hint="Password"
-                    android:layout_marginTop="40dp"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+
                 <Button
                     android:textColor="@color/white"
                     android:background="@drawable/buttonstyle"
@@ -137,16 +204,16 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:textAlignment="center"
-                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:padding="20dp"
                         android:layout_marginTop="20dp"
+                        android:padding="20dp"
+                        android:text="Experience the best Business Ever!!"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="18sp"
-                        android:text="Experience the best Business Ever!!"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textStyle="bold" />
 
 
 

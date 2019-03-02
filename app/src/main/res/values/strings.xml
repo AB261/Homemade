@@ -20,7 +20,7 @@
         <item>6</item>
         <item>7</item>
     </string-array>
-<string name="Rs">\u20B9</string>
+    <string name="Rs">\u20B9</string>
     <string-array name="food_array">
         <item>Idli</item>
         <item>Dosa</item>
@@ -110,5 +110,26 @@
 
     <string name="start">Start</string>
     <string name="next">Next</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="normal_map">Normal Map</string>
+    <string name="hybrid_map">Hybrid Map</string>
+    <string name="satellite_map">Satellite Map</string>
+    <string name="terrain_map">Terrain Map</string>
+    <string name="homemade_food_lovers">Homemade Food Lovers</string>
+
+
+    <string name="min_rating">Min Rating:</string>
+
+    <string-array name="filter_array">
+        <item>None Selected</item>
+        <item>Alphabetically</item>
+        <item>Distance: Near to Far</item>
+        <item>Rating: High to Low</item>
+    </string-array>
+
+
 
 </resources>

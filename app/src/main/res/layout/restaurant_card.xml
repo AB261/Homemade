@@ -1,51 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_relative_layout"
+    android:id="@+id/swipeToRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
-    android:paddingTop="70dp"
     android:paddingBottom="0dp">
 
-
-    <ProgressBar
-        android:id="@+id/progress_circular"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/inputSearch"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/card_relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search Restaurants.."
-        android:inputType="textVisiblePassword"
-        android:paddingBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="@color/grey"
+        android:paddingTop="70dp"
+        android:paddingBottom="0dp">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignTop="@+id/inputSearch"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:paddingTop="0dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/inputSearch"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+        <EditText
+            android:id="@+id/inputSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search Restaurants.."
+            android:inputType="textVisiblePassword"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintBottom_toTopOf="@id/filter_spinner"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/filter_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/inputSearch"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/min_rating_text"/>
+        <TextView
+            android:id="@+id/min_rating_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/min_rating"
+            android:layout_marginLeft="5dp"
+            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/inputSearch"
+            app:layout_constraintLeft_toRightOf="@id/filter_spinner"
+            app:layout_constraintRight_toLeftOf="@id/min_rating_edit_text"/>
+        <EditText
+            android:paddingEnd="10dp"
+            android:paddingStart="0dp"
+            android:id="@+id/min_rating_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/inputSearch"
+            app:layout_constraintLeft_toRightOf="@id/min_rating_text"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cardView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@+id/inputSearch"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingTop="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filter_spinner" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

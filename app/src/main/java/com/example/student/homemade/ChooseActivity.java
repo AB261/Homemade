@@ -81,55 +81,55 @@ public class ChooseActivity extends AppCompatActivity {
             }
         });
 
-        update = findViewById(R.id.button_update);
-        update.setVisibility(View.GONE);
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent val = getIntent();
-                val.getStringExtra("type");
-                //Get menu type and
-                db.collection("Menu").orderBy("menuID", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("THIS IS  ", document.getId() + " => " + document.getData());
-                                HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
-                                Log.d("MENU TYPE =  ", "" + map.get("menu_type"));
-                                String menu_type = map.get("menu_type").toString();
-                                if(menu_type.equals("Breakfast")) {
-                                    Intent intent = new Intent(ChooseActivity.this, BreakfastActivity.class);
-                                    intent.putExtra("type", "breakfast");
-                                    startActivity(intent);
-                                }
-                                else if(menu_type.equals("Lunch")) {
-                                    Intent intent = new Intent(ChooseActivity.this, LunchActivity.class);
-                                    intent.putExtra("type", "lunch");
-                                    startActivity(intent);
-                                }
-                                else if(menu_type.equals("Dinner")) {
-                                    Intent intent = new Intent(ChooseActivity.this, DinnerActivity.class);
-                                    intent.putExtra("type", "dinner");
-                                    startActivity(intent);
-                                }
-                                else if(menu_type.equals("Snacks")) {
-                                    Intent intent = new Intent(ChooseActivity.this, SnacksActivity.class);
-                                    intent.putExtra("type", "snacks");
-                                    startActivity(intent);
-                                }
-
-                            }
-                        } else {
-                            Log.d("R", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-            }
-        });
+//        update = findViewById(R.id.button_update);
+//        update.setVisibility(View.GONE);
+//        update.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent val = getIntent();
+//                val.getStringExtra("type");
+//                //Get menu type and
+//                db.collection("Menu").orderBy("menuID", Query.Direction.DESCENDING).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d("THIS IS  ", document.getId() + " => " + document.getData());
+//                                HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
+//                                Log.d("MENU TYPE =  ", "" + map.get("menu_type"));
+//                                String menu_type = map.get("menu_type").toString();
+//                                if(menu_type.equals("Breakfast")) {
+//                                    Intent intent = new Intent(ChooseActivity.this, BreakfastActivity.class);
+//                                    intent.putExtra("type", "breakfast");
+//                                    startActivity(intent);
+//                                }
+//                                else if(menu_type.equals("Lunch")) {
+//                                    Intent intent = new Intent(ChooseActivity.this, LunchActivity.class);
+//                                    intent.putExtra("type", "lunch");
+//                                    startActivity(intent);
+//                                }
+//                                else if(menu_type.equals("Dinner")) {
+//                                    Intent intent = new Intent(ChooseActivity.this, DinnerActivity.class);
+//                                    intent.putExtra("type", "dinner");
+//                                    startActivity(intent);
+//                                }
+//                                else if(menu_type.equals("Snacks")) {
+//                                    Intent intent = new Intent(ChooseActivity.this, SnacksActivity.class);
+//                                    intent.putExtra("type", "snacks");
+//                                    startActivity(intent);
+//                                }
+//
+//                            }
+//                        } else {
+//                            Log.d("R", "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+//
+//            }
+//        });
 
     }
 }

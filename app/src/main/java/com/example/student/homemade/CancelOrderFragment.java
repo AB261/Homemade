@@ -1,23 +1,47 @@
 package com.example.student.homemade;
 
-import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
         import android.support.v7.widget.LinearLayoutManager;
         import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 
-        import java.util.ArrayList;
+import com.example.student.homemade.ui.HistoricalOrdersFragment;
 
-public class CancelOrder extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class CancelOrderFragment extends Fragment {
     private ArrayList<CancelItem> mExampleList;
     private RecyclerView mRecyclerview;
     private CancelAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    View v;
+
+    public CancelOrderFragment(){
+
+    }
+    public static CancelOrderFragment newInstance() {
+        CancelOrderFragment fragment = new CancelOrderFragment();
+        return fragment;
+    }
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_cancel);
+//        createExampleList();
+//        buildRecyclerView();
+//    }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cancel);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        v = inflater.inflate(R.layout.activity_cancel, container, false);
         createExampleList();
         buildRecyclerView();
+        return v;
     }
     public void removeItem(int position){
         mExampleList.remove(position);
@@ -43,9 +67,9 @@ public class CancelOrder extends AppCompatActivity {
 
     }
     public void buildRecyclerView(){
-        mRecyclerview=findViewById(R.id.recyclerview);
+        mRecyclerview=v.findViewById(R.id.recyclerview);
         mRecyclerview.setHasFixedSize(true);
-        mLayoutManager=new LinearLayoutManager(this);
+        mLayoutManager=new LinearLayoutManager(getActivity());
         mAdapter=new CancelAdapter(mExampleList);
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.setAdapter(mAdapter);

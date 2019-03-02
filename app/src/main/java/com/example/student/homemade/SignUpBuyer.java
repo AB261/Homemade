@@ -1,14 +1,22 @@
 package com.example.student.homemade;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +26,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +52,10 @@ public class SignUpBuyer extends AppCompatActivity {
     public EditText textInputEmail;
     public EditText textInputUsername;
     public EditText textInputPassword;
+    public ImageView imageUserPhoto;
+    public static int PReqCode = 1;
+    public static int REQUESCODE = 1;
+    public Uri pickedImgUri;
     private Typeface myFont;
     private TextView headText;
 
@@ -57,7 +73,75 @@ public class SignUpBuyer extends AppCompatActivity {
         textInputEmail = findViewById(R.id.text_input_email);
         textInputUsername = findViewById(R.id.text_input_username);
         textInputPassword = findViewById(R.id.text_input_password);
+        imageUserPhoto = findViewById(R.id.profile_picture);
+
+
+        imageUserPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(Build.VERSION.SDK_INT >= 28) {
+                    checkAndRequestforPermission();
+                }
+
+                else {
+                    openGallery();
+                }
+
+            }
+        });
     }
+
+
+    private void openGallery() {
+        //open gallery intent and wait for user to pick an image!
+
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, REQUESCODE);
+
+    }
+
+
+
+
+    private void checkAndRequestforPermission() {
+
+        if(ContextCompat.checkSelfPermission(SignUpBuyer.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(SignUpBuyer.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Toast.makeText(SignUpBuyer.this, "Please accept required permission", Toast.LENGTH_SHORT).show();
+            }
+
+            else {
+                ActivityCompat.requestPermissions(SignUpBuyer.this,
+                                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                                    PReqCode);
+            }
+        }
+
+        else
+            openGallery();
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == REQUESCODE && data != null) {
+            //the user has successfully picked an image
+            // we need to save the reference to a uri variable
+
+            pickedImgUri = data.getData();
+            imageUserPhoto.setImageURI(pickedImgUri);
+        }
+
+    }
+
+
 
     private boolean validateEmail() {
         String emailInput = textInputEmail.getText().toString().trim();
@@ -106,10 +190,14 @@ public class SignUpBuyer extends AppCompatActivity {
             textInputPassword.setError("Field cannot be empty");
             return false;
         }
-        else if(!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
-            textInputPassword.setError("Password too weak. Must have atleast one small, one capital letter and one special character.");
+        else if(passwordInput.length() < 8) {
+            textInputPassword.setError("Field cannot have less than 8 characters");
             return false;
         }
+//        else if(!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+//            textInputPassword.setError("Password too weak. Must have atleast one small, one capital letter and one special character.");
+//            return false;
+//        }
         else {
             textInputPassword.setError(null);
             return true;
@@ -119,9 +207,25 @@ public class SignUpBuyer extends AppCompatActivity {
 
     public void confirmInput(View v) {
         // validate password has been removed because of regex problems
-        if(!validateEmail() |!validateUsername()) {
+        if(!validateEmail() || !validateUsername() || !validatePassword()) {
             return;
         }
+
+        // Study Firebase Storage Properly before and implement this thing properly
+
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("consumers_photos");
+        final StorageReference imageFilePath = mStorage.child(pickedImgUri.getLastPathSegment());
+        imageFilePath.putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("Storage successful.", "Storage of " + textInputEmail.getText().toString() + " Successful");
+                    }
+                });
+            }
+        });
 
         String input = "Email: " + textInputEmail.getText().toString();
         input += "\n";
@@ -147,6 +251,7 @@ public class SignUpBuyer extends AppCompatActivity {
                     user.put("username", textInputUsername.getText().toString());
                     user.put("email", textInputEmail.getText().toString());
                     user.put("password", textInputPassword.getText().toString());
+                    user.put("profile_picture", pickedImgUri);
                     user.put("typeOfUser", "Consumer");
 
                     db.collection("user").document(textInputEmail.getText().toString()).set(user)

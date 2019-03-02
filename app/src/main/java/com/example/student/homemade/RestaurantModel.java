@@ -24,7 +24,7 @@ public class RestaurantModel {
         return restaurantName;
     }
 
-    float getDistance() {
+    public float getDistance() {
         return distance;
     }
 

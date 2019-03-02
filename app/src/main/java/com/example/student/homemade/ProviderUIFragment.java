@@ -24,6 +24,7 @@ public class ProviderUIFragment extends Fragment {
     FloatingActionButton add_menu;
     CardView current_orders;
     CardView orders_history;
+    CardView reviews;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -102,6 +103,17 @@ public class ProviderUIFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), OrdersHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        reviews = view.findViewById(R.id.reviews);
+
+        reviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), ReviewDisplayActivity.class);
                 startActivity(intent);
             }
         });

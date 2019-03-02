@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,9 +20,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
-import com.example.student.homemade.ui.ConsumerDetailsLayout;
+import com.example.student.homemade.ui.ConsumerDetailsFragment;
 import com.example.student.homemade.ui.ConsumerUIFragment;
 import com.example.student.homemade.ui.DeliveryAndTrackingFragment;
 import com.example.student.homemade.ui.HistoricalOrdersFragment;
@@ -35,15 +38,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements ProviderUIFragment.OnFragmentInteractionListener, ConsumerUIFragment.OnFragmentInteractionListener{
     private static int c;
+    Button logout;
     private DrawerLayout mDrawer;
-
     private Toolbar toolbar;
     private Context context;
-
+    private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView navigationView;
+    String mActivityTitle;
 
-
-    Button logout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,31 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         Toolbar toolbar = findViewById(R.id.toolbar);
         setTitle("Dashboard");
         //logout = findViewById(R.id.main_btn_logout);
+        mDrawer = findViewById(R.id.drawer_view);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                setupDrawerContent(navigationView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawer.setDrawerListener(mDrawerToggle);
+        navigationView = findViewById(R.id.nav_view);
+        setupDrawerContent(navigationView);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
 
         SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
         c = settings.getInt("ProviderOrConsumerFlag", 0);
@@ -92,9 +118,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
             fragmentClass = null;
 
 
-        mDrawer = findViewById(R.id.drawer_view);
-        navigationView = findViewById(R.id.nav_view);
-        setupDrawerContent(navigationView);
+
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!= null) {
@@ -111,7 +135,30 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private void setupDrawer() {
+
+    }
     private void setupDrawerContent(NavigationView navigationView) {
+
 
         navigationView.setNavigationItemSelectedListener(
 
@@ -156,29 +203,29 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                 break;
             case R.id.historical_orders:
                 fragmentClass = HistoricalOrdersFragment.class;
-               // toolbar.setTitle("Resturant List");
+                // toolbar.setTitle("Resturant List");
                 break;
             case R.id.mass_orders:
                 fragmentClass = MassOrderFragment.class;
-               // toolbar.setTitle("Mass Order");
+                // toolbar.setTitle("Mass Order");
                 break;
             case R.id.trending_items:
-               fragmentClass = TrendingItemsFragment.class;
-               // toolbar.setTitle("Trending Items");
+                fragmentClass = TrendingItemsFragment.class;
+                // toolbar.setTitle("Trending Items");
                 break;
             case R.id.delivery_and_tracking:
                 fragmentClass = DeliveryAndTrackingFragment.class;
-               // toolbar.setTitle("Delivery and Tracking");
+                Intent intentMap = new Intent(context, MapsActivity.class);
+                startActivity(intentMap);
+                // toolbar.setTitle("Delivery and Tracking");
                 break;
             case R.id.user_button:
-                Intent intent1 = new Intent(context, ConsumerDetailsLayout.class);
-                startActivity(intent1);
-                fragmentClass = MassOrderFragment.class;
+//                Intent intent1 = new Intent(context, ConsumerDetailsFragment.class);
+//                startActivity(intent1);
+                fragmentClass = ConsumerDetailsFragment.class;
                 break;
             case R.id.cancel_order:
-                Intent intent = new Intent(context,CancelOrder.class);
-                startActivity(intent);
-                fragmentClass = MassOrderFragment.class;
+                fragmentClass = CancelOrderFragment.class;
                 break;
             case R.id.main_btn_logout:
 
