@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.Consumer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class ConsumerDetailsFragment extends Fragment {
 
@@ -43,7 +46,6 @@ public class ConsumerDetailsFragment extends Fragment {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String currentUserUID = firebaseAuth.getUid();
     DocumentReference notebookRef  = db.collection("Consumer").document("saharsh1999@nitk.ac.in");
-    //FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
 
 
@@ -80,11 +82,8 @@ public class ConsumerDetailsFragment extends Fragment {
         userEmail = v.findViewById(R.id.tvProfileEmail);
         changeUserPassword = v.findViewById(R.id.btnChangePassword);
         editUserDetails = v.findViewById(R.id.btnEditDetails);
-
-
-
-
         setDetails();
+        setProfilePic();
 
 
         return v;
@@ -112,6 +111,28 @@ public class ConsumerDetailsFragment extends Fragment {
                         Toast.makeText(context, "Sorry that didn't work", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+    }
+
+    public void setProfilePic(){
+
+//            imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    // profilePic.setImageURI(uri);             THIS WON'T WORK AS IT'S RETURNING A URL RATHER THAN A IMAGE
+//                    try {
+//                        Picasso.get().load(uri).fit().centerCrop().into(userProfilePic);//GET THIS FROM SQUARE PICASSO ,DON'T FORGET ITS DEPENDENCY
+//                    }catch (Exception e){
+//                        Log.i("fuck",e.toString());
+//                    }
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText(getActivity(), "CANNOT LOAD IMAGE", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
 
     }
 
