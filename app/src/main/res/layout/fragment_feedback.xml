@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FeedbackFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <EditText
+            android:id="@+id/feedbackSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginEnd="20dp"
+            android:drawablePadding="5dp"
+            android:hint="Enter Subject of Email"
+            android:padding="10dp"
+            android:textColor="@color/primaryText"
+            android:textColorHighlight="@color/primaryText"
+            android:textColorHint="@color/primaryText"
+            android:textSize="16sp"
+            android:backgroundTint="@color/primaryText"/>
+
+
+
+        <EditText
+            android:id="@+id/feedbackBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="20dp"
+            android:drawablePadding="5dp"
+            android:hint="Enter Body of Email"
+            android:padding="10dp"
+            android:textColor="@color/primaryText"
+            android:textColorHighlight="@color/primaryText"
+            android:textColorHint="@color/primaryText"
+            android:textSize="16sp"
+            android:backgroundTint="@color/primaryText"/>
+
+        <Button
+            android:id="@+id/btnFeedback"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shapefeedback"
+            android:padding="0dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="Send Email to Developers"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

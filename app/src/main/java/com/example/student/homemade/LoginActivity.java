@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private int flag = 0;
 
 
-    private Button login, register, btnReset, signInButton;
+    private Button login, register, btnForgot, signInButton;
     private EditText etEmail, etPass;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -76,16 +76,17 @@ public class LoginActivity extends AppCompatActivity {
         register = findViewById(R.id.btnReg);
         etEmail = findViewById(R.id.etEmail);
         etPass = findViewById(R.id.etPass);
-        btnReset = findViewById(R.id.btnForgot);
+        btnForgot = findViewById(R.id.btnForgot);
         signInButton = findViewById(R.id.sign_in_button);
 
         mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
+
         //--------Passing Intent to Start Page
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSplashPageActivity();
+                openStartPageActivity();
             }
         });
 
@@ -94,39 +95,43 @@ public class LoginActivity extends AppCompatActivity {
 
         //----------Forgot password below
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        btnForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String email;
-                email = etEmail.getText().toString().trim();
+//                String email;
+//                email = etEmail.getText().toString().trim();
+//
+//                if (TextUtils.isEmpty(email)) {
+//                    //Toast.makeText(getApplication(), "Enter your registered email and press \"Forgot Password\"", Toast.LENGTH_LONG).show();
+//                    inform("Enter your Registered Email and press \"Forgot Password\".");
+//
+//                    return;
+//                }
+//
+//                //progressBar.setVisibility(View.VISIBLE);
+//
+//                mAuth.sendPasswordResetEmail(email)
+//
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                if (task.isSuccessful()) {
+//                                    //Toast.makeText(LoginActivity.this, "We have sent you instructions at your email to reset your password!", Toast.LENGTH_LONG).show();
+//                                    inform("We have sent you instructions at your Email to reset your Password!");
+//
+//                                } else {
+//                                    //Toast.makeText(LoginActivity.this, "This email is not registered in this app", Toast.LENGTH_LONG).show();
+//                                    inform("This Email is not registered in this App.");
+//                                }
+//
+//                                //progressBar.setVisibility(View.GONE);
+//                            }
+//                        });
 
-                if (TextUtils.isEmpty(email)) {
-                    //Toast.makeText(getApplication(), "Enter your registered email and press \"Forgot Password\"", Toast.LENGTH_LONG).show();
-                    inform("Enter your Registered Email and press \"Forgot Password\".");
-
-                    return;
-                }
-
-                //progressBar.setVisibility(View.VISIBLE);
-
-                mAuth.sendPasswordResetEmail(email)
-
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    //Toast.makeText(LoginActivity.this, "We have sent you instructions at your email to reset your password!", Toast.LENGTH_LONG).show();
-                                    inform("We have sent you instructions at your Email to reset your Password!");
-
-                                } else {
-                                    //Toast.makeText(LoginActivity.this, "This email is not registered in this app", Toast.LENGTH_LONG).show();
-                                    inform("This Email is not registered in this App.");
-                                }
-
-                                //progressBar.setVisibility(View.GONE);
-                            }
-                        });
+                //----------changes above
+                Intent forgotIntent = new Intent(activity, ForgotActivity.class);
+                startActivity(forgotIntent);
             }
         });
 
@@ -363,66 +368,95 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("LoginActivity", "string is "+email);
 
 
-            db.collection("Provider").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
+        db.collection("user").whereEqualTo("email", email).whereEqualTo("type_of_user", "Provider").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (((String) document.getData().get("email")).equals(email)) {
-                                flag = 1;
-                                SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
-                                SharedPreferences.Editor editor = settings.edit();
-                                editor.putInt("ProviderOrConsumerFlag",1);
-                                editor.commit();
+                    QuerySnapshot document = task.getResult();
+                    Log.d("LoginActivity", "---printing"+document.getDocuments().toString());
+                    if(document.getDocuments().size() != 0){
+                        SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putInt("ProviderOrConsumerFlag",1);
+                        editor.commit();
 
-                                Log.d("LoginActivity", "-----------Successfully found user in Provider");
-                                //---------------------------Send intent to provider UI
-                                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                                //mainIntent.putExtra("ProviderOrConsumer", 1);
-                                startActivity(mainIntent);
-                                finish();
-                            } else {
-                                Log.d("LoginActivity", "-----------Not found in Provider");
-                            }
-
-                            break;
-                        }
+                        Log.d("LoginActivity", "-----------Successfully found user in Provider");
+                        //---------------------------Send intent to provider UI
+                        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                        //mainIntent.putExtra("ProviderOrConsumer", 1);
+                        startActivity(mainIntent);
+                        finish();
+                    }
+                    else{
+                        SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putInt("ProviderOrConsumerFlag",2);
+                        editor.commit();
+                        Log.d("LoginActivity", "-----------Successfully found user in Consumer");
+                        //---------------------------Send intent to consumer UI
+                        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                        //mainIntent.putExtra("ProviderOrConsumer", 2);
+                        startActivity(mainIntent);
+                        finish();
 
                     }
+
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                            if (((String) document.getData().get("email")).equals(email)) {
+//                                flag = 1;
+//                                SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+//                                SharedPreferences.Editor editor = settings.edit();
+//                                editor.putInt("ProviderOrConsumerFlag",1);
+//                                editor.commit();
+//
+//                                Log.d("LoginActivity", "-----------Successfully found user in Provider");
+//                                //---------------------------Send intent to provider UI
+//                                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+//                                //mainIntent.putExtra("ProviderOrConsumer", 1);
+//                                startActivity(mainIntent);
+//                                finish();
+//                            } else {
+//                                Log.d("LoginActivity", "-----------Not found in Provider");
+//                            }
+//
+//                            break;
+//                        }
+
                 }
-            });
+            }
+        });
 
 
 
 
-            db.collection("Consumer").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (((String) document.getData().get("email")).equals(email)) {
-                                flag = 2;
-                                SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
-                                SharedPreferences.Editor editor = settings.edit();
-                                editor.putInt("ProviderOrConsumerFlag",2);
-                                editor.commit();
-                                Log.d("LoginActivity", "-----------Successfully found user in Consumer");
-                                //---------------------------Send intent to consumer UI
-                                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                                //mainIntent.putExtra("ProviderOrConsumer", 2);
-                                startActivity(mainIntent);
-                                finish();
-                            } else {
-                                Log.d("LoginActivity", "-----------Not found in Provider");
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            });
+//            db.collection("Consumer").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                            if (((String) document.getData().get("email")).equals(email)) {
+//                                flag = 2;
+//                                SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+//                                SharedPreferences.Editor editor = settings.edit();
+//                                editor.putInt("ProviderOrConsumerFlag",2);
+//                                editor.commit();
+//                                Log.d("LoginActivity", "-----------Successfully found user in Consumer");
+//                                //---------------------------Send intent to consumer UI
+//                                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+//                                //mainIntent.putExtra("ProviderOrConsumer", 2);
+//                                startActivity(mainIntent);
+//                                finish();
+//                            } else {
+//                                Log.d("LoginActivity", "-----------Not found in Provider");
+//                            }
+//
+//                            break;
+//                        }
+//                    }
+//                }
+//            });
 
 
 
@@ -437,8 +471,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //----------------Opens the start activity page i.e Signup pages and intro's
-    public void openSplashPageActivity() {
-        Intent startIntent = new Intent(this, SplashActivity.class);
+    public void openStartPageActivity() {
+        Intent startIntent = new Intent(this, StartPage.class);
         startActivity(startIntent);
     }
 }

@@ -55,6 +55,37 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         setTitle("Dashboard");
         //logout = findViewById(R.id.main_btn_logout);
         mDrawer = findViewById(R.id.drawer_view);
+
+        //-----------------added here
+
+        SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+        c = settings.getInt("ProviderOrConsumerFlag", 0);
+        navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        menu.add(0, 0, 0, "Dashboard");
+
+
+        if(c==1){
+            //Provider
+
+
+
+        }
+        else{
+            //Consumer
+            menu.add(0, 4, 0, "Restaurant List");
+            menu.add(0, 5, 0, "Historical Orders");
+            menu.add(0, 6, 0, "Mass Orders");
+            menu.add(0, 7, 0, "Trending Items");
+            menu.add(0, 8, 0, "Cancel Order");
+            menu.add(0, 9, 0, "Delivery and Tracking");
+        }
+
+        menu.add(0, 1, 0, "User Details");
+        menu.add(0, 2, 0, "Send Feedback");
+        menu.add(0, 3, 0, "Logout");
+
+        //----------------ended here
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
                 R.string.drawer_open, R.string.drawer_close) {
 
@@ -80,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
-        SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+        //SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
         c = settings.getInt("ProviderOrConsumerFlag", 0);
         Class fragmentClass;
         Fragment fragment = null;
@@ -189,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         Class fragmentClass;
 
         switch (menuItem.getItemId()) {
-            case R.id.dashboard:
+            case 0:
                 if(c == 1)
                     fragmentClass = ProviderUIFragment.class;
                 else if(c == 2)
@@ -197,37 +228,40 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                 else
                     fragmentClass = null;
                 break;
-            case R.id.rest_list:
+            case 4:
                 fragmentClass = RestaurantFragment.class;
                 //toolbar.setTitle("Resturant List");
                 break;
-            case R.id.historical_orders:
+            case 5:
                 fragmentClass = HistoricalOrdersFragment.class;
                 // toolbar.setTitle("Resturant List");
                 break;
-            case R.id.mass_orders:
+            case 6:
                 fragmentClass = MassOrderFragment.class;
                 // toolbar.setTitle("Mass Order");
                 break;
-            case R.id.trending_items:
+            case 7:
                 fragmentClass = TrendingItemsFragment.class;
                 // toolbar.setTitle("Trending Items");
                 break;
-            case R.id.delivery_and_tracking:
+            case 9:
                 fragmentClass = DeliveryAndTrackingFragment.class;
                 Intent intentMap = new Intent(context, MapsActivity.class);
                 startActivity(intentMap);
                 // toolbar.setTitle("Delivery and Tracking");
                 break;
-            case R.id.user_button:
+            case 1:
 //                Intent intent1 = new Intent(context, ConsumerDetailsFragment.class);
 //                startActivity(intent1);
                 fragmentClass = ConsumerDetailsFragment.class;
                 break;
-            case R.id.cancel_order:
+            case 8:
                 fragmentClass = CancelOrderFragment.class;
                 break;
-            case R.id.main_btn_logout:
+            case 2:
+                fragmentClass = FeedbackFragment.class;
+                break;
+            case 3:
 
                 //Logic for logout
 
@@ -266,7 +300,10 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
 
-                fragmentClass = MassOrderFragment.class;
+                if(c == 1)
+                    fragmentClass = ProviderUIFragment.class;
+                else
+                    fragmentClass = ConsumerUIFragment.class;
 
 
 //                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/dashboard"
-            android:title="Dashboard" />
-        <item
-            android:id="@+id/rest_list"
-            android:title="Restaurant List" />
-        <item
-            android:id="@+id/historical_orders"
-            android:title="Historical Orders" />
-        <item
-            android:id="@+id/mass_orders"
-            android:title="Mass Orders" />
-        <item
-            android:id="@+id/trending_items"
-            android:title="Trending Items" />
-        <item
-            android:id="@+id/cancel_order"
-            android:title="Cancellation of order" />
-        <item
-            android:id="@+id/delivery_and_tracking"
-            android:title="Delivery and Tracking" />
-        <item
-            android:id="@+id/user_button"
-            android:title="User Details" />
-        <item
-            android:id="@+id/main_btn_logout"
-            android:title="Logout" />
+        <!--<item-->
+            <!--android:id="@+id/dashboard"-->
+            <!--android:title="Dashboard" />-->
+        <!--<item-->
+            <!--android:id="@+id/rest_list"-->
+            <!--android:title="Restaurant List" />-->
+        <!--<item-->
+            <!--android:id="@+id/historical_orders"-->
+            <!--android:title="Historical Orders" />-->
+        <!--<item-->
+            <!--android:id="@+id/mass_orders"-->
+            <!--android:title="Mass Orders" />-->
+        <!--<item-->
+            <!--android:id="@+id/trending_items"-->
+            <!--android:title="Trending Items" />-->
+        <!--<item-->
+            <!--android:id="@+id/cancel_order"-->
+            <!--android:title="Cancellation of order" />-->
+        <!--<item-->
+            <!--android:id="@+id/delivery_and_tracking"-->
+            <!--android:title="Delivery and Tracking" />-->
+        <!--<item-->
+            <!--android:id="@+id/user_button"-->
+            <!--android:title="User Details" />-->
+        <!--<item-->
+            <!--android:id="@+id/user_feedback"-->
+            <!--android:title="Send Feedback" />-->
+        <!--<item-->
+            <!--android:id="@+id/main_btn_logout"-->
+            <!--android:title="Logout" />-->
     </group>
 </menu>

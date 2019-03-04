@@ -4,12 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 /**
@@ -25,6 +37,12 @@ public class ProviderUIFragment extends Fragment {
     CardView current_orders;
     CardView orders_history;
     CardView reviews;
+    private FirebaseFirestore firebaseFirestore;
+
+    private FirebaseAuth mAuth;
+    public String sellerID = FirebaseAuth.getInstance().getUid();
+
+    TextView Sellername;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -71,8 +89,34 @@ public class ProviderUIFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        Log.d("sellerID",sellerID);
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_sellers_dashboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_sellers_dashboard, container, false);
+        Sellername = view.findViewById(R.id.restaurant_name);
+
+//        String S = "L9DYxJQza3OVeWIxlZiE";
+        firebaseFirestore.collection("Provider").document(sellerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("DOCSNAP", "DocumentSnapshot data: " + document.get("username"));
+                        Sellername.setText("Hello " + document.get("username").toString());
+                    } else {
+                        Log.d("NOOE", "No such document");
+                    }
+                } else {
+                    Log.d("FAIL", "get failed with ", task.getException());
+                }
+            }
+        });
+
+
+//        Sellername.setText("Hello" + sellername);
+
         add_menu = view.findViewById(R.id.add_menu);
 
         add_menu.setOnClickListener(new View.OnClickListener() {
@@ -118,12 +162,9 @@ public class ProviderUIFragment extends Fragment {
             }
         });
 
-
-
-
-
         return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
