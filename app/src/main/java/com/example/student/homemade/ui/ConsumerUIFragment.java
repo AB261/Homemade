@@ -45,8 +45,6 @@ public class ConsumerUIFragment extends Fragment {
 
 
     public static ConsumerUIFragment newInstance() {
-
-
         return new ConsumerUIFragment();
     }
 
@@ -150,8 +148,5 @@ public class ConsumerUIFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-
-
-
     }
 }
