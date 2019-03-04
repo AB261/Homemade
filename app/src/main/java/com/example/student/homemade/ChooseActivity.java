@@ -81,8 +81,8 @@ public class ChooseActivity extends AppCompatActivity {
             }
         });
 
-//        update = findViewById(R.id.button_update);
-//        update.setVisibility(View.GONE);
+        update = findViewById(R.id.button_update);
+        update.setVisibility(View.GONE);
 //        update.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

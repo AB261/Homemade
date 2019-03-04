@@ -69,23 +69,23 @@ public class MenuActivity extends AppCompatActivity {
                 HashMap<String, Long> map = new HashMap<>();
 
                 int size = menuAdapter.getItemCount();
-                Log.d("BRO","" + size);
+                Log.d("BRO", "" + size);
                 if (size != 0) {
                     Boolean update = true;
                     for (MenuItem menuItem : menuAdapter.getItems()) {
 
-                        if(menuItem.getPrice() == 0L){
+                        if (menuItem.getPrice() == 0L) {
                             Log.d("tag", menuItem.getName());
                             update = false;
 
                             menuAdapter.notifyItemChanged(menuAdapter.getItems().indexOf(menuItem));
                         }
                         map.put(menuItem.getName(), menuItem.getPrice());
-                        Log.d("UPDDATE",update + " ");
+                        Log.d("UPDDATE", update + " ");
                     }
-                    if(update) {
+                    if (update) {
 
-                        Log.d("INSIDE",update + " ");
+                        Log.d("INSIDE", update + " ");
                         HashMap<String, HashMap> m = new HashMap<>();
                         m.put("items", map);
                         Log.d(" ID ", FirebaseAuth.getInstance().getUid());
@@ -172,7 +172,7 @@ public class MenuActivity extends AppCompatActivity {
                             //Log.d("tag", documentSnapshot.get("items").toString());
                             HashMap<String, Long> map = (HashMap<String, Long>) documentSnapshot.get("items");
 
-                            for(Map.Entry<String, Long> entry : map.entrySet()){
+                            for (Map.Entry<String, Long> entry : map.entrySet()) {
 
                                 MenuItem menuItem = new MenuItem();
                                 menuItem.setPrice(entry.getValue());
