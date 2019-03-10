@@ -24,17 +24,16 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView time_and_date;
-        TextView no_order_items;
-        TextView order_id;
-        TextView things_ordered;
+        TextView line1;
+        TextView line2;
+        TextView line3;
         ImageView mDeleteImage;
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListner listener) {
             super(itemView);
-            time_and_date=itemView.findViewById(R.id.orderitem1);
-            no_order_items=itemView.findViewById(R.id.orderitem2);
-            things_ordered=itemView.findViewById(R.id.orderitem3);
+            line1=itemView.findViewById(R.id.orderitem1);
+            line2=itemView.findViewById(R.id.orderitem2);
+            line3=itemView.findViewById(R.id.orderitem3);
             mDeleteImage=itemView.findViewById(R.id.image_delete);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,15 +78,10 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         OrderInfo orderInfo=info.get(position);
-        viewHolder.time_and_date.append(orderInfo.getTime_and_date());
-        viewHolder.no_order_items.append("" + orderInfo.getNoOrders());
-        //viewHolder.order_id.append("" + orderInfo.getOrderID());
-        viewHolder.things_ordered.append("" + orderInfo.getThings_ordered());
+        viewHolder.line1.append("Order ID: " + orderInfo.getOrderID() + " --- Time: " + orderInfo.getTime_and_date());
+        viewHolder.line2.append("Time before cancel: " + orderInfo.timeBeforeCancel + " min");
+        viewHolder.line3.append(/*"Total Cost: " + orderInfo.getTotal_cost() + */"Items ordered: " + orderInfo.getThings_ordered());
 
-
-//        viewHolder.time_and_date.setText(orderInfo.getTime_and_date());
-//        viewHolder.no_order_items.setText(orderInfo.getNoOrders());
-//        viewHolder.things_ordered.setText(orderInfo.getThings_ordered());
     }
 
     @Override

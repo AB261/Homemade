@@ -57,8 +57,14 @@ public class OrderInfo {
         return paid;
     }
 
-    public ArrayList<String> getThings_ordered() {
-        return things_ordered;
+    public String getThings_ordered() {
+        String result = "";
+        for(int i=0; i<things_ordered.size() - 1; i++){
+            result = result + things_ordered.get(i) + ", ";
+        }
+        result = result + things_ordered.get(things_ordered.size() - 1);
+
+        return result;
     }
 
     public String getTime_and_date() {
