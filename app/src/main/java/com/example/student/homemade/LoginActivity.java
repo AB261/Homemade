@@ -373,7 +373,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        db.collection("user").whereEqualTo("email", email).whereEqualTo("type_of_user", "Provider").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("user").whereEqualTo("email", email).whereEqualTo("typeOfUser", "Provider").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
