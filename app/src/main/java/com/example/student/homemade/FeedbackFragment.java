@@ -59,13 +59,21 @@ public class FeedbackFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_feedback, container, false);
 
         Button feedbackBtn = view.findViewById(R.id.btnFeedback);
+        Button reportBtn = view.findViewById(R.id.btnReport);
         final EditText subject = view.findViewById(R.id.feedbackSubject);
         final EditText body = view.findViewById(R.id.feedbackBody);
 
         feedbackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendEmail(subject.getText().toString(), body.getText().toString());
+                sendFeedback(subject.getText().toString(), body.getText().toString());
+            }
+        });
+
+        reportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendReport(subject.getText().toString(), body.getText().toString());
             }
         });
 
@@ -73,7 +81,7 @@ public class FeedbackFragment extends Fragment {
     }
 
 
-    public void sendEmail(String subject, String body){
+    public void sendFeedback(String subject, String body){
 
         if(subject.isEmpty()){
             inform("Empty Subject");
@@ -88,7 +96,30 @@ public class FeedbackFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:govardhangdg@gmail.com, cupofjava08@gmail.com"));
 
 
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "FEEDBACK: " + subject);
+            intent.putExtra(Intent.EXTRA_TEXT, body);
+
+            startActivity(Intent.createChooser(intent, "Send Email through ..."));
+
+        }
+    }
+
+    public void sendReport(String subject, String body){
+
+        if(subject.isEmpty()){
+            inform("Empty Subject");
+            //Toast.makeText(getContext(), "Empty Subject", Toast.LENGTH_LONG).show();
+        }
+        else if(body.isEmpty()){
+            inform("Empty Body");
+            //Toast.makeText(getContext(), "Empty Body", Toast.LENGTH_LONG).show();
+        }
+        else {
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:govardhangdg@gmail.com, cupofjava08@gmail.com"));
+
+
+            intent.putExtra(Intent.EXTRA_SUBJECT, "BUG REPORT: " + subject);
             intent.putExtra(Intent.EXTRA_TEXT, body);
 
             startActivity(Intent.createChooser(intent, "Send Email through ..."));
