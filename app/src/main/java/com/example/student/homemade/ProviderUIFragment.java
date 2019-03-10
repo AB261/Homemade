@@ -8,10 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +24,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -38,6 +43,8 @@ public class ProviderUIFragment extends Fragment {
     CardView orders_history;
     CardView reviews;
     private FirebaseFirestore firebaseFirestore;
+
+    private HashMap<String, String> itemPictures = new HashMap<>();
 
     private FirebaseAuth mAuth;
     public String sellerID = FirebaseAuth.getInstance().getUid();
@@ -95,6 +102,29 @@ public class ProviderUIFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sellers_dashboard, container, false);
         Sellername = view.findViewById(R.id.restaurant_name);
+        final SwitchCompat switchButton = view.findViewById(R.id.switchButton);
+
+        firebaseFirestore.collection("Provider").document(sellerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                if(document.exists()){
+                    Map<String, Object> map = document.getData();
+                    switchButton.setChecked((Boolean)map.get("availability"));
+                }else{
+                    Log.d("fuck","this bitch is not working");
+                }
+
+            }
+        });
+
+        switchButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+//                switchButton.toggle();
+                firebaseFirestore.collection("Provider").document(sellerID).update("availability",switchButton.isChecked());
+            }
+        });
 
 //        String S = "L9DYxJQza3OVeWIxlZiE";
         firebaseFirestore.collection("Provider").document(sellerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -104,6 +134,8 @@ public class ProviderUIFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d("DOCSNAP", "DocumentSnapshot data: " + document.get("username"));
+                        itemPictures = (HashMap<String, String>) document.get("itemPictures");
+                        Log.d("SIZE",itemPictures.size()+"");
                         Sellername.setText("Hello " + document.get("username").toString());
                     } else {
                         Log.d("NOOE", "No such document");
@@ -124,7 +156,7 @@ public class ProviderUIFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), ChooseActivity.class);
-
+                intent.putExtra("itemPictures",itemPictures);
                 startActivity(intent);
             }
         });

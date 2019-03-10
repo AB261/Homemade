@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:padding="10dp"
+    android:elevation="1dp"
     card_view:cardCornerRadius="4dp" >
 
 
@@ -44,10 +45,9 @@
                         android:id="@+id/restaurantname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/card_text_size"
-                        android:textStyle="bold" />
+                        android:theme="@style/normalHeading"
+                         />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
@@ -58,26 +58,33 @@
             android:layout_height="0dp"
             android:layout_weight="0.8"
             android:orientation="vertical">
+            <!--<RatingBar-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:isIndicator="true"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/rating_bar"-->
+                <!--android:theme="@style/Base.Widget.AppCompat.RatingBar.Small"-->
+                <!--/>-->
 
             <TextView
+                android:theme="@style/normaltext"
                 android:id="@+id/distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingLeft="16dp"
-                android:paddingTop="1dp"
-                android:paddingEnd="16dp"
-                android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="@color/primaryText"
                 android:textStyle="bold" />
-
-            <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                android:paddingLeft="16dp"
-                android:isIndicator="true"
+            <RatingBar
+                android:id="@+id/rating_bar"
+                android:paddingStart="8dp"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rating_bar"
-                style="@style/Widget.MaterialRatingBar.RatingBar" />
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1" />
+
+
 
 
 

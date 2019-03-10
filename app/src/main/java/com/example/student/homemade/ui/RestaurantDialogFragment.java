@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,9 +25,11 @@ import com.example.student.homemade.R;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.security.auth.callback.Callback;
+
 
 //Creates a popup dialog on click on restaurant cards
-public class RestaurantDialogFragment extends DialogFragment {
+public class RestaurantDialogFragment extends DialogFragment implements View.OnClickListener {
     String descr;
     TextView textView,description;
     RatingBar ratingBar;
@@ -33,6 +37,7 @@ public class RestaurantDialogFragment extends DialogFragment {
     String title;
     TextView review;
     String review_text;
+    private Callback callback;
     public RestaurantDialogFragment() {
         this.stars="4";
         this.title="Restaurant Name";
@@ -83,14 +88,20 @@ public class RestaurantDialogFragment extends DialogFragment {
 
 
     }
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dialog_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fullscreen_dialog , container, false);
         getDialog().setTitle("Simple Dialog");
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageButton close = rootView.findViewById(R.id.fullscreen_dialog_close);
+        Button action =rootView.findViewById(R.id.dismiss);
 
-
+        close.setOnClickListener(this);
+        action.setOnClickListener(this);
         return rootView;
 
     }
@@ -98,6 +109,24 @@ public class RestaurantDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id) {
+
+            case R.id.fullscreen_dialog_close:
+                dismiss();
+                break;
+
+            case R.id.dismiss:
+                dismiss();
+                break;
+
+        }
 
     }
 }

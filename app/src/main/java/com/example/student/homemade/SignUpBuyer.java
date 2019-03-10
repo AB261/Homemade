@@ -15,8 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,12 +54,19 @@ public class SignUpBuyer extends AppCompatActivity {
     public EditText textInputEmail;
     public EditText textInputUsername;
     public EditText textInputPassword;
+    public EditText textInputConfirmPassword;
+    public EditText textInputPhoneNumber;
+    public EditText textInputAddress;
     public ImageView imageUserPhoto;
     public static int PReqCode = 1;
     public static int REQUESCODE = 1;
     public Uri pickedImgUri;
     private Typeface myFont;
     private TextView headText;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private StorageReference mStorage;
+    private ProgressBar loadingProgress;
+    private Button signUpBuyerBtn;
 
 
     @Override
@@ -70,11 +79,28 @@ public class SignUpBuyer extends AppCompatActivity {
         headText = findViewById(R.id.head_text);
         headText.setTypeface(myFont);
 
-        textInputEmail = findViewById(R.id.text_input_email);
-        textInputUsername = findViewById(R.id.text_input_username);
-        textInputPassword = findViewById(R.id.text_input_password);
-        imageUserPhoto = findViewById(R.id.profile_picture);
+        textInputUsername = findViewById(R.id.text_input_username_buyer);
+        textInputEmail = findViewById(R.id.text_input_email_buyer);
+        textInputPassword = findViewById(R.id.text_input_password_buyer);
+        textInputConfirmPassword = findViewById(R.id.text_input_confirm_password_buyer);
+        textInputPhoneNumber = findViewById(R.id.text_input_phone_number_buyer);
+        textInputAddress = findViewById(R.id.text_input_address_buyer);
+        imageUserPhoto = findViewById(R.id.profile_picture_buyer);
+        signUpBuyerBtn = findViewById(R.id.signup_buyer_button);
+        loadingProgress = findViewById(R.id.progress_bar_signup_buyer);
 
+        loadingProgress.setVisibility(View.INVISIBLE);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        signUpBuyerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUpBuyerBtn.setVisibility(View.INVISIBLE);
+                loadingProgress.setVisibility(View.VISIBLE);
+                confirmInput();
+            }
+        });
 
         imageUserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,28 +230,49 @@ public class SignUpBuyer extends AppCompatActivity {
         }
     }
 
+    private boolean validateAddress() {
+        String addressInput = textInputAddress.getText().toString().trim();
 
-    public void confirmInput(View v) {
+        if(addressInput.isEmpty()) {
+            textInputAddress.setError("Field cannot be empty");
+            return false;
+        }
+
+        else {
+            textInputAddress.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePhoneNumber() {
+        String phoneInput = textInputPhoneNumber.getText().toString().trim();
+
+        if(phoneInput.isEmpty()) {
+            textInputPhoneNumber.setError("Field cannot be empty");
+            return false;
+        }
+
+        else {
+            textInputPhoneNumber.setError(null);
+            return true;
+        }
+    }
+
+
+
+    public void confirmInput() {
         // validate password has been removed because of regex problems
-        if(!validateEmail() || !validateUsername() || !validatePassword()) {
+        if(!validateEmail() || !validateUsername() || !validatePassword() || !textInputPassword.getText().toString().equals(textInputConfirmPassword.getText().toString()) || !validateAddress()) {
+            loadingProgress.setVisibility(View.INVISIBLE);
+            signUpBuyerBtn.setVisibility(View.VISIBLE);
+            Log.d("Sign UP", "validation error");
             return;
         }
 
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         // Study Firebase Storage Properly before and implement this thing properly
 
-        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("consumers_photos");
-        final StorageReference imageFilePath = mStorage.child(pickedImgUri.getLastPathSegment());
-        imageFilePath.putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Log.d("Storage successful.", "Storage of " + textInputEmail.getText().toString() + " Successful");
-                    }
-                });
-            }
-        });
+
 
         String input = "Email: " + textInputEmail.getText().toString();
         input += "\n";
@@ -236,53 +283,82 @@ public class SignUpBuyer extends AppCompatActivity {
         Toast.makeText(this, input, Toast.LENGTH_SHORT).show();
 
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         mAuth.createUserWithEmailAndPassword(textInputEmail.getText().toString(), textInputPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isComplete()) {
-                    String input = "Email: " + textInputEmail.getText().toString();
-                    input += "\n";
-                    input += "Username: " + textInputUsername.getText().toString();
-                    input += "\n";
-                    input += "Password: " + textInputPassword.getText().toString();
 
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("username", textInputUsername.getText().toString());
-                    user.put("email", textInputEmail.getText().toString());
-                    user.put("password", textInputPassword.getText().toString());
-                    user.put("profile_picture", pickedImgUri);
-                    user.put("typeOfUser", "Consumer");
+                    mAuth.signInWithEmailAndPassword(textInputEmail.getText().toString(), textInputPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            String input = "Email: " + textInputEmail.getText().toString();
+                            input += "\n";
+                            input += "Username: " + textInputUsername.getText().toString();
+                            input += "\n";
+                            input += "Password: " + textInputPassword.getText().toString();
 
-                    db.collection("user").document(textInputEmail.getText().toString()).set(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            Map<String, Object> userdata = new HashMap<>();
+                            userdata.put("username", textInputUsername.getText().toString());
+                            userdata.put("email", textInputEmail.getText().toString());
+                            userdata.put("password", textInputPassword.getText().toString());
+                            userdata.put("contactNumber", textInputPhoneNumber.getText().toString());
+                            userdata.put("address", textInputAddress.getText().toString());
+                            userdata.put("wallet", "1000");
+//                            userdata.put("profile_picture", pickedImgUri);
+                            userdata.put("typeOfUser", "Consumer");
+
+                            db.collection("user").document(mAuth.getCurrentUser().getUid()).set(userdata)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("SignUP", "Signup of " + textInputEmail.getText().toString() + " successful.");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("SignUP", "Signup of " + textInputEmail.getText().toString() + " failure.");
+                                        }
+                                    });
+
+                            db.collection("Consumer").document(mAuth.getCurrentUser().getUid()).set(userdata)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("SignUP", "Signup of " + textInputEmail.getText().toString() + " successful.");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("SignUP", "Signup of " + textInputEmail.getText().toString() + " failure.");
+                                        }
+                                    });
+
+                            StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("consumers_photos");
+                            final StorageReference imageFilePath = mStorage.child(mAuth.getCurrentUser().getUid());
+                            imageFilePath.putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("SignUP", "Signup of " + textInputEmail.getText().toString() + " successful.");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("SignUP", "Signup of " + textInputEmail.getText().toString() + " failure.");
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Log.d("Storage successful.", "Storage of " + textInputEmail.getText().toString() + " Successful");
+                                            loadingProgress.setVisibility(View.INVISIBLE);
+                                            signUpBuyerBtn.setVisibility(View.VISIBLE);
+
+                                            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivity(mainActivity);
+                                            finish();
+                                        }
+                                    });
                                 }
                             });
 
-                    db.collection("Consumer").document(textInputEmail.getText().toString()).set(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("SignUP", "Signup of " + textInputEmail.getText().toString() + " successful.");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("SignUP", "Signup of " + textInputEmail.getText().toString() + " failure.");
-                                }
-                            });
-
-                    Toast.makeText(getApplicationContext(), "Successfull Sign Up. Go to Login and Start Over", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getApplicationContext(), "Successfull Sign Up. Go to Login and Start Over", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
         });

@@ -17,9 +17,16 @@ import android.widget.Toast;
 
 import com.example.student.homemade.MainActivity;
 import com.example.student.homemade.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
@@ -31,6 +38,10 @@ public class MassOrderFragment extends Fragment {
     EditText dateText,timeText,addressText;
     Button submitButton;
     Spinner spinnerItems,spinnerSeller;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference providerIds  = db.collection("Provider");
+
+
 
 
     public int checkForValidInput() {
@@ -52,19 +63,6 @@ public class MassOrderFragment extends Fragment {
     //SUBMIT BUTTON IN ACTION
     public int submitToUserButton(View view)
     {
-        // CHECKING FOR VALID INPUT FROM USER
-//        int temp1 = checkForValidInput();
-//        if(temp1 != 0){
-//            if(temp1 == 1)
-//                Toast.makeText(getActivity(), "DATE FORMAT NOT CORRECT", Toast.LENGTH_SHORT).show();
-//            else if(temp1 == 2)
-//                Toast.makeText(getActivity(), "TIME NOT CORRECT", Toast.LENGTH_SHORT).show();
-//            else if(temp1 == 3)
-//                Toast.makeText(getActivity(), "ADDRESS BAR EMPTY", Toast.LENGTH_SHORT).show();
-//
-//            return 1;
-//        }
-
 
         Toast.makeText(getActivity(), "ORDER SUBMITTED TO USER", Toast.LENGTH_SHORT).show();
         //INITIALISING ALL THE TEXTS
@@ -136,6 +134,7 @@ public class MassOrderFragment extends Fragment {
         addressText = (EditText) v.findViewById(R.id.addressText);
 
         submitButton = (Button) v.findViewById(R.id.submitToSellerButton);
+
         //CREATING A SPINNER AND ITEMS STRING ARRAY IS IN res/values/strings.xml NAMED "items"
         spinnerItems = (Spinner) v.findViewById(R.id.spinnerItems);
         ArrayAdapter<String> arrayAdapterItems = new ArrayAdapter<String>(getActivity(),
@@ -153,15 +152,18 @@ public class MassOrderFragment extends Fragment {
 
 
         //CREATING 2ND SPINNER FOR SELLER AND SELLER ARRAY IS IN res/vales/strings.xml NAMED "seller"
+        //MAKE A STRING ARRAY AND REPLACE IT IN R.array.-------
         spinnerSeller = (Spinner) v.findViewById(R.id.spinnerSeller);
-        ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.seller));
-        arrayAdapterSeller.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSeller.setAdapter(arrayAdapterSeller);
+        loadSellerSpinner();
+
+
+
+        //CREATING 2ND SPINNER FOR SELLER AND SELLER ARRAY IS IN res/vales/strings.xml NAMED "seller"
+
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 String date1 = "1234567890";
                 date1 = dateText.getText().toString();
@@ -189,6 +191,25 @@ public class MassOrderFragment extends Fragment {
             }
         });
         return v;
+    }
+
+    void loadSellerSpinner(){
+        final ArrayList<String>  sellerList = new ArrayList<String>();
+        sellerList.add("something");
+//        providerIds.get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+//                            Map<String,Object> map = documentSnapshot.getData();
+//                        }
+//                    }
+//                });
+        ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1,sellerList);
+        arrayAdapterSeller.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSeller.setAdapter(arrayAdapterSeller);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

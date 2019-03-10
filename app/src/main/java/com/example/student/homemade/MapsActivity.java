@@ -3,6 +3,8 @@ package com.example.student.homemade;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -11,9 +13,16 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,8 +35,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -38,6 +52,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     public static final float DEFAULT_ZOOM = 15f;
 
+    //widgets
+    private EditText mSearchText;
+    private ImageView mGps;
+
+    //vars
     private Boolean mLocationPermissionsGranted;
     private FusedLocationProviderClient mFusedLoactionProviderClient;
 
@@ -57,11 +76,70 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        mSearchText = findViewById(R.id.input_search_maps);
+        mGps = findViewById(R.id.ic_gps);
+
+
         if (isServicesOK()) {
             getLocationPermission();
             if (mLocationPermissionsGranted == true) {
+                init();
                 initMap();
             }
+        }
+    }
+
+    private void init() {
+        Log.e(TAG, "init: initializing..");
+
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
+                    || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                    || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
+
+                    //execute our method for search
+                    geoLocate();
+                }
+                return false;
+            }
+        });
+
+        mGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "GPS button clicked.");
+                getDeviceLocation();
+            }
+        });
+
+        hideSoftKeyBoard();
+    }
+
+    private void geoLocate() {
+        Log.e(TAG, "In Geolocate:");
+
+        String searchString = mSearchText.getText().toString();
+
+        Geocoder geocoder = new Geocoder(MapsActivity.this);
+
+        List<Address> list = new ArrayList<>();
+        try {
+            list = geocoder.getFromLocationName(searchString, 1);
+        }catch (IOException e) {
+            Log.e(TAG, "IOException: " + e.getMessage());
+        }
+
+        if(list.size() > 0) {
+            Address address = list.get(0);
+
+            Log.e(TAG, "geoLocate: found a location, list size is greater than zero.");
+            Toast.makeText(this, address.toString() , Toast.LENGTH_LONG).show();
+
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
+
         }
     }
 
@@ -109,7 +187,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Log.d(TAG, "onComplete: found location.");
                             Location currentLocation = (Location) task.getResult();
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                                    DEFAULT_ZOOM);
+                                    DEFAULT_ZOOM, "My Location");
 
                         }else {
                             Toast.makeText(MapsActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
@@ -124,8 +202,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void moveCamera(LatLng latlng, float zoom) {
+    private void moveCamera(LatLng latlng, float zoom, String title) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
+
+        if(title.equals("My Location")) {
+            MarkerOptions options = new MarkerOptions()
+                    .position(latlng)
+                    .title(title);
+            mMap.addMarker(options);
+        }
+
+        hideSoftKeyBoard();
     }
 
     private void getLocationPermission() {
@@ -187,7 +274,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
+    private void hideSoftKeyBoard() {
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
 
 
     @Override

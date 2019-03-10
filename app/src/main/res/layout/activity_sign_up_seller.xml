@@ -6,6 +6,7 @@
     tools:context=".SignUpSeller"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/back"
     >
     <LinearLayout
 
@@ -43,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="20dp"
-                    android:text="Please provide all details of your restaurant as asked here. This will be stored in the database."
+                    android:text="Resturant Location will be taken via GPS. Please provide all details of your restaurant as asked here. This will be stored in the database."
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
@@ -56,16 +57,11 @@
                     android:layout_height="wrap_content">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profile_picture"
+                        android:id="@+id/profile_picture_seller"
                         android:src="@drawable/userphoto"
                         android:padding="25dp"
-                        android:layout_width="125dp"
-                        android:layout_height="125dp" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/restaurant_picture"
-                        android:src="@drawable/restaurant_symbol"
-                        android:padding="25dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
                         android:layout_width="125dp"
                         android:layout_height="125dp" />
 
@@ -78,21 +74,11 @@
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:gravity="center"
-                    android:text="Click on the left image to add the owner icon."/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:gravity="center"
-                    android:text="Click on the right one to add Restaurant Picture"/>
-
-
+                    android:text="Click on the image to add the owner icon."/>
 
 
                 <EditText
-                    android:id="@+id/text_input_username"
+                    android:id="@+id/text_input_username_seller"
                     android:background="@drawable/edittextstyle"
                     android:hint="Username"
                     android:layout_marginTop="40dp"
@@ -102,7 +88,7 @@
 
 
                 <EditText
-                    android:id="@+id/text_input_restaurant_name"
+                    android:id="@+id/text_input_restaurant_name_seller"
                     android:background="@drawable/edittextstyle"
                     android:hint="Restaurant Name"
                     android:layout_marginTop="40dp"
@@ -111,7 +97,7 @@
                     android:layout_gravity="center_horizontal"/>
 
                 <EditText
-                    android:id="@+id/text_input_restaurant_details"
+                    android:id="@+id/text_input_restaurant_details_seller"
                     android:background="@drawable/edittextstyle"
                     android:hint="Restaurant Details"
                     android:layout_marginTop="40dp"
@@ -120,7 +106,7 @@
                     android:layout_gravity="center_horizontal"/>
 
                 <EditText
-                    android:id="@+id/text_input_phone_number"
+                    android:id="@+id/text_input_phone_number_seller"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -149,7 +135,7 @@
                     <!--android:layout_gravity="center_horizontal"/>-->
 
                 <EditText
-                    android:id="@+id/text_input_email"
+                    android:id="@+id/text_input_email_seller"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -177,7 +163,7 @@
                 <!--</android.support.design.widget.TextInputLayout>-->
 
                 <EditText
-                    android:id="@+id/text_input_password"
+                    android:id="@+id/text_input_password_seller"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -186,15 +172,29 @@
                     android:hint="Password"
                     android:inputType="textPassword" />
 
-                <Button
-                    android:textColor="@color/white"
-                    android:background="@drawable/buttonstyle"
-                    android:text="Sign Up"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp"
-                    android:onClick="confirmInput"/>
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:textColor="@color/white"
+                        android:background="@drawable/buttonstyle"
+                        android:text="Sign Up"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:id="@+id/signup_seller_button"/>
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/progress_bar_signup_seller"/>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_marginTop="25dp"

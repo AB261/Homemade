@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#69f0ae</color>
-    <color name="colorPrimaryDark">#2bbd7e</color>
+    <color name="colorPrimaryDark">#135339</color>
     <color name="colorPrimaryLight">#9fffe0</color>
     <color name="colorSecondary">#33691e</color>
-    <color name="colorSecondaryLight">#61D359</color>
+    <color name="colorSecondaryLight">#449940</color>
+    <color name="toolbarColor">#244D22</color>
     <color name="colorSecondaryDark">#003d00</color>
     <color name="primaryText">#000000</color>
     <color name="secondaryText">#ffffff</color>
@@ -28,4 +29,5 @@
     <color name="grey">#D3D1D1</color>
     <color name="green">#216621</color>
     <color name="green2">#259125</color>
+    <color name="loadingcolor">#259125</color>
 </resources>

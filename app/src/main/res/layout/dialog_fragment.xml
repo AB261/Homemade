@@ -7,6 +7,7 @@
     android:layout_marginRight="20dp"
     android:layout_marginBottom="20dp"
     android:layout_marginTop="20dp"
+    android:theme="@style/FullScreenDialogStyle"
     android:background="@drawable/dialog_bg"
     android:gravity="center">
 

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/fullscreen_dialog_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:src="@drawable/baseline_close_white_18dp" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/fullscreen_dialog_close"
+                android:textAlignment="center"
+                android:text="@string/details"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/fullscreen_dialog_action"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:background="?attr/selectableItemBackground"-->
+                <!--android:padding="8dp"-->
+                <!--android:text="ACTION"-->
+                <!--android:textColor="@android:color/white" />-->
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/title"
+                android:theme="@style/Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/restaurant_name"
+                android:textSize="40sp"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:src="@drawable/default_rest"
+                android:scaleType="fitXY"
+                android:id="@+id/dialog_image"
+                android:layout_width="400dp"
+                android:layout_height="300dp"
+                android:layout_margin="0dp"
+                android:padding="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <TextView
+                android:id="@+id/descriptiontitle"
+                android:theme="@style/normalHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                app:layout_constraintTop_toBottomOf="@id/dialog_image"
+                app:layout_constraintBottom_toTopOf="@id/description"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+            <TextView
+                android:id="@+id/description"
+                android:theme="@style/normaltext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blahabalsdlfasdlfjasdfj"
+                app:layout_constraintTop_toBottomOf="@id/descriptiontitle"
+                app:layout_constraintBottom_toTopOf="@id/rating"
+                app:layout_constraintLeft_toLeftOf="parent"
+                />
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+            <RatingBar
+                android:id="@+id/rating"
+                android:paddingLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                app:layout_constraintBottom_toTopOf="@id/view2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view1"
+                />
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@+id/rating" />
+            <TextView
+                android:id="@+id/reviewtitle"
+                android:theme="@style/normalHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reviews"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rating"
+                app:layout_constraintBottom_toTopOf="@id/reviews"
+                />
+            <TextView
+                android:id="@+id/reviews"
+                android:theme="@style/normaltext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BLAHAHAHAHS"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/dismiss"
+                app:layout_constraintTop_toBottomOf="@id/reviewtitle" />
+
+            <Button
+                android:textColor="@color/white"
+                android:background="@drawable/buttonstyle"
+                android:text="ORDER"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reviews"
+                android:id="@+id/dismiss"/>
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

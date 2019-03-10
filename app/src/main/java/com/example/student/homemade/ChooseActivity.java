@@ -25,10 +25,11 @@ public class ChooseActivity extends AppCompatActivity {
     CardView lunch;
     CardView snacks;
     CardView dinner;
+    private HashMap<String, String> itemPictures = new HashMap<>();
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("guh","ss");
+        Log.d("guh", "ss");
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ChooseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose);
 
-
+itemPictures = (HashMap<String,String>)getIntent().getExtras().get("itemPictures");
         breakfast = findViewById(R.id.button_breakfast);
 
         breakfast.setOnClickListener(new View.OnClickListener() {
@@ -44,38 +45,41 @@ public class ChooseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(ChooseActivity.this, MenuActivity.class);
-
-                intent.putExtra("type","Breakfast");
+                intent.putExtra("itemPictures",itemPictures);
+                intent.putExtra("type", "Breakfast");
                 startActivity(intent);
             }
         });
 
 
         lunch = findViewById(R.id.button_lunch);
-        lunch.setOnClickListener(new View.OnClickListener(){
+        lunch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseActivity.this, MenuActivity.class);
+                intent.putExtra("itemPictures",itemPictures);
                 intent.putExtra("type", "Lunch");
                 startActivity(intent);
             }
         });
 
         dinner = findViewById(R.id.button_dinner);
-        dinner.setOnClickListener(new View.OnClickListener(){
+        dinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseActivity.this, MenuActivity.class);
+                intent.putExtra("itemPictures",itemPictures);
                 intent.putExtra("type", "Dinner");
                 startActivity(intent);
             }
         });
 
         snacks = findViewById(R.id.button_snacks);
-        snacks.setOnClickListener(new View.OnClickListener(){
+        snacks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseActivity.this, MenuActivity.class);
+                intent.putExtra("itemPictures",itemPictures);
                 intent.putExtra("type", "Snacks");
                 startActivity(intent);
             }
@@ -86,7 +90,13 @@ public class ChooseActivity extends AppCompatActivity {
 //        update.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//
+//                Intent intent = new Intent(ChooseActivity.this,UploadActivity.class);
+////                intent.putExtra(type);
+//                startActivity(intent);
+//            }
+//        });
+
+        //
 //                Intent val = getIntent();
 //                val.getStringExtra("type");
 //                //Get menu type and

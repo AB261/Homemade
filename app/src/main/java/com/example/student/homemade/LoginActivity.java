@@ -366,6 +366,11 @@ public class LoginActivity extends AppCompatActivity {
     private void postLoginWithIntent(final String email){
 
         Log.d("LoginActivity", "string is "+email);
+        SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("email",email);
+        editor.apply();
+
 
 
         db.collection("user").whereEqualTo("email", email).whereEqualTo("type_of_user", "Provider").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

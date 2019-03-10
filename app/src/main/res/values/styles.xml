@@ -48,21 +48,63 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="FullScreenDialogStyle" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+    <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+
+        <!-- Set this to true if you want Full Screen without status bar -->
+        <item name="android:windowFullscreen">false</item>
+
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- This is important! Don't forget to set window background -->
         <item name="android:windowBackground">@color/white</item>
+
         <!-- Additionally if you want animations when dialog opening -->
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
-
     <!-- Part of the slider view -->
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">2dp</item>
         <item name="android:background">@color/white</item>
     </style>
+    <!--                                     This is for making our app uniform please use it                               -->
+    <style name="Title">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="subtext">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="normalHeading">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="normaltext">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+
 
 </resources>
