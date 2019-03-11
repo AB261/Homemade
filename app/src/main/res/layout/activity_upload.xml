@@ -9,9 +9,9 @@
 
     <Button
         android:id="@+id/button_choose_image"
-        android:layout_width="103dp"
+        android:layout_width="wrap_content"
+        android:background="@drawable/buttonstyle"
         android:layout_height="wrap_content"
-        android:background="@color/green2"
         android:text="Choose file"
         android:textColor="@color/white" />
 
@@ -23,7 +23,7 @@
         android:layout_alignParentEnd="true"
         android:entries="@array/food_array"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="57dp"></Spinner>
+        android:layout_marginEnd="57dp" />
 
     <ImageView
         android:id="@+id/image_view"
@@ -40,6 +40,7 @@
         android:id="@+id/progress_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
+        android:outlineSpotShadowColor="@color/colorSecondaryDark"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_upload"
         android:layout_alignParentStart="true"
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/green2"
+        android:background="@drawable/buttonstyle"
         android:textColor="@color/white"
         android:text="Upload" />
 

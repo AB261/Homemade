@@ -6,9 +6,11 @@ import android.support.v7.widget.Toolbar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class RatingandReviewActivity extends AppCompatActivity {
-        RatingBar ratebar;
-        TextView tvrate;
+    RatingBar ratebar;
+    TextView tvrate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,10 @@ public class RatingandReviewActivity extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 tvrate.setText("Rated : " + rating);
+
             }
         });
-        }
-        }
+
+        String userID = FirebaseAuth.getInstance().getUid();
+    }
+}

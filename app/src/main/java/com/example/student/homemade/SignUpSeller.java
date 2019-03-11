@@ -322,11 +322,7 @@ public class SignUpSeller extends AppCompatActivity {
 
                             Map<String, Object> user = new HashMap<>();
                             user.put("active",true);
-
-                            user.put("address",geoPoint);
-
-                            user.put("address",null);
-
+                            user.put("address", geoPoint);
                             user.put("description", textInputRestaurantDetails.getText().toString());
                             user.put("email", textInputEmail.getText().toString());
                             //user.put("imageResourceId", textInputImageResourceId.getText().toString());

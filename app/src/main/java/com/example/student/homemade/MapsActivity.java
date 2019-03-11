@@ -212,6 +212,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.addMarker(options);
         }
 
+        else {
+            MarkerOptions options = new MarkerOptions()
+                    .position(latlng)
+                    .title(title);
+            mMap.addMarker(options);
+        }
+
         hideSoftKeyBoard();
     }
 

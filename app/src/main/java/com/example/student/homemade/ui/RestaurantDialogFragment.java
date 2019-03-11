@@ -1,5 +1,6 @@
 package com.example.student.homemade.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.student.homemade.OrderPageActivity;
 import com.example.student.homemade.R;
 
 import java.util.ArrayList;
@@ -83,6 +85,16 @@ public class RestaurantDialogFragment extends DialogFragment implements View.OnC
         ratingBar= getView().findViewById(R.id.rating);
         ratingBar.setRating(Float.valueOf(stars));
         ratingBar.setIsIndicator(true);
+        Button button = getView().findViewById(R.id.dismiss);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),OrderPageActivity.class);
+                intent.putExtra("restaurantName",title);
+                startActivity(intent);
+            }
+        });
+
 
 
 

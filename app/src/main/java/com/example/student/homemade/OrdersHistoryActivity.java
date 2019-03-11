@@ -42,6 +42,7 @@ public class OrdersHistoryActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 OrderInfo orderInfo;
+                Log.d(TAG,"Entered");
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d(TAG, document.getId() + " => " + document.getData());

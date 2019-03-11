@@ -195,10 +195,16 @@ public class MenuActivity extends AppCompatActivity {
                                         Log.d("MACHSAAAADASAS", e.toString());
                                     }
                                 });
+                        Toast.makeText(MenuActivity.this,"Menu uploaded",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MenuActivity.this,MainActivity.class);
+                        startActivity(intent);
                     }
 
                 }
-                Toast.makeText(MenuActivity.this,"Menu uploaded",Toast.LENGTH_SHORT).show();
+                else{
+                    Toast.makeText(MenuActivity.this,"Enter Price",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -211,7 +217,7 @@ public class MenuActivity extends AppCompatActivity {
         final String[] list = getResources().getStringArray(R.array.food_array);
         final ArrayList<Integer> selectedList = new ArrayList<>();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), R.style.myDialog);
         builder.setTitle("Select Items");
 
         builder.setMultiChoiceItems(list, null,

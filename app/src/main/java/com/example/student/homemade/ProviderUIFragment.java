@@ -1,20 +1,25 @@
 package com.example.student.homemade;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,6 +47,9 @@ public class ProviderUIFragment extends Fragment {
     CardView current_orders;
     CardView orders_history;
     CardView reviews;
+    CardView mass_discount;
+    TextView mass_discount_text;
+    CardView sub_discount;
     private FirebaseFirestore firebaseFirestore;
 
     private HashMap<String, String> itemPictures = new HashMap<>();
@@ -149,6 +157,8 @@ public class ProviderUIFragment extends Fragment {
 
 //        Sellername.setText("Hello" + sellername);
 
+        mass_discount_text = view.findViewById(R.id.discount_mass);
+
         add_menu = view.findViewById(R.id.add_menu);
 
         add_menu.setOnClickListener(new View.OnClickListener() {
@@ -194,9 +204,80 @@ public class ProviderUIFragment extends Fragment {
             }
         });
 
+        mass_discount = view.findViewById(R.id.mass_order);
+
+        mass_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeLangDialog();
+//                Intent intent = new Intent(getActivity(), MassDiscountActivity.class);
+//                startActivity(intent);
+            }
+        });
+
+        sub_discount = view.findViewById(R.id.subscription_discount);
+
+        sub_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), SubscriptionDiscountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         return view;
     }
 
+    public void showChangeLangDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_mass_discount_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final NumberPicker noOfOrders = (NumberPicker) dialogView.findViewById(R.id.no_of_orders);
+        final NumberPicker dicountRate = (NumberPicker) dialogView.findViewById(R.id.discount_mass);
+        noOfOrders.setMaxValue(100);
+        noOfOrders.setMinValue(1);
+        noOfOrders.setValue(1);
+        dicountRate.setMaxValue(100);
+        dicountRate.setMinValue(0);
+        dicountRate.setValue(50);
+        dialogBuilder.setTitle("Mass Orders");
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                int num = noOfOrders.getValue();
+                int disc = dicountRate.getValue();
+                if(disc!=0)
+                {
+                    mass_discount_text.setText("Discount : " + disc + "%\n" + "Minimum orders : " + num);
+                }
+                else
+                {
+                    mass_discount_text.setText("Discount : 0% ");
+                }
+//                if(edt.getText().toString() != "") {
+//                    noOfOrders = Integer.parseInt(edt.getText().toString());
+//
+//                    int discount_mass = num.getValue();
+//                    mass_discount_text.setText("Minimum orders : " + noOfOrders + " Discount : " + discount_mass);
+//                    //do something with edt.getText().toString();
+//                }
+//                else
+//                {
+//                    Toast.makeText(getActivity(),"Enter minimum orders",Toast.LENGTH_SHORT).show();
+//                }
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

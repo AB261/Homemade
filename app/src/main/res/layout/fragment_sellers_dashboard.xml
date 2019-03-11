@@ -13,7 +13,7 @@
         android:layout_marginTop="56dp"
         android:background="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -135,6 +135,7 @@
                         android:theme="@style/BrandedSwitch" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/reviews"
                 android:layout_width="match_parent"
@@ -160,6 +161,73 @@
                     android:textSize="32sp" />
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/subscription_discount"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="30dp"
+                    android:padding="10sp"
+                    android:src="@mipmap/orders_history_picture_round" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/current_orders"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginTop="70dp"
+                    android:text="Subscription Discount"
+                    android:textSize="32sp" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/mass_order"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_marginTop="30dp"
+                        android:padding="10sp"
+                        android:src="@mipmap/orders_history_picture_round" />
+
+                    <TextView
+                        android:id="@+id/mass_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="150dp"
+                        android:layout_marginTop="28dp"
+                        android:text="Mass Orders"
+                        android:textSize="32sp" />
+
+                    <TextView
+                        android:id="@+id/discount_mass"
+                        android:layout_width="214dp"
+                        android:layout_height="75dp"
+                        android:layout_alignTop="@+id/mass_text"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="51dp"
+                        android:layout_marginEnd="35dp"
+                        android:text="Discount : 0%"
+                        android:textSize="24sp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
 
@@ -169,10 +237,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right|end"
         android:layout_margin="16dp"
-        android:outlineAmbientShadowColor="@color/colorPrimaryDark"
-        android:outlineSpotShadowColor="@color/colorPrimaryDark"
         android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/green2"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:elevation="5dp"
         app:layout_anchorGravity="bottom|right|end"
         app:layout_constraintBottom_toBottomOf="parent"

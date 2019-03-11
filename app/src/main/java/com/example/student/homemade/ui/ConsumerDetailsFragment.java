@@ -20,9 +20,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,18 +32,25 @@ import com.example.student.homemade.ConsumerDetailsClass;
 import com.example.student.homemade.EditConsumerDetails;
 import com.example.student.homemade.R;
 import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ConsumerDetailsFragment extends Fragment {
 
@@ -55,11 +64,9 @@ public class ConsumerDetailsFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String currentUserUID = firebaseAuth.getUid();
-    DocumentReference notebookRef  = db.collection("Consumer").document("nigga@99.com");
-    StorageReference storageReference = FirebaseStorage.getInstance().getReference("consumers_photos").child("somerandompic");
+    DocumentReference notebookRef  = db.collection("Consumer").document(currentUserUID);
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference("consumers_photos").child(currentUserUID);
     ProgressDialog progressDialog;
-
-
 
 
     public ConsumerDetailsFragment(){
@@ -112,6 +119,8 @@ public class ConsumerDetailsFragment extends Fragment {
 
     }
 
+
+
     ////CODE TO FETCH AND SHOW DETAILS USING CLASS ConsumerDetailsClass
     public void setDetails(){
 
@@ -122,7 +131,7 @@ public class ConsumerDetailsFragment extends Fragment {
 
                 userName.setText(details.getUsername());
                 userAddress.setText(details.getAddress());
-                userContact.setText(details.getContactNo());
+                userContact.setText(details.getContactNumber());
                 userEmail.setText(details.getEmail());
                 userWallet.setText(details.getWallet());
 

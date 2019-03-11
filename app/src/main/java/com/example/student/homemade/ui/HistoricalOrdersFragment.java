@@ -83,6 +83,7 @@ public class HistoricalOrdersFragment extends Fragment {
     }
 
 
+    /////////////////CUSTOM ADADPTER FOR LIST OF CURRENT ITEMS
 
     class CustomAdapter extends BaseAdapter {
 
@@ -114,6 +115,7 @@ public class HistoricalOrdersFragment extends Fragment {
             return view;
         }
     }
+    /////////////////CUSTOM ADADPTER FOR LIST OF CURRENT ITEMS
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

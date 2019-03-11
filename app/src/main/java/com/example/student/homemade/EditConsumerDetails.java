@@ -42,6 +42,7 @@ public class EditConsumerDetails extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageReference = FirebaseStorage.getInstance().getReference("consumers_photos");
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    String currentUID = firebaseAuth.getUid();
     Button editDetailsbtn;
     ProgressDialog progressDialog;
     boolean flagImage = false;
@@ -55,14 +56,12 @@ public class EditConsumerDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_consumer_details);
 
         showOldPic();
         showOldDetails();
 
-        super.onCreate(savedInstanceState);
-
-
-        setContentView(R.layout.activity_edit_consumer_details);
         editName = findViewById(R.id.tvEditName);
         editAddress = findViewById(R.id.tvEditAddress);
         editcontact = findViewById(R.id.tvEditContact);
@@ -92,8 +91,8 @@ public class EditConsumerDetails extends AppCompatActivity {
             public void onClick(View v) {
                 setDetails();
                 if(flagImage == true) setimage();
+                flagImage = false;
 
-                setimage();
             }
         });
 
@@ -105,7 +104,8 @@ public class EditConsumerDetails extends AppCompatActivity {
     void setDetails(){
         if(!validate()) return;
 
-        DocumentReference noteRef = db.collection("Consumer").document("nigga@99.com");
+        DocumentReference noteRef = db.collection("Consumer").document(currentUID);
+
         String name,address,contact;
         name = editName.getText().toString();
         address = editAddress.getText().toString();
@@ -123,7 +123,7 @@ public class EditConsumerDetails extends AppCompatActivity {
     void setimage(){
         ////////////////////////////////////////for image uplaod  #partToSetImage
         progressDialog.show();
-        StorageReference imageReference = FirebaseStorage.getInstance().getReference().child("consumers_photos").child("somerandompic");
+        StorageReference imageReference = FirebaseStorage.getInstance().getReference().child("consumers_photos").child(currentUID);
         UploadTask uploadTask = imageReference.putFile(imagePath);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -162,7 +162,8 @@ public class EditConsumerDetails extends AppCompatActivity {
 
         /////////LOADING IMAGE FROM FIREBASE AND DISPLAYING DONE
         storageReference = FirebaseStorage.getInstance().getReference();
-        storageReference.child("consumers_photos/somerandompic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {          /////do change here
+
+        storageReference.child("consumers_photos").child(currentUID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {          /////do change here
 
             @Override
             public void onSuccess(Uri uri) {
@@ -182,7 +183,9 @@ public class EditConsumerDetails extends AppCompatActivity {
     }
 
     void showOldDetails(){
-        DocumentReference myref =  db.collection("Consumer").document("nigga@99.com");
+
+        DocumentReference myref =  db.collection("Consumer").document(currentUID);
+        
 
         myref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -190,7 +193,7 @@ public class EditConsumerDetails extends AppCompatActivity {
                 detailsOld = documentSnapshot.toObject(ConsumerDetailsClass.class);
                 editName.setText(detailsOld.getUsername());
                 editAddress.setText(detailsOld.getAddress());
-                editcontact.setText(detailsOld.getContactNo());
+                editcontact.setText(detailsOld.getContactNumber());
 
             }
         });

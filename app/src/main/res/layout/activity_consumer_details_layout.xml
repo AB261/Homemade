@@ -54,6 +54,12 @@
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
+                <Spinner
+                    android:id="@+id/testSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
             </LinearLayout>
 
             <android.support.v7.widget.CardView
@@ -163,6 +169,8 @@
 
             </android.support.v7.widget.CardView>
 
+
+
         </RelativeLayout>
 
         <LinearLayout
@@ -233,7 +241,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <Button
@@ -257,6 +265,8 @@
                 android:background="@drawable/buttonstyle"
                 android:text="Change Password"
                 android:textColor="#ffffff" />
+
+
 
         </LinearLayout>
 

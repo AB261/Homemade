@@ -82,24 +82,23 @@ public class ReviewDisplayActivity extends AppCompatActivity {
     }
 
     public String findusername(QueryDocumentSnapshot document, final HashMap<String, Object> map){
-
+        String reviewer = document.get("reviewer").toString();
         final String[] usernamearray = new String[1];
-        firebaseFirestore.collection("Consumer").whereEqualTo("id", document.get("reviewer")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection("Consumer").document(reviewer).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
                 ReviewInfo reviewInfo;
                 if (task2.isSuccessful()) {
-                    for (QueryDocumentSnapshot document2 : task2.getResult()) {
+                    DocumentSnapshot document2 = task2.getResult();
                         Log.d("USERINFO ",document2.get("username").toString());
-                         username = document2.get("username").toString();
-                         Log.d("HERE",username);
+                        username = document2.get("username").toString();
+                        Log.d("HERE",username);
                         reviewInfo = new ReviewInfo(Integer.parseInt(map.get("ratings").toString()), map.get("review").toString(), map.get("reviewID").toString(), map.get("reviewee").toString(), username, map.get("date").toString());
                         reviewDisplayAdapter.added(reviewInfo);
 //                         username[0] = document2.get("username").toString();
 
 //                                        HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
 
-                    }
                 } else {
                     Log.d("INSIDE ERROR", "Error getting documents: ", task2.getException());
                 }
@@ -108,4 +107,31 @@ public class ReviewDisplayActivity extends AppCompatActivity {
 //        Log.d("BROOOROROOROR",username);
         return null;
     }
+//    public String findusername(QueryDocumentSnapshot document, final HashMap<String, Object> map){
+//
+//        final String[] usernamearray = new String[1];
+//        firebaseFirestore.collection("Consumer").whereEqualTo("id", document.get("reviewer")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+//                ReviewInfo reviewInfo;
+//                if (task2.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document2 : task2.getResult()) {
+//                        Log.d("USERINFO ",document2.get("username").toString());
+//                         username = document2.get("username").toString();
+//                         Log.d("HERE",username);
+//                        reviewInfo = new ReviewInfo(Integer.parseInt(map.get("ratings").toString()), map.get("review").toString(), map.get("reviewID").toString(), map.get("reviewee").toString(), username, map.get("date").toString());
+//                        reviewDisplayAdapter.added(reviewInfo);
+////                         username[0] = document2.get("username").toString();
+//
+////                                        HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
+//
+//                    }
+//                } else {
+//                    Log.d("INSIDE ERROR", "Error getting documents: ", task2.getException());
+//                }
+//            }
+//        });
+////        Log.d("BROOOROROOROR",username);
+//        return null;
+//    }
 }

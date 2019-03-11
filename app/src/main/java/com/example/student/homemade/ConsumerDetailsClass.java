@@ -1,22 +1,16 @@
 package com.example.student.homemade;
 
 public class ConsumerDetailsClass {
-    String username, password, address, contactNo, wallet, email,typeOfUser;
+    String username, password, address, contactNumber, wallet, email,typeOfUser;
 
     public ConsumerDetailsClass() {
-    }
-
-    public ConsumerDetailsClass(String username,String address, String contactNo) {
-        this.username = username;
-        this.address = address;
-        this.contactNo = contactNo;
     }
 
     public ConsumerDetailsClass(String username, String password, String address, String contactNo, String wallet, String email, String typeOfUser) {
         this.username = username;
         this.password = password;
         this.address = address;
-        this.contactNo = contactNo;
+        this.contactNumber = contactNo;
         this.wallet = wallet;
         this.email = email;
         this.typeOfUser = typeOfUser;
@@ -46,12 +40,12 @@ public class ConsumerDetailsClass {
         this.address = address;
     }
 
-    public String getContactNo() {
-        return contactNo;
+    public String getContactNumber() {
+        return contactNumber;
     }
 
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     public String getWallet() {
