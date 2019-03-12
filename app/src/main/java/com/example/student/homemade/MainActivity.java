@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         menu.add(0, 0, 0, "Dashboard");
 
 
+
+
         if(c==1){
             //Provider
 
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         menu.add(0, 3, 0, "Logout");
 
         //----------------ended here
+        mDrawer.setScrimColor(getResources().getColor(R.color.white));
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
                 R.string.drawer_open, R.string.drawer_close) {
 
@@ -129,9 +132,12 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         final ProgressBar progressBar = hView.findViewById(R.id.progress_bar_header);
         Sprite wave = new Wave();
         progressBar.setIndeterminateDrawable(wave);
-        Log.i(TAG,"ID: "+FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Log.v(TAG+"c:",String.valueOf(c));
+        StringBuilder url = (c!=2) ? new StringBuilder("providers_photos/profile_pictures/") : new StringBuilder("consumers_photos/");
+        url.append(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Log.v(TAG+"url:",url.toString());
         StorageReference mImageRef =
-                FirebaseStorage.getInstance().getReference("consumers_photos/"+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                FirebaseStorage.getInstance().getReference(url.toString().trim());
         final long ONE_MEGABYTE = 1024 * 1024;
         mImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -139,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                 Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 DisplayMetrics dm = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(dm);
-
+                Log.v(TAG,"Got image");
                 imageView.setMinimumHeight(dm.heightPixels);
                 imageView.setMinimumWidth(dm.widthPixels);
                 imageView.setImageBitmap(bm);
@@ -300,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
             case 1:
 //                Intent intent1 = new Intent(context, ConsumerDetailsFragment.class);
 //                startActivity(intent1);
-                fragmentClass = ConsumerDetailsFragment.class;
+                //fragmentClass = ConsumerDetailsFragment.class;
                 break;
             case 8:
                 fragmentClass = CancelOrderFragment.class;
@@ -379,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
         try {
 
-            fragment = (Fragment) fragmentClass.newInstance();
+//            fragment = (Fragment) fragmentClass.newInstance();
 
         } catch (Exception e) {
 

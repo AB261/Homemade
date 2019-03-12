@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -76,14 +77,20 @@ public class UploadActivity extends AppCompatActivity {
     private StorageTask mUploadTask;
     String itemName;
     private HashMap<String, String> itemPictures = new HashMap<>();
-
-
+    private ArrayList<MenuItem> menuItems;
+    private Seller seller;
+    private ArrayList<String> present = new ArrayList<>();
+    private ArrayList<String> absent = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
         type = (String) getIntent().getExtras().get("type");
+        menuItems = (ArrayList<MenuItem>) getIntent().getExtras().get("menuItems");
         mButtonChooseImage = findViewById(R.id.button_choose_image);
+        seller = (Seller)getIntent().getExtras().getSerializable("seller");
+        present = (ArrayList<String>) getIntent().getExtras().get("present");
+        absent = (ArrayList<String>) getIntent().getExtras().get("absent");
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         mEditTextFileName = findViewById(R.id.edit_text_file_name);
@@ -119,6 +126,13 @@ public class UploadActivity extends AppCompatActivity {
                 openImagesActivity();
             }
         });
+
+        Log.d("PRESENT ARRAY IN UPLOAD",present.toString());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, present);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEditTextFileName.setAdapter(adapter);
     }
 
     private void openFileChooser() {
@@ -194,9 +208,13 @@ public class UploadActivity extends AppCompatActivity {
 
     private void uploadFile() {
         File newImageFile;
+
 //        progressBar.setVisibility(View.VISIBLE);
+//        mEditTextFileName.
         itemName = mEditTextFileName.getSelectedItem().toString().trim();
+
 //            userId = firebaseAuth.getCurrentUser().getUid();
+
         if (mainImageURI != null) {
             newImageFile = new File(mainImageURI.getPath());
 
@@ -392,8 +410,13 @@ else{
 
     private void openImagesActivity() {
         Intent intent = new Intent(this, MenuActivity.class);
+
         Log.d("KJSFKJSDHFKJSDHFKJSDHF",type);
         intent.putExtra("type", type);
+        intent.putExtra("seller", seller);
+        intent.putExtra("present",present);
+        intent.putExtra("absent",absent);
+        intent.putExtra("menuItems",menuItems);
         intent.putExtra("itemPictures",itemPictures);
         startActivity(intent);
     }

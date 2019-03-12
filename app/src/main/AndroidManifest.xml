@@ -62,7 +62,7 @@
         <activity
             android:name=".SplashActivity"
             android:label="SplashScreen" />
-        <activity android:name=".ui.ConsumerDetailsFragment" />
+        <!--<activity android:name=".ui.ConsumerDetailsFragment" />-->
         <activity android:name=".SignUpSeller" />
         <activity
             android:name=".SignUpBuyer"
@@ -106,16 +106,18 @@
             android:label="Ratings and Reviews"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".CancelOrderFragment"
-            android:label="Cancel Order"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".ChooseActivity"
             android:label="Lunch"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".OrdersHistoryActivity"
             android:label="Lunch"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".CustomerConfirmActivity"
+            android:label="Confirm Order"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".OrderPageActivity"
+            android:label="Choose Items"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".CurrentOrdersActivity"

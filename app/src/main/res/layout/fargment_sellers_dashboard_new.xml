@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProviderUIFragment">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- TODO: Update blank fragment layout -->
+
+            <TextView
+                android:id="@+id/restaurant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="User Name"
+                android:textSize="32sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/current_orders"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_weight="0.5"
+                    app:cardBackgroundColor="@color/colorSecondaryLight"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/current_orders_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="10dp"
+                            android:src="@mipmap/current_orders_picture_round" />
+
+                        <TextView
+                            android:id="@+id/current_orders_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Current Orders"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/orders_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_weight="0.5"
+                    app:cardBackgroundColor="@color/colorSecondaryLight"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/order_history_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="10dp"
+                            android:src="@mipmap/orders_history_picture_round" />
+
+                        <TextView
+                            android:id="@+id/order_history_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Orders History"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/availability_status"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                app:cardBackgroundColor="@color/colorSecondaryLight"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="78dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="45dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="67dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="19dp"
+                        android:text="Availability Status"
+                        android:textColor="@color/white"
+                        android:textSize="24dp" />
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/switchButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="79dp"
+                        android:layout_marginRight="79dp"
+                        android:checked="true"
+                        android:padding="2dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:theme="@style/BrandedSwitch" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_weight="0.5"
+                    app:cardBackgroundColor="@color/colorSecondaryLight"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/reviews_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="10dp"
+                            android:src="@mipmap/discount_subs" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Reviews"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/add_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_weight="0.5"
+                    app:cardBackgroundColor="@color/colorSecondaryLight"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/add_menu_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="10dp"
+                            android:src="@mipmap/orders_history_picture_round" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Add Menu"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/subscription_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_weight="0.5"
+                    app:cardBackgroundColor="@color/colorSecondaryLight"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/subs_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="10dp"
+                            android:src="@mipmap/discount_mass" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Subscription "
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/discount_subs"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_weight="0.1"
+                            android:text="Current Discount : 0%"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/mass_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_weight="0.5"
+                    app:cardBackgroundColor="@color/colorSecondaryLight"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/mass_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:padding="10dp"
+                            android:src="@mipmap/people" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Mass Order"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/discount_mass"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Current Discount : 0%"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/no_of_mass_orders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2"
+                            android:text="Number of Items : 0"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+
+            <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/subscription_discount"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="175dp"-->
+            <!--card_view:cardCornerRadius="10dp"-->
+            <!--card_view:cardElevation="5dp"-->
+            <!--card_view:cardUseCompatPadding="true">-->
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:padding="10sp"-->
+            <!--android:src="@mipmap/orders_history_picture_round" />-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/current_orders"-->
+            <!--android:layout_marginLeft="150dp"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:text="Subscription Discount"-->
+            <!--android:textSize="32sp" />-->
+
+            <!--</android.support.v7.widget.CardView>-->
+
+            <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/mass_order"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="175dp"-->
+            <!--card_view:cardCornerRadius="10dp"-->
+            <!--card_view:cardElevation="5dp"-->
+            <!--card_view:cardUseCompatPadding="true">-->
+
+            <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:padding="10sp"-->
+            <!--android:src="@mipmap/orders_history_picture_round" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/mass_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginLeft="150dp"-->
+            <!--android:layout_marginTop="28dp"-->
+            <!--android:text="Mass Orders"-->
+            <!--android:textSize="32sp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/discount_mass"-->
+            <!--android:layout_width="214dp"-->
+            <!--android:layout_height="75dp"-->
+            <!--android:layout_alignTop="@+id/mass_text"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginTop="51dp"-->
+            <!--android:layout_marginEnd="35dp"-->
+            <!--android:text="Discount : 0%"-->
+            <!--android:textSize="24sp" />-->
+            <!--</RelativeLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/add_menu"-->
+    <!--android:layout_width="59dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|right|end"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:src="@drawable/ic_add_black_24dp"-->
+    <!--app:backgroundTint="@color/colorPrimaryDark"-->
+    <!--app:elevation="5dp"-->
+    <!--app:layout_anchorGravity="bottom|right|end"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:rippleColor="@color/colorSecondaryDark" />-->
+
+</android.support.constraint.ConstraintLayout>
