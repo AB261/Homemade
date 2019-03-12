@@ -138,8 +138,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
                                 geoPoint = (GeoPoint) map.get("address");
                                 Log.d(TAG, "findLocationFromText: Found " + (GeoPoint)map.get("address"));
-                                if((String) map.get("restaurantname") != null)
-                                    moveCamera(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()), DEFAULT_ZOOM, (String) map.get("restaurantname"));
+                                if((String) map.get("restaurantName") != null)
+                                    moveCamera(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()), DEFAULT_ZOOM, (String) map.get("restaurantName"));
                                 getDeviceLocation();
                             }
                         } else {
