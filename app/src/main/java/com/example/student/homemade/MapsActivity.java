@@ -156,7 +156,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mDb.collection("Provider")
-                .whereEqualTo("restaurantname", searchString)
+                .whereEqualTo("restaurantName", searchString)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
