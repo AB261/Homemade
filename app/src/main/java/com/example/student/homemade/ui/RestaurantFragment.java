@@ -513,9 +513,7 @@ public class RestaurantFragment extends Fragment {
                                 } else {
                                     descriptions.add(map.get("description").toString());
                                 }
-
 //                                Log.d(TAG,"Location calc correc :Latitudeis:"+latitude+"Longitudeis"+longitude);
-
                                 if (map.get("address") == null) {
                                     Location crntLocation = new Location(restaurantNames.get(i));
                                     crntLocation.setLatitude(latitude);
@@ -557,7 +555,7 @@ public class RestaurantFragment extends Fragment {
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                                                         Map map = document.getData();
-//                                                        Log.d(TAG, document.getId() + " => " + map);
+                                                        Log.d(TAG, document.getId() + " => " + map);
 
                                                         ArrayList<String> reviews = (ArrayList<String>) restaurantModels[2];
                                                         reviews.add((String) map.get("review"));
@@ -568,7 +566,7 @@ public class RestaurantFragment extends Fragment {
                                                         totalRating += ratingdouble;
                                                         ratings.add(0, totalRating / i);
 
-//                                                        Log.d(TAG, ratings.get(0).toString() + reviews.get(i - 1));
+                                                        Log.d(TAG, ratings.get(0).toString() + reviews.get(i - 1));
                                                         i++;
 
 

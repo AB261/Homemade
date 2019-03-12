@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
         Fragment fragment = null;
 
-        Class fragmentClass;
+        Class fragmentClass=null;
 
         switch (menuItem.getItemId()) {
             case 0:
@@ -385,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
         try {
 
-//            fragment = (Fragment) fragmentClass.newInstance();
+            fragment = (Fragment) fragmentClass.newInstance();
 
         } catch (Exception e) {
 
