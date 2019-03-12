@@ -194,6 +194,15 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MyView
         return items;
     }
 
+    public ArrayList<String> getItemNames(){
+        ArrayList<String> s = new ArrayList<>();
+        for(MenuItem item : items)
+        {
+            s.add(item.getName());
+        }
+        return s;
+    }
+
     public void setMap(HashMap<String,Long> map){
         this.map = map;
     }

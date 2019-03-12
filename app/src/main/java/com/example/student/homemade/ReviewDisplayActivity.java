@@ -34,7 +34,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
     private ReviewDisplayAdapter reviewDisplayAdapter;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;
-    public String myproviderID = "13";//        FirebaseAuth.getInstance().getUid()
+//    public String myproviderID = "13";//        FirebaseAuth.getInstance().getUid()
     public String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
         recyclerView.setAdapter(reviewDisplayAdapter);
 
         Log.d("user", mAuth.getUid() + "!");
-
+        mAuth = FirebaseAuth.getInstance();
 
         fetch();
 
@@ -59,7 +59,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
 
 
     public void fetch() {
-        firebaseFirestore.collection("Reviews and Ratings").whereEqualTo("reviewee", myproviderID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection("Reviews and Ratings").whereEqualTo("reviewee", mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 ReviewInfo reviewInfo;
@@ -84,7 +84,7 @@ public class ReviewDisplayActivity extends AppCompatActivity {
     public String findusername(QueryDocumentSnapshot document, final HashMap<String, Object> map){
         String reviewer = document.get("reviewer").toString();
         final String[] usernamearray = new String[1];
-        firebaseFirestore.collection("Consumer").document(reviewer).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firebaseFirestore.collection("user").document(reviewer).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
                 ReviewInfo reviewInfo;

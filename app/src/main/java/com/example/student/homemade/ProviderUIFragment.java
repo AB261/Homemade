@@ -16,12 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.NumberPicker;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,19 +46,24 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class ProviderUIFragment extends Fragment {
-    FloatingActionButton add_menu;
+    DecimalFormat df=new DecimalFormat("#.#");
+    CardView add_menu;
     CardView current_orders;
     CardView orders_history;
     CardView reviews;
+    GridView gridview;
     CardView mass_discount;
-    TextView mass_discount_text;
+    TextView discount_subs;
+    TextView discount_mass;
+    TextView no_of_mass_orders;
+
     CardView sub_discount;
     private FirebaseFirestore firebaseFirestore;
-
     private HashMap<String, String> itemPictures = new HashMap<>();
-
+    private Seller seller;
     private FirebaseAuth mAuth;
     public String sellerID = FirebaseAuth.getInstance().getUid();
+
 
     TextView Sellername;
     // TODO: Rename parameter arguments, choose names that match
@@ -104,9 +112,11 @@ public class ProviderUIFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        Log.d("sellerID",sellerID);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        //final Seller[] seller = new Seller[1];
+        Log.d("sellerID", sellerID);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sellers_dashboard, container, false);
         Sellername = view.findViewById(R.id.restaurant_name);
@@ -116,21 +126,22 @@ public class ProviderUIFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult();
-                if(document.exists()){
+                if (document.exists()) {
                     Map<String, Object> map = document.getData();
-                    switchButton.setChecked((Boolean)map.get("availability"));
-                }else{
-                    Log.d("fuck","this bitch is not working");
+                    switchButton.setChecked((Boolean) map.get("availability"));
+                } else {
+                    Log.d("fuck", "this bitch is not working");
+
                 }
 
             }
         });
 
-        switchButton.setOnClickListener(new View.OnClickListener(){
+        switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
 //                switchButton.toggle();
-                firebaseFirestore.collection("Provider").document(sellerID).update("availability",switchButton.isChecked());
+                firebaseFirestore.collection("Provider").document(sellerID).update("availability", switchButton.isChecked());
             }
         });
 
@@ -141,9 +152,14 @@ public class ProviderUIFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        seller = document.toObject(Seller.class);
+                        discount_mass.setText("Current Discount : " + df.format(seller.getMassOrderDiscount()) +"%");
+                        no_of_mass_orders.setText("Number of Items : " + df.format(seller.getNoOfMassOrders()));
+                        discount_subs.setText("Current Discount : " + df.format(seller.getLongTermSubscriptionDiscount()) + "%");
+                        Log.d("SELLEE", seller.toString());
                         Log.d("DOCSNAP", "DocumentSnapshot data: " + document.get("username"));
                         itemPictures = (HashMap<String, String>) document.get("itemPictures");
-                        Log.d("SIZE",itemPictures.size()+"");
+                        Log.d("SIZE", itemPictures.size() + "");
                         Sellername.setText("Hello " + document.get("username").toString());
                     } else {
                         Log.d("NOOE", "No such document");
@@ -157,7 +173,9 @@ public class ProviderUIFragment extends Fragment {
 
 //        Sellername.setText("Hello" + sellername);
 
-        mass_discount_text = view.findViewById(R.id.discount_mass);
+        discount_mass = view.findViewById(R.id.discount_mass);
+        no_of_mass_orders = view.findViewById(R.id.no_of_mass_orders);
+        discount_subs = view.findViewById(R.id.discount_subs);
 
         add_menu = view.findViewById(R.id.add_menu);
 
@@ -166,7 +184,8 @@ public class ProviderUIFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), ChooseActivity.class);
-                intent.putExtra("itemPictures",itemPictures);
+                intent.putExtra("itemPictures", itemPictures);
+                intent.putExtra("seller", seller);
                 startActivity(intent);
             }
         });
@@ -178,6 +197,7 @@ public class ProviderUIFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), CurrentOrdersActivity.class);
+                intent.putExtra("seller", seller);
                 startActivity(intent);
             }
         });
@@ -189,6 +209,7 @@ public class ProviderUIFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), OrdersHistoryActivity.class);
+                intent.putExtra("seller", seller);
                 startActivity(intent);
             }
         });
@@ -200,6 +221,7 @@ public class ProviderUIFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), ReviewDisplayActivity.class);
+                intent.putExtra("seller", seller);
                 startActivity(intent);
             }
         });
@@ -221,8 +243,7 @@ public class ProviderUIFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getActivity(), SubscriptionDiscountActivity.class);
-                startActivity(intent);
+                showChangeLangDialog1();
             }
         });
 
@@ -231,7 +252,7 @@ public class ProviderUIFragment extends Fragment {
     }
 
     public void showChangeLangDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),R.style.myDialog);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_mass_discount_dialog, null);
         dialogBuilder.setView(dialogView);
@@ -240,7 +261,8 @@ public class ProviderUIFragment extends Fragment {
         final NumberPicker dicountRate = (NumberPicker) dialogView.findViewById(R.id.discount_mass);
         noOfOrders.setMaxValue(100);
         noOfOrders.setMinValue(1);
-        noOfOrders.setValue(1);
+        noOfOrders.setValue(20);
+
         dicountRate.setMaxValue(100);
         dicountRate.setMinValue(0);
         dicountRate.setValue(50);
@@ -249,25 +271,66 @@ public class ProviderUIFragment extends Fragment {
             public void onClick(DialogInterface dialog, int whichButton) {
                 int num = noOfOrders.getValue();
                 int disc = dicountRate.getValue();
-                if(disc!=0)
-                {
-                    mass_discount_text.setText("Discount : " + disc + "%\n" + "Minimum orders : " + num);
-                }
-                else
-                {
-                    mass_discount_text.setText("Discount : 0% ");
-                }
-//                if(edt.getText().toString() != "") {
-//                    noOfOrders = Integer.parseInt(edt.getText().toString());
-//
-//                    int discount_mass = num.getValue();
-//                    mass_discount_text.setText("Minimum orders : " + noOfOrders + " Discount : " + discount_mass);
-//                    //do something with edt.getText().toString();
-//                }
-//                else
-//                {
-//                    Toast.makeText(getActivity(),"Enter minimum orders",Toast.LENGTH_SHORT).show();
-//                }
+                discount_mass.setText("Current Discount : " + disc+"%");
+                no_of_mass_orders.setText("Number of Items : " + num);
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("massOrderDiscount",disc);
+                map.put("noOfMassOrders",num);
+                firebaseFirestore.collection("Provider").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(),"Updated",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("FSA",e.toString());
+                            }
+                        });
+
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    public void showChangeLangDialog1() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),R.style.myDialog);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_subs_discount_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final NumberPicker dicountRate = (NumberPicker) dialogView.findViewById(R.id.discount_subs);
+        dicountRate.setMaxValue(100);
+        dicountRate.setMinValue(0);
+        dicountRate.setValue(10);
+        dialogBuilder.setTitle("Enter Discount Rate");
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                int disc = dicountRate.getValue();
+                discount_subs.setText("Current Discount : " + disc +"%");
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("longTermSubscriptionDiscount",disc);
+                firebaseFirestore.collection("Provider").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(),"Updated",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("FSA",e.toString());
+                            }
+                        });
+
+
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

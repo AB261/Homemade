@@ -53,6 +53,15 @@ class Order2 {
     ArrayList<FoodItem2> itemsOrdered;
     String deliveryPerson;
     boolean isMassOrder;
+    String orderDate;
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
 
     public void setMassOrder(boolean massOrder) {
         isMassOrder = massOrder;
@@ -157,7 +166,8 @@ class Order2 {
                 result = result + itemsOrdered.get(i).itemName + " - " + itemsOrdered.get(i).itemNumber + "  ";
             }
         }
-//        if(itemsOrdered.get(itemsOrdered.size() lt = result + itemsOrdered.get(itemsOrdered.size() - 1).itemName + ":" + itemsOrdered.get(itemsOrdered.size()-1).itemNumber;
+//        if(itemsOrdered.get(itemsOrdered.size() - 1).itemNumber != 0)
+//            result = result + itemsOrdered.get(itemsOrdered.size() - 1).itemName + ":" + itemsOrdered.get(itemsOrdered.size()-1).itemNumber;
 
 
         return result;

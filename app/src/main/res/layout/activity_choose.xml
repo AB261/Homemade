@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/grey"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -29,8 +29,8 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:background="@color/colorPrimaryLight"
-            card_view:cardCornerRadius="10dp"
             card_view:cardBackgroundColor="@color/colorPrimaryDark"
+            card_view:cardCornerRadius="10dp"
             card_view:cardElevation="5dp"
             card_view:cardUseCompatPadding="true">
 
@@ -39,9 +39,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:text="Breakfast"
+                android:textColor="@color/white"
                 android:textSize="40sp" />
         </android.support.v7.widget.CardView>
 
@@ -61,9 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:text="Lunch"
+                android:textColor="@color/white"
                 android:textSize="40sp" />
         </android.support.v7.widget.CardView>
 
@@ -83,9 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:text="Dinner"
+                android:textColor="@color/white"
                 android:textSize="40sp" />
         </android.support.v7.widget.CardView>
 
@@ -106,25 +106,25 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:textColor="@color/white"
                 android:text="Snacks"
+                android:textColor="@color/white"
                 android:textSize="40sp" />
         </android.support.v7.widget.CardView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="50dp">
 
-        <Button
-            android:id="@+id/button_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/green"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:paddingLeft="56dp"
-            android:paddingRight="48dp"
-            android:text="Update Current Menu"
-            android:textColor="#fff" />
+            <Button
+                android:id="@+id/add_custom_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonstyle"
+                android:text="Add Items"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

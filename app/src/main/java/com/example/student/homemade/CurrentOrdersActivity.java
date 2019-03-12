@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 public class CurrentOrdersActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
     private static final String TAG = "CURRENTORDERSACTIVITY";
     private CurrentOrdersRecyclerViewAdapter recyclerViewAdapter;
     //vars
@@ -29,11 +31,11 @@ public class CurrentOrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_orders);
         Log.d(TAG, "onCreate: started.");
-
+        mAuth = FirebaseAuth.getInstance();
         //PLEASE PASS provider ID to this activity from login page
-        int myproviderID = 13;
+//        int myproviderID = 13;
         //PLEASE PASS provider ID to this activity from login page
-
+        String myProviderId = mAuth.getUid();
 
 
 
@@ -44,7 +46,7 @@ public class CurrentOrdersActivity extends AppCompatActivity {
 
 //        DocumentReference docRef = db.collection("Orders").document(myproviderIDString);
 //        Query docRef = db.collection("Orders").whereEqualTo("Provider",myproviderID);
-        db.collection("Orders").whereEqualTo("Provider", myproviderID).whereEqualTo("delivered", false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Orders").whereEqualTo("provider", myProviderId).whereEqualTo("delivered", false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 OrderInfo orderInfo;
@@ -52,8 +54,21 @@ public class CurrentOrdersActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d(TAG, document.getId() + " => " + document.getData());
                         HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
-                        Log.d(TAG, "client id :" + map.get("client"));
-                        orderInfo = new OrderInfo(Integer.parseInt(map.get("Provider").toString()), Integer.parseInt(map.get("client").toString()), (Boolean) map.get("completed"), (Boolean) map.get("delivered"), Integer.parseInt(map.get("delivery_person").toString()), Integer.parseInt(map.get("orderID").toString()), (Boolean) map.get("paid"), (ArrayList<String>) map.get("things_ordered"), (String) map.get("time_and_date"), Integer.parseInt(map.get("timeBeforeCancel").toString()), Float.parseFloat(map.get("total_cost").toString()));
+                        Log.d(TAG, "client id :" + map.get("provider"));
+                        Log.d(TAG, "client id :" + map.get("consumer"));
+                        Log.d(TAG, "client id :" + map.get("completed"));
+                        Log.d(TAG, "client id :" + map.get("delivered"));
+                        Log.d(TAG, "client id :" + map.get("deliveryPerson"));
+                        Log.d(TAG, "client id :" + map.get("isMassOrder"));
+                        Log.d(TAG, "client id :" + map.get("paid"));
+                        Log.d(TAG, "client id :" + map.get("orderTotal"));
+                        Log.d(TAG, "client id :" + map.get("itemsOrdered"));
+                        Log.d(TAG, "client id :" + map.get("orderDate"));
+                        Log.d(TAG, "client id :" + map.get("orderTime"));
+                        orderInfo = new OrderInfo(map.get("provider").toString(), map.get("consumer").toString(), (Boolean)map.get("completed"), (Boolean)map.get("delivered"), map.get("deliveryPerson").toString(),(Boolean)map.get("isMassOrder"), (Boolean)map.get("paid"), (ArrayList<HashMap<String,Object>>) map.get("itemsOrdered"), (double)map.get("orderTotal"),map.get("orderTime").toString(), map.get("orderDate").toString());
+//                        orderInfo = document.toObject(OrderInfo.class);
+//                        Log.d("ORDERINFO",orderInfo.toString());
+
                         recyclerViewAdapter.added(orderInfo);
                     }
                 } else {
