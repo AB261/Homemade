@@ -157,8 +157,7 @@ class Order2 {
                 result = result + itemsOrdered.get(i).itemName + " - " + itemsOrdered.get(i).itemNumber + "  ";
             }
         }
-//        if(itemsOrdered.get(itemsOrdered.size() - 1).itemNumber != 0)
-//            result = result + itemsOrdered.get(itemsOrdered.size() - 1).itemName + ":" + itemsOrdered.get(itemsOrdered.size()-1).itemNumber;
+//        if(itemsOrdered.get(itemsOrdered.size() lt = result + itemsOrdered.get(itemsOrdered.size() - 1).itemName + ":" + itemsOrdered.get(itemsOrdered.size()-1).itemNumber;
 
 
         return result;
