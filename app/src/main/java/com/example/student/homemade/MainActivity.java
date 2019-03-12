@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
         Log.v(TAG,settings.getString("email","homemade"));
         c = settings.getInt("ProviderOrConsumerFlag", 0);
+        Log.d("BRO","" + c);
         navigationView = findViewById(R.id.nav_view);
 
         Menu menu = navigationView.getMenu();
@@ -274,12 +275,12 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
         switch (menuItem.getItemId()) {
             case 0:
-                if(c == 1)
+                if(c != 2)
                     fragmentClass = ProviderUIFragment.class;
                 else if(c == 2)
                     fragmentClass = ConsumerUIFragment.class;
-                else
-                    fragmentClass = null;
+//                else
+//                    fragmentClass = null;
                 break;
             case 4:
                 fragmentClass = RestaurantFragment.class;
@@ -387,6 +388,10 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
             fragment = (Fragment) fragmentClass.newInstance();
 
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -396,9 +401,6 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
         // Insert the fragment by replacing any existing fragment
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 
 
         // Highlight the selected item has been done by NavigationView

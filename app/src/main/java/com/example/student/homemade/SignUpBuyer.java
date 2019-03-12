@@ -301,6 +301,7 @@ public class SignUpBuyer extends AppCompatActivity {
                             Map<String, Object> userdata = new HashMap<>();
                             userdata.put("username", textInputUsername.getText().toString());
                             userdata.put("email", textInputEmail.getText().toString());
+                            userdata.put("id", mAuth.getCurrentUser().getUid());
                             userdata.put("password", textInputPassword.getText().toString());
                             userdata.put("contactNumber", textInputPhoneNumber.getText().toString());
                             userdata.put("address", textInputAddress.getText().toString());
@@ -356,7 +357,7 @@ public class SignUpBuyer extends AppCompatActivity {
                                 }
                             });
 
-//                            Toast.makeText(getApplicationContext(), "Successfull Sign Up. Go to Login and Start Over", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Successfull Sign Up. Enjoy", Toast.LENGTH_LONG).show();
                         }
                     });
                 }

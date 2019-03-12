@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Seller implements Serializable {
-    boolean active;
-    GeoPoint geoPoint;
+    GeoPoint address;
     boolean availability;
     ArrayList<String> customItems;
     String description;
@@ -22,17 +21,17 @@ public class Seller implements Serializable {
     int timeBeforeCancel;
     String username;
     Long wallet;
-
+    String id;
 
     @Override
     public String toString() {
         return "Seller{" +
-                "active=" + active +
-                ", geoPoint=" + geoPoint +
+                "address=" + address +
                 ", availability=" + availability +
                 ", customItems=" + customItems +
                 ", description='" + description + '\'' +
                 ", email='" + email + '\'' +
+                ", id='" + id + '\'' +
                 ", itemPictures=" + itemPictures +
                 ", longTermSubscriptionDiscount=" + longTermSubscriptionDiscount +
                 ", massOrderDiscount=" + massOrderDiscount +
@@ -56,20 +55,28 @@ public class Seller implements Serializable {
         this.wallet = wallet;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getId() {
+        return id;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setId(String id) {
+        this.id = id;
+    }
+//    public boolean isActive() {
+//        return active;
+//    }
+//
+//    public void setActive(boolean active) {
+//        this.active = active;
+//    }
+
+
+    public GeoPoint getAddress() {
+        return address;
     }
 
-    public GeoPoint getGeoPoint() {
-        return geoPoint;
-    }
-
-    public void setGeoPoint(GeoPoint geoPoint) {
-        this.geoPoint = geoPoint;
+    public void setAddress(GeoPoint address) {
+        this.address = address;
     }
 
     public boolean isAvailability() {
