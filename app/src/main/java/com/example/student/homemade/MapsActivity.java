@@ -1,8 +1,14 @@
 package com.example.student.homemade;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -33,7 +39,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,13 +51,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private static final String TAG = "MapsActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -66,6 +76,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Boolean mLocationPermissionsGranted;
     private FusedLocationProviderClient mFusedLoactionProviderClient;
     private FirebaseFirestore mDb;
+    private FirebaseStorage storage;
 
     private GoogleMap mMap;
 
@@ -139,7 +150,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 geoPoint = (GeoPoint) map.get("address");
                                 Log.d(TAG, "findLocationFromText: Found " + (GeoPoint)map.get("address"));
                                 if((String) map.get("restaurantName") != null)
-                                    moveCamera(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()), DEFAULT_ZOOM, (String) map.get("restaurantName"));
+                                    moveCameraWithImage(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()), DEFAULT_ZOOM, (String) map.get("restaurantName"), (String) map.get("description"));
                                 getDeviceLocation();
                             }
                         } else {
@@ -212,6 +223,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         Toast.makeText(this, "Map is ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
+        mMap.setOnInfoWindowClickListener(MapsActivity.this);
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
@@ -287,6 +299,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         hideSoftKeyBoard();
     }
 
+    private void moveCameraWithImage(LatLng latlng, float zoom, String title, String description) {
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
+
+        MarkerOptions options = new MarkerOptions()
+                    .position(latlng)
+                    .title(title)
+                    .snippet(description)
+                    .icon(bitMapDescriptorFromVector(getApplicationContext(), R.mipmap.ic_maps_res_disp_icon_round));
+        mMap.addMarker(options);
+
+        hideSoftKeyBoard();
+    }
+
     private void getLocationPermission() {
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -346,6 +371,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private BitmapDescriptor bitMapDescriptorFromVector(Context context, int vectorResId) {
+        final int markerWidth = (int) context.getResources().getDimension(R.dimen.custom_marker_image_maps);
+        final int markerHeight = (int) context.getResources().getDimension(R.dimen.custom_marker_image_maps);
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0,0,vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(markerWidth, markerHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
     private void hideSoftKeyBoard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
@@ -399,4 +435,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        if(marker.getTitle().equals("My Location")) {
+            marker.hideInfoWindow();
+        }
+
+        else {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+            builder.setMessage("Determine route to this restaurant?")
+                    .setCancelable(true)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unsused")final DialogInterface dialog, @SuppressWarnings("unsused") final int id) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unsused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
 }

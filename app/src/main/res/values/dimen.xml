@@ -9,5 +9,6 @@
     <dimen name="icon_padding">8dp</dimen>
     <dimen name="card_height">250dip</dimen>
     <dimen name="card_text_size">18sp</dimen>
+    <dimen name="custom_marker_image_maps">100dp</dimen>
 
 </resources>
