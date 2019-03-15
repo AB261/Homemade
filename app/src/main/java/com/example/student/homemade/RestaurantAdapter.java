@@ -1,10 +1,13 @@
 package com.example.student.homemade;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +18,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.student.homemade.ui.RestaurantDialogFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 
@@ -41,7 +49,41 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
         myViewHolder.rating.setRating((float)restaurantModel.getRating());
 
 //Glide is a library used to put images in image view
-        Glide.with(mContext).load(R.drawable.default_rest).into(myViewHolder.thumbnail);
+        StringBuilder url = new StringBuilder("providers_photos/restaurant_pictures/");
+        url.append(restaurantModel.getUserID());
+        StorageReference mImageRef =
+                FirebaseStorage.getInstance().getReference(url.toString().trim());
+        if(restaurantModel.getRestaurantImage()==null){
+            final long ONE_MEGABYTE = 1024 * 1024;
+            mImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+//                DisplayMetrics dm = new DisplayMetrics();
+//                mContext.getResources().getWindowManager().getDefaultDisplay().getMetrics(dm);
+                    Log.v(TAG,"Got image");
+                    myViewHolder.thumbnail.setMinimumHeight(dm.heightPixels);
+                    myViewHolder.thumbnail.setMinimumWidth(dm.widthPixels);
+                    restaurantModel.setRestaurantImage(bm);
+                    myViewHolder.thumbnail.setImageBitmap(bm);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Glide.with(mContext).load(R.drawable.default_rest).into(myViewHolder.thumbnail);
+
+                }
+            });
+        }
+        else {
+            DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+//                DisplayMetrics dm = new DisplayMetrics();
+//                mContext.getResources().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            myViewHolder.thumbnail.setMinimumHeight(dm.heightPixels);
+            myViewHolder.thumbnail.setMinimumWidth(dm.widthPixels);
+            myViewHolder.thumbnail.setImageBitmap(restaurantModel.getRestaurantImage());
+        }
 
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +94,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
                 args.putString("title",restaurantModel.getRestaurantName());
                 args.putStringArrayList("reviews",restaurantModel.getReview());
                 args.putString("description",restaurantModel.getDescription());
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                if(restaurantModel.getRestaurantImage()!=null){
+                    restaurantModel.getRestaurantImage().compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    args.putByteArray("image",byteArray);
+                }
+
 
                 Log.d(TAG,String.valueOf(restaurantModel.getRating()));
                 Log.d(TAG,restaurantModel.getRestaurantName());

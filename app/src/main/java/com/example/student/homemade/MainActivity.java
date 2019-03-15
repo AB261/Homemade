@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         menu.add(0, 3, 0, "Logout");
 
         //----------------ended here
-        mDrawer.setScrimColor(getResources().getColor(R.color.white));
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
                 R.string.drawer_open, R.string.drawer_close) {
 
@@ -124,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+        mDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawer.setDrawerListener(mDrawerToggle);
         setupDrawerContent(navigationView);
