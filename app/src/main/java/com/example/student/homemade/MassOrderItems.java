@@ -36,14 +36,12 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
     EditText amountBreakfast, amountLunch, amountSnacks, amountDinner;
     ArrayList<String> breakfastList, lunchList, snacksList, dinnerList;
     DocumentReference breakfastCollection, lunchCollection, snacksCollection, dinnerCollection;
-    final String providerIDTemp = "vMR09oO90SbUtCapURrudg5QMlw2";
     ArrayList<Integer> arrayOfRespectiveAmountOfItemsChoosen;
     ArrayList<String> arrayOfItems;             ///////ARRAY LIST DECLARED
     Button saveItems;
     String nameOfResturant,date,time,address,providerID;  ///GETTING THESE THINGS VIA INTENT
     String item1,item2,item3,item4;
     int amount1,amount2,amount3,amount4;
-
 
 
     @Override
@@ -53,14 +51,14 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
 
 
 
-//        amountBreakfast = findViewById(R.id.etBreakfast);
-//        amountLunch = findViewById(R.id.etLunch);
-//        amountSnacks = findViewById(R.id.etSnacks);
-//        amountDinner = findViewById(R.id.etDinner);
-//        breakfastSpinner = findViewById(R.id.spinnerBreakfast);
-//        lunchSpinner = findViewById(R.id.spinnerLunch);
-//        snacksSpinner = findViewById(R.id.spinnerSnacks);
-//        dinnerSpinner = findViewById(R.id.spinnerDinner);
+        amountBreakfast = findViewById(R.id.etBreakfast);
+        amountLunch = findViewById(R.id.etLunch);
+        amountSnacks = findViewById(R.id.etSnacks);
+        amountDinner = findViewById(R.id.etDinner);
+        breakfastSpinner = findViewById(R.id.spinnerBreakfast);
+        lunchSpinner = findViewById(R.id.spinnerLunch);
+        snacksSpinner = findViewById(R.id.spinnerSnacks);
+        dinnerSpinner = findViewById(R.id.spinnerDinner);
         saveItems= findViewById(R.id.btnAddItems);
         arrayOfRespectiveAmountOfItemsChoosen = new ArrayList<Integer>();
         arrayOfItems = new ArrayList<String>();
@@ -75,8 +73,9 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
         address = intentGet.getStringExtra("address");
         providerID = intentGet.getStringExtra("providerID");
 
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference providerIds = db.collection("Provider").document(providerIDTemp).collection("menu");
+        CollectionReference providerIds = db.collection("Provider").document(providerID).collection("menu");
         breakfastCollection = providerIds.document("Breakfast");
         lunchCollection = providerIds.document("Lunch");
         snacksCollection = providerIds.document("Snacks");
@@ -91,11 +90,22 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View v) {
 
+                try {
+                    item1 = breakfastSpinner.getSelectedItem().toString();
+                }catch(Exception e){}
 
-                item1 = breakfastSpinner.getSelectedItem().toString();
-                item2 = lunchSpinner.getSelectedItem().toString();
-                item3 = snacksSpinner.getSelectedItem().toString();
-                item4 = dinnerSpinner.getSelectedItem().toString();
+                try {
+                    item2 = lunchSpinner.getSelectedItem().toString();
+                }catch (Exception e){}
+
+                try {
+                    item3 = snacksSpinner.getSelectedItem().toString();
+                }catch (Exception e){}
+
+                try {
+                    item4 = dinnerSpinner.getSelectedItem().toString();
+                }catch (Exception e){}
+
                 sendItemDetailsToMassOrderFragment();
 
             }
@@ -108,7 +118,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
 
         if(checkforallfields() == false){
             Toast.makeText(this, "SOME FIELDS ARE EMPTY", Toast.LENGTH_SHORT).show();
-           return;
+            return;
         }
 
         try {
@@ -162,7 +172,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
         intentSend.putExtra("date", date);
         intentSend.putExtra("address", address);
         intentSend.putExtra("time", time);
-        intentSend.putExtra("providerID", providerIDTemp);
+        intentSend.putExtra("providerID", providerID);
 
         startActivity(intentSend);
         finish();
@@ -213,6 +223,8 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(MassOrderItems.this, "BREAKFAST MENU DOES NOT EXIST", Toast.LENGTH_SHORT).show();
+                breakfastSpinner.setVisibility(View.GONE);
+                amountBreakfast.setVisibility(View.GONE);
             }
         });
 
@@ -253,6 +265,8 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(MassOrderItems.this, "LUNCH MENU DOES NOT EXIST", Toast.LENGTH_SHORT).show();
+                lunchSpinner.setVisibility(View.GONE);
+                amountLunch.setVisibility(View.GONE);
             }
         });
 
@@ -287,6 +301,8 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
 
                 }else{
                     Toast.makeText(MassOrderItems.this, "TASK NOT SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    snacksSpinner.setVisibility(View.GONE);
+                    amountSnacks.setVisibility(View.GONE);
                 }
 
             }
@@ -333,6 +349,8 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(MassOrderItems.this, "DINNER MENU DOES NOT EXIST", Toast.LENGTH_SHORT).show();
+                dinnerSpinner.setVisibility(View.GONE);
+                amountDinner.setVisibility(View.GONE);
             }
         });
 
