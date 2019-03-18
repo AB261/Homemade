@@ -47,6 +47,7 @@ public class TrendingItemsFragment extends Fragment {
 
 
 
+
     public TrendingItemsFragment() {
         // Required empty public constructor
     }
@@ -204,7 +205,10 @@ public class TrendingItemsFragment extends Fragment {
             TextView price = view.findViewById(R.id.tvPriceOfFood);
             TextView date = view.findViewById(R.id.tvDateOfFood);
             TextView time = view.findViewById(R.id.tvTimeOfFood);
-
+            ImageView calanderImage = view.findViewById(R.id.ivDate);
+            ImageView clockImage = view.findViewById(R.id.ivTime);
+            calanderImage.setVisibility(View.GONE);
+            clockImage.setVisibility(View.GONE);
 
             name.setText(nameArrayList.get(i));
             price.setText(priceArrayList.get(i).toString());
