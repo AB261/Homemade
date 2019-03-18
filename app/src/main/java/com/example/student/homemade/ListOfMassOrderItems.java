@@ -90,6 +90,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
                 intentSend.putExtra("providerID", providerID);
 
                 startActivity(intentSend);
+                finish();
             }
         });
         ////////////GOING TO ADD ITEMS PAGE
@@ -117,15 +118,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
                             @Override
                             public void onSuccess(Void aVoid) {
 
-                                try{
-                                    ConsumerUIFragment fragment = new ConsumerUIFragment();
-                                    getSupportFragmentManager().beginTransaction()
-                                            .replace(R.id.container, fragment)
-                                            .commit();
-                                }
-                                catch (Exception e){
-                                    Log.i("jump",e.toString());
-                                }
+
                                 Toast.makeText(ListOfMassOrderItems.this, "SUCCESSFULLY ORDER PLACED", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
