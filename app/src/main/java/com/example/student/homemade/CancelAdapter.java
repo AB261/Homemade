@@ -103,11 +103,13 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 HashMap<String, Object> map = (HashMap<String, Object>) documentSnapshot.getData();
                 String restaurantName = map.get("restaurantName").toString();
-                int timeBeforeCancel = Integer.parseInt(map.get("timeBeforeCancel").toString());
+                int timeBeforeCancel;
+                if(map.get("timeBeforeCancel").equals(null)) timeBeforeCancel = 5;
+                else timeBeforeCancel = Integer.parseInt(map.get("timeBeforeCancel").toString());
                 viewHolder1.line1.setText("" + restaurantName);
                 viewHolder1.line2.setText("Time when order was placed: " + orderInfo.orderTime );
                 viewHolder1.line3.setText("Order can be cancelled before: " + timeBeforeCancel + " min");
-                viewHolder1.line4.setText("Items: " + orderInfo.getItemsOrdered());
+                viewHolder1.line4.setText("Items:\n" + orderInfo.getItemsOrdered());
                 viewHolder1.line5.setText("Total Cost: " + orderInfo.getOrderTotal());
             }
         });
