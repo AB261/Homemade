@@ -52,7 +52,7 @@ public class MassOrderFragment extends Fragment {
     TextView submitTextView, headingText;
     EditText dateText, timeText, addressText;
     Button submitButton;
-    Spinner spinnerItems, spinnerSeller,spinnerNoOfItems;
+    Spinner  spinnerSeller;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference providerIds = db.collection("Provider");
     ArrayList<String> sellerList  = new ArrayList<String>();
@@ -128,6 +128,7 @@ public class MassOrderFragment extends Fragment {
     void  goToNextPage(){
         Intent intent = new Intent(getActivity(), ListOfMassOrderItems.class);
         String resturant;
+
         try {
             resturant = spinnerSeller.getSelectedItem().toString();
             intent.putExtra("nameOfResturant", resturant);

@@ -118,7 +118,7 @@ public class ConsumerUIFragment extends Fragment {
 
                             if((boolean)map.get("delivered") == false){         ///not delivered
                                 ArrayList<HashMap> orders = (ArrayList) map.get("itemsOrdered");
-                                                                                                //ITEM ARE STORED IN A MAP INSIDE A ARRAYLIST SO I'M RETRIEVING THEM USING HASHMAP
+                                //ITEM ARE STORED IN A MAP INSIDE A ARRAYLIST SO I'M RETRIEVING THEM USING HASHMAP
                                 for(int i=0 ;i<orders.size() ; i++) {
                                     nameArrayList.add(orders.get(i).get("itemName").toString());
                                     dateArrayList.add(currDate);
@@ -157,7 +157,7 @@ public class ConsumerUIFragment extends Fragment {
 
         @Override
         public int getCount() {
-           return nameArrayList.size();
+            return nameArrayList.size();
         }
 
         @Override
