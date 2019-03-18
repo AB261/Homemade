@@ -103,11 +103,30 @@ public class CustomerConfirmActivity extends AppCompatActivity {
 
                                 Log.d("newnew","In consumer");
                                 final HashMap<String, Object> map = (HashMap<String, Object>)documentSnapshot.getData();
-                                final boolean isSubscriber = false;
+//                                ///////////////////////////////////////////////////////////////////////////////
+                                /////////////////////////////////////CHANGES MADE/////////////////////////////////////////
+                                boolean iss = false;
+                                if(map.containsKey("Subscriptions")){
+                                    final HashMap<String,String> subscriptions = (HashMap<String,String>)(map.get("Subscriptions"));
+                                    Log.d("mfuck",subscriptions.toString());
+
+                                    if(subscriptions.containsKey(providerID)){
+                                        Log.d("mfuck",providerID);
+//                                        Log.d("mfucccccckkkkkkkerrrr", ((System.currentTimeMillis() /1000) <  Long.parseLong(subscriptions.get(providerID))) + "");
+                                        long t = Long.parseLong(subscriptions.get(providerID).trim());
+                                        long now = System.currentTimeMillis();
+                                        if( now <  t * 1000){
+                                            iss = true;
+                                        }
+                                    }
+                                }
+
+                                final boolean isSubscriber = iss;
+                                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 walletCost.setText(map.get("wallet").toString());
-                                final Double orderTotal = orderTotal1 - (isSubscriber?discountLongTerm*orderTotal1*0.01:0) - (isMassOrder?orderTotal1*0.01*discountMassOrder:0) + deliveryCharges ;
+                                final Double orderTotal = orderTotal1 - (isSubscriber?discountLongTerm*orderTotal1*0.01:0) + deliveryCharges ;
                                 totalCost.setText(orderTotal + "");
-                                statusInfo.setText("Please proceed to make the payment");
+                                statusInfo.setText((isSubscriber?"Subscriber discount applied\n":"") + "Delivery : Rs 75\nPlease proceed to make the payment");
                                 if(Double.parseDouble(map.get("wallet").toString()) > orderTotal) {
                                     lastButton.setText("Pay");
                                     lastButton.setOnClickListener(new View.OnClickListener() {

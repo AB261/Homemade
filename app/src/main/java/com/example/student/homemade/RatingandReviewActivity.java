@@ -68,7 +68,7 @@ public class RatingandReviewActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("Review" ,review);
+//        Log.d("Review" ,review);
     }
     private void validate(String rev){
 
