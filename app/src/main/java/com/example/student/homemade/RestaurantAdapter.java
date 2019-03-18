@@ -50,6 +50,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         final RestaurantModel restaurantModel = myList.get(i);
+        Log.d(TAG,"Now it contains"+restaurantModel.getReview().get(0));
         String dis = mContext.getString(R.string.dist_from_curr_loc) +": " + restaurantModel.getDistance();
         myViewHolder.distanceFromCurrLoc.setText(dis + " km");
         // myViewHolder.rating.setText("Rating:" + String.valueOf(5));
@@ -108,21 +109,21 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             public void onClick(View v) {
                 RestaurantDialogFragment dialogFragment = new RestaurantDialogFragment();
                 Bundle args = new Bundle();
-                args.putString("stars",String.valueOf(restaurantModel.getRating()));
-                args.putString("title",restaurantModel.getRestaurantName());
-                args.putStringArrayList("reviews",restaurantModel.getReview());
-                args.putString("description",restaurantModel.getDescription());
+                args.putString("stars", String.valueOf(restaurantModel.getRating()));
+                args.putString("title", restaurantModel.getRestaurantName());
+                args.putStringArrayList("reviews", restaurantModel.getReview());
+                args.putString("description", restaurantModel.getDescription());
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                if(restaurantModel.getRestaurantImage()!=null){
+                if (restaurantModel.getRestaurantImage() != null) {
                     restaurantModel.getRestaurantImage().compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
-                    args.putByteArray("image",byteArray);
+                    args.putByteArray("image", byteArray);
                 }
 
 
-                Log.d(TAG,String.valueOf(restaurantModel.getRating()));
-                Log.d(TAG,restaurantModel.getRestaurantName());
-                Log.d(TAG,restaurantModel.getReview().toString());
+                Log.d(TAG, String.valueOf(restaurantModel.getRating()));
+                Log.d(TAG, restaurantModel.getRestaurantName());
+                Log.d(TAG, restaurantModel.getReview().toString());
 
                 dialogFragment.setArguments(args);
                 dialogFragment.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "Simple Dialog");
