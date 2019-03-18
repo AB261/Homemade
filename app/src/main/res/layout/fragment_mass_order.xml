@@ -8,32 +8,6 @@
 
 
     <TextView
-        android:id="@+id/submitTextView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/holo_red_light"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:onClick="submitToUserButton"
-        android:text="DETAILS OF YOUR ORDER IS SUBMITTED TO PRODUCER\n\n\nPLEASE WAIT FOR PRODUCER TO CONFIRM IT \n\nONCE CONFIRMED YOU'LL GET NOTIFICATION"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@android:color/background_dark"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.566"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572" />
-
-    <TextView
         android:id="@+id/headingText"
         android:layout_width="362dp"
         android:layout_height="53dp"
