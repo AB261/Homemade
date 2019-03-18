@@ -109,7 +109,7 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
                 viewHolder1.line1.setText("" + restaurantName);
                 viewHolder1.line2.setText("Time when order was placed: " + orderInfo.orderTime );
                 viewHolder1.line3.setText("Order can be cancelled before: " + timeBeforeCancel + " min");
-                viewHolder1.line4.setText("Items: " + orderInfo.getItemsOrdered());
+                viewHolder1.line4.setText("Items:\n" + orderInfo.getItemsOrdered());
                 viewHolder1.line5.setText("Total Cost: " + orderInfo.getOrderTotal());
             }
         });
