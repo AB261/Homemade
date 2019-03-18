@@ -11,20 +11,34 @@ public class RestaurantModel {
     private float distance;
     private double rating;
     private String userID;
+    public ArrayList<String> userNames;
     Bitmap restaurantImage;
+    ArrayList<Integer>individualRating;
 
-    public RestaurantModel(String restaurantName, String description, ArrayList<String> review,  float distance, String imageResourceId,double rating, String userID) {
+    public RestaurantModel(String restaurantName, String description, ArrayList<String> review,  float distance, String imageResourceId,double rating) {
         this.restaurantName = restaurantName;
         this.description = description;
         this.review = review;
         this.distance =  distance;
         this.imageResourceId = imageResourceId;
         this.rating = rating;
-        this.userID=userID;
+
     }
 
     public Bitmap getRestaurantImage() {
         return restaurantImage;
+    }
+
+    public ArrayList<String> getUserNames() {
+        return userNames;
+    }
+
+    public void setUserNames(ArrayList<String> userNames) {
+        this.userNames = userNames;
+    }
+
+    public ArrayList<Integer> getIndividualRating() {
+        return individualRating;
     }
 
     public void setRestaurantImage(Bitmap restaurantImage) {
@@ -85,5 +99,9 @@ public class RestaurantModel {
 
     public void setReview(ArrayList<String> review) {
         this.review = review;
+    }
+
+    public void setIndividualRating(ArrayList<Integer> individualRating) {
+        this.individualRating = individualRating;
     }
 }

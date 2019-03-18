@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.student.homemade">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -58,7 +59,8 @@
             android:label="SliderIntro" />
         <activity
             android:name=".SplashActivity"
-            android:label="SplashScreen" /> <!-- <activity android:name=".ui.ConsumerDetailsFragment" /> -->
+            android:label="SplashScreen" />
+        <!--<activity android:name=".ui.ConsumerDetailsFragment" />-->
         <activity android:name=".SignUpSeller" />
         <activity
             android:name=".SignUpBuyer"
@@ -97,14 +99,13 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Subscription_time"
-            android:label="Subscription0"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".Subscription_time"
+            android:theme="@style/AppTheme"
+            android:label="Subscription0"/>
         <activity
             android:name=".RatingandReviewActivity"
-            android:exported="true"
             android:label="Ratings and Reviews"
+            android:exported="true"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ChooseActivity"
@@ -114,12 +115,10 @@
             android:name=".OrdersHistoryActivity"
             android:label="Lunch"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".CustomerConfirmActivity"
+        <activity android:name=".CustomerConfirmActivity"
             android:label="Confirm Order"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".OrderPageActivity"
+        <activity android:name=".OrderPageActivity"
             android:label="Choose Items"
             android:theme="@style/AppTheme" />
         <activity
@@ -133,7 +132,7 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".MassDiscountActivity" />
-        <activity android:name=".SubscriptionDiscountActivity" />
+        <activity android:name=".SubscriptionDiscountActivity"/>
     </application>
 
 </manifest>
