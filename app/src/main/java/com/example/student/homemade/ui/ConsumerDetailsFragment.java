@@ -69,6 +69,7 @@ public class ConsumerDetailsFragment extends Fragment {
     ProgressDialog progressDialog;
 
 
+
     public ConsumerDetailsFragment(){
         //Required empty constructor
     }
@@ -113,6 +114,12 @@ public class ConsumerDetailsFragment extends Fragment {
             }
         });
 
+        changeUserPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ChangePassword.class));
+            }
+        });
 
         return v;
 

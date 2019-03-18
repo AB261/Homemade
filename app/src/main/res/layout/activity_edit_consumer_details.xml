@@ -55,6 +55,7 @@
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="30dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Name"
                     android:textColor="#fff"
                     android:textSize="21sp"
@@ -88,6 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="top"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="number"
                     android:layout_marginLeft="20dp"
                     android:textSize="20dp" />
@@ -113,6 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:gravity="top"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Address"
                     android:textSize="20dp" />
 
@@ -126,6 +129,7 @@
 
             <Button
                 android:id="@+id/saveDetails"
+                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
