@@ -36,6 +36,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
 public class EditConsumerDetails extends AppCompatActivity {
 
     EditText editName,editAddress,editContact;
@@ -47,8 +49,7 @@ public class EditConsumerDetails extends AppCompatActivity {
     Button editDetailsbtn;
     ProgressDialog progressDialog;
     boolean flagImage = false;
-    ConsumerDetailsClass detailsOld;
-
+    Map detailsOld;
 
 
 
@@ -92,10 +93,7 @@ public class EditConsumerDetails extends AppCompatActivity {
                 setDetails();
                 if(flagImage == true) setimage();
                 flagImage = false;
-                ConsumerUIFragment fragment = new ConsumerUIFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .commit();
+                finish();
             }
         });
 
@@ -114,10 +112,25 @@ public class EditConsumerDetails extends AppCompatActivity {
         address = editAddress.getText().toString();
         contact = editContact.getText().toString();
 
-        ConsumerDetailsClass details = new ConsumerDetailsClass(name,detailsOld.getPassword(),address,contact,detailsOld.getWallet(),detailsOld.getEmail(),detailsOld.getTypeOfUser());
+        Map  details = detailsOld;
+        details.put("username",name);
+        details.put("address",address);
+        details.put("contactNumber",contact);
 
-        noteRef.set(details);
-        Toast.makeText(this, "Details Saved Successfully", Toast.LENGTH_SHORT).show();
+        noteRef.set(details).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(EditConsumerDetails.this, "Details Saved Successfully", Toast.LENGTH_SHORT).show();
+
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(EditConsumerDetails.this, "Details cannot be saved", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 
 
     }
@@ -193,10 +206,10 @@ public class EditConsumerDetails extends AppCompatActivity {
         myref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                detailsOld = documentSnapshot.toObject(ConsumerDetailsClass.class);
-                editName.setText(detailsOld.getUsername());
-                editAddress.setText(detailsOld.getAddress());
-                editContact.setText(detailsOld.getContactNumber());
+                  detailsOld = documentSnapshot.getData();
+                editName.setText( detailsOld.get("username").toString()  );
+                editAddress.setText(   detailsOld.get("address").toString()  );
+                editContact.setText(detailsOld.get("contactNumber").toString());
 
             }
         });
