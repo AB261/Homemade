@@ -50,7 +50,7 @@
 
                 <EditText
                     android:id="@+id/tvEditName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="30dp"

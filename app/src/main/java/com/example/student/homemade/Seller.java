@@ -1,14 +1,16 @@
 package com.example.student.homemade;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Seller implements Serializable {
-    boolean active;
-    GeoPoint geoPoint;
+public class Seller implements Parcelable {
+    GeoPoint address;
     boolean availability;
     ArrayList<String> customItems;
     String description;
@@ -22,17 +24,52 @@ public class Seller implements Serializable {
     int timeBeforeCancel;
     String username;
     Long wallet;
+    String id;
 
+    public Seller() {
+    }
+
+    protected Seller(Parcel in) {
+        availability = in.readByte() != 0;
+        customItems = in.createStringArrayList();
+        description = in.readString();
+        email = in.readString();
+        longTermSubscriptionDiscount = in.readDouble();
+        massOrderDiscount = in.readDouble();
+        noOfMassOrders = in.readDouble();
+        phone = in.readString();
+        restaurantName = in.readString();
+        timeBeforeCancel = in.readInt();
+        username = in.readString();
+        if (in.readByte() == 0) {
+            wallet = null;
+        } else {
+            wallet = in.readLong();
+        }
+        id = in.readString();
+    }
+
+    public static final Creator<Seller> CREATOR = new Creator<Seller>() {
+        @Override
+        public Seller createFromParcel(Parcel in) {
+            return new Seller(in);
+        }
+
+        @Override
+        public Seller[] newArray(int size) {
+            return new Seller[size];
+        }
+    };
 
     @Override
     public String toString() {
         return "Seller{" +
-                "active=" + active +
-                ", geoPoint=" + geoPoint +
+                "address=" + address +
                 ", availability=" + availability +
                 ", customItems=" + customItems +
                 ", description='" + description + '\'' +
                 ", email='" + email + '\'' +
+                ", id='" + id + '\'' +
                 ", itemPictures=" + itemPictures +
                 ", longTermSubscriptionDiscount=" + longTermSubscriptionDiscount +
                 ", massOrderDiscount=" + massOrderDiscount +
@@ -56,20 +93,28 @@ public class Seller implements Serializable {
         this.wallet = wallet;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getId() {
+        return id;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setId(String id) {
+        this.id = id;
+    }
+//    public boolean isActive() {
+//        return active;
+//    }
+//
+//    public void setActive(boolean active) {
+//        this.active = active;
+//    }
+
+
+    public GeoPoint getAddress() {
+        return address;
     }
 
-    public GeoPoint getGeoPoint() {
-        return geoPoint;
-    }
-
-    public void setGeoPoint(GeoPoint geoPoint) {
-        this.geoPoint = geoPoint;
+    public void setAddress(GeoPoint address) {
+        this.address = address;
     }
 
     public boolean isAvailability() {
@@ -162,5 +207,33 @@ public class Seller implements Serializable {
 
     public Long getWallet() {
         return wallet;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (availability ? 1 : 0));
+        dest.writeStringList(customItems);
+        dest.writeString(description);
+        dest.writeString(email);
+        dest.writeDouble(longTermSubscriptionDiscount);
+        dest.writeDouble(massOrderDiscount);
+        dest.writeDouble(noOfMassOrders);
+        dest.writeString(phone);
+        dest.writeString(restaurantName);
+        dest.writeInt(timeBeforeCancel);
+        dest.writeString(username);
+        if (wallet == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(wallet);
+        }
+        dest.writeString(id);
     }
 }

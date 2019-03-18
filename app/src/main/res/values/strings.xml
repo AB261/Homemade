@@ -103,6 +103,7 @@
     <string name="search_restaurants">Search Restaurants..</string>
     <string name="details">Details</string>
     <string name="restaurant_name">Restaurant Name</string>
+    <string name="enter_location">Enter Location</string>
 
     <string-array name="filter_array">
         <item>None Selected</item>

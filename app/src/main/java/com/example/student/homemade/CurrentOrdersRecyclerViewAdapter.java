@@ -88,11 +88,14 @@ public class CurrentOrdersRecyclerViewAdapter extends RecyclerView.Adapter<Curre
 
         String item = "";
         for(int j=0;j<orderInfo.getNoOrders();j++) {
-            item += orderInfo.getItemsOrdered().get(j).get("itemName").toString() + "(" + orderInfo.getItemsOrdered().get(j).get("itemNumber").toString() + ") ," ;
-            Log.d("THIS",orderInfo.getItemsOrdered().get(j).get("itemNumber").toString() + " " + orderInfo.getItemsOrdered().get(j).get("itemName").toString());
+            if (!orderInfo.getItemsOrdered().get(j).get("itemNumber").toString().equals("0")) {
+                item += orderInfo.getItemsOrdered().get(j).get("itemName").toString() + "(" + orderInfo.getItemsOrdered().get(j).get("itemNumber").toString() + ") ,";
+                Log.d("THIS", orderInfo.getItemsOrdered().get(j).get("itemNumber").toString() + " " + orderInfo.getItemsOrdered().get(j).get("itemName").toString());
+            }
+
+
         }
         viewHolder.things_ordered.append("" + item);
-
     }
 
     @Override
