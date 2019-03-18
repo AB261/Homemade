@@ -2,6 +2,7 @@ package com.example.student.homemade.ui;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.student.homemade.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,9 +38,12 @@ import com.example.student.homemade.R;
 public class HistoricalOrdersFragment extends Fragment {
 
     View v;
-    int[] IMAGES = {R.drawable.alooparatha,R.drawable.biriyani,R.drawable.chicken_kabab,R.drawable.dosaidli,R.drawable.muturpaneer,R.drawable.poori_bhaji,R.drawable.samosa,};
-    String[] NAMES={"Aloo-Paratha","Biriyani","Chicken kabab","Dosa-Idli","Paneer","Poori-Bhaji","Samosa"};
-    String[] DESCRIPTION = {"SHARMA HOUSE FOOD","KUMAR FOOD HOUSE FOOD","MAHARAJA KI DUKAN","JAIN HOUSE FOOD","KRISHNA FOOD CENTER","GOPAL CENTER OF FOOD","TEMP HOUSE"};
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ArrayList<String> nameArrayList,dateArrayList,timeArrayList;
+    ArrayList<Double> priceArrayList;
+    ListView historyOfOrdersListView;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    CollectionReference ordersRef  = db.collection("Orders");
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,20 +93,83 @@ public class HistoricalOrdersFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_historical_orders, container, false);
 
-        ListView listView = (ListView) v.findViewById(R.id.listview);
-        HistoricalOrdersFragment.CustomAdapter customAdapter = new CustomAdapter();
-        listView.setAdapter(customAdapter);
+
+        historyOfOrdersListView = (ListView) v.findViewById(R.id.lvHistory);
+        loadHistoryOfOrders();
+
+
         return v;
+    }
+
+
+
+    void loadHistoryOfOrders(){
+
+        dateArrayList = new ArrayList<>();
+        timeArrayList = new ArrayList<>();
+        priceArrayList = new ArrayList<>();
+        nameArrayList = new ArrayList<>();
+
+        ordersRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot currentOrderDetails : task.getResult()){
+
+                        Map map =  currentOrderDetails.getData();
+                        if( map.get("consumer") != null && map.get("consumer").equals(FirebaseAuth.getInstance().getUid()) ){           ///checking for particular consumer
+
+
+                            String currDate= "No Date",currTime = "No Time";                                                    //INCASE DATE AND TIME ARE NULL
+                            if(  !map.get("orderDate").equals(""))   currDate = map.get("orderDate").toString();
+                            if(  !map.get("orderTime").equals(""))    currTime = map.get("orderTime").toString();
+
+
+                            if((boolean)map.get("delivered") == false){         ///not delivered
+                                ArrayList<HashMap> orders = (ArrayList) map.get("itemsOrdered");
+                                //ITEM ARE STORED IN A MAP INSIDE A ARRAYLIST SO I'M RETRIEVING THEM USING HASHMAP
+                                for(int i=0 ;i<orders.size() ; i++) {
+                                    nameArrayList.add(orders.get(i).get("itemName").toString());
+                                    dateArrayList.add(currDate);
+                                    timeArrayList.add(currTime);
+                                    priceArrayList.add( Double.valueOf(String.valueOf(orders.get(i).get("itemCost"))));
+//                                    Log.i("items", nameArrayList.get(i) + "\t" + dateArrayList.get(i) + "\t" + timeArrayList.get(i) +"\t"
+//                                                        + statusArrayList.get(i) + "\t" + Double.toString(priceArrayList.get(i)));
+                                }
+                                /////NOW EVERYORDER RELATED TO THE PARTICULAR LOGINED USER IS STORED IN LIST
+                                /////NEXT TASK IS TO PUT EVERYTHING IN LISTVIEW
+                            }
+                        }
+                    }
+                    HistoricalOrdersFragment.OrderAdapter customAdapter = new HistoricalOrdersFragment.OrderAdapter();
+                    historyOfOrdersListView.setAdapter(customAdapter);
+                }
+                else{
+                    Toast.makeText(getActivity(), "CANNOT DISPLAY ITEMS!", Toast.LENGTH_SHORT).show();
+                    nameArrayList.add("NO ITEMS TO DISPLAY BECAUSE OF ERROR IN LOADING");
+
+                }
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        nameArrayList.add("NO ITEMS TO DISPLAY BECAUSE OF ERROR IN LOADING");
+                        Toast.makeText(getActivity(), "CANNOT LOAD CURRENT ORDERS!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
     }
 
 
     /////////////////CUSTOM ADADPTER FOR LIST OF CURRENT ITEMS
 
-    class CustomAdapter extends BaseAdapter {
+    class OrderAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return IMAGES.length;
+            return nameArrayList.size();
         }
 
         @Override
@@ -104,17 +184,24 @@ public class HistoricalOrdersFragment extends Fragment {
 
         @Override
         public View getView(int i, View view, ViewGroup parent) {
-            view = getLayoutInflater().inflate(R.layout.trending_items_custom_view,null);
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView2);
-            TextView textView_name = (TextView) view.findViewById(R.id.textView_names);
-            TextView textView_description = (TextView) view.findViewById(R.id.textView_description);
+            view = getLayoutInflater().inflate(R.layout.custom_list_view_for_orders,null);
 
-            imageView.setImageResource(IMAGES[i]);
-            textView_name.setText(NAMES[i]);
-            textView_description.setText(DESCRIPTION[i]);
+
+            TextView name =  view.findViewById(R.id.tvNameOfFood);
+            TextView price = view.findViewById(R.id.tvPriceOfFood);
+            TextView date = view.findViewById(R.id.tvDateOfFood);
+            TextView time = view.findViewById(R.id.tvTimeOfFood);
+
+
+            name.setText(nameArrayList.get(i));
+            price.setText(priceArrayList.get(i).toString());
+            date.setText(dateArrayList.get(i));
+            time.setText(timeArrayList.get(i));
+
             return view;
         }
     }
+
     /////////////////CUSTOM ADADPTER FOR LIST OF CURRENT ITEMS
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
