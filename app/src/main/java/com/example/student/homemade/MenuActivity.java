@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,12 @@ public class MenuActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private ArrayList<MenuItem> mUploads;
     private HashMap<String, String> itemPictures = new HashMap<>();
+    private ArrayList<MenuItem> menuItems;
+    private Seller seller;
+    private ArrayList<String> present = new ArrayList<>();
+    private ArrayList<String> absent = new ArrayList<>();
+    private String[] stringA;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,25 +60,35 @@ public class MenuActivity extends AppCompatActivity {
         itemPictures = (HashMap<String,String>)getIntent().getExtras().get("itemPictures");
         type = (String) getIntent().getExtras().get("type");
         recyclerView = findViewById(R.id.rv);
+        seller = (Seller)getIntent().getExtras().getParcelable("seller");
         fab = findViewById(R.id.add_item);
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        menuAdapter = new MenuItemAdapter(this, new ArrayList<MenuItem>(), itemPictures,type);
+        menuItems = (ArrayList<MenuItem>)getIntent().getExtras().get("menuItems");
+        if(menuItems == null) {
+            menuAdapter = new MenuItemAdapter(this, new ArrayList<MenuItem>(), itemPictures, type);
+            fetch();
+        }
+        else{
+            menuAdapter = new MenuItemAdapter(this, menuItems, itemPictures, type);
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
         recyclerView.setAdapter(menuAdapter);
         submit = findViewById(R.id.submit);
         title = findViewById(R.id.title);
-
+        Log.d("MENUADAPATER HERE",menuAdapter.getItemNames().toString());
         title.setText(type);
 
         Log.d("user", mAuth.getUid() + "!");
 
-
-        fetch();
+        Log.d("SELLER IS",seller.toString());
         mUploads = new ArrayList<>();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
         Log.d("DBREF",mDatabaseRef.toString());
+
+
+//        ArrayList<String> dummy =
 
 
 //        mDatabaseRef.addValueEventListener(new ValueEventListener() {
@@ -96,16 +113,16 @@ public class MenuActivity extends AppCompatActivity {
 //        });
 
 
-        update = findViewById(R.id.upload_image);
-//        update.setVisibility(View.GONE);
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this,UploadActivity.class);
-                intent.putExtra("type",type);
-                startActivity(intent);
-            }
-        });
+//        update = findViewById(R.id.upload_image);
+////        update.setVisibility(View.GONE);
+//        update.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MenuActivity.this,UploadActivity.class);
+//                intent.putExtra("type",type);
+//                startActivity(intent);
+//            }
+//        });
 
 //        mUploads = new ArrayList<>();
 //        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
@@ -133,14 +150,44 @@ public class MenuActivity extends AppCompatActivity {
 //            }
 //        });
 
-
+    Log.d("PRESENT ARRAY IN MENU",present.toString());
         update = findViewById(R.id.upload_image);
 //        update.setVisibility(View.GONE);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] list = getResources().getStringArray(R.array.food_array);
+                List<String> l = Arrays.<String>asList(list);
+                Log.d("THIS IS l ARRAY",l.toString());
+                ArrayList<String> al = new ArrayList<String>(l);
+                Log.d("THIS IS al ARRAY before",al.toString());
+                al.addAll(seller.getCustomItems());
+
+                Log.d("THIS IS al ARRAY",al.toString());
+                Log.d("menuadapter",menuAdapter.getItemNames().toString());
+                for(String s:al){
+
+                    if(menuAdapter.getItemNames().contains(s) && !present.contains(s))
+                    {
+                        present.add(s);
+                    }
+                    else if(!absent.contains(s) && !present.contains(s)){
+                        absent.add(s);
+                    }
+                }
+                Log.d("THIS IS present ARRAY",present.toString());
+                Log.d("THIS IS absent ARRAY",absent.toString());
+                stringA = new String[absent.size()];
+                absent.toArray(stringA);
+                for(int i=0;i<absent.size();i++)
+                    Log.d("stringA",stringA[i]);
+
                 Intent intent = new Intent(MenuActivity.this,UploadActivity.class);
                 intent.putExtra("itemPictures",itemPictures);
+                intent.putExtra("seller", seller);
+                intent.putExtra("menuItems",menuAdapter.getItems());
+                intent.putExtra("present",present);
+                intent.putExtra("absent",absent);
                 intent.putExtra("type",type);
                 startActivity(intent);
             }
@@ -195,10 +242,16 @@ public class MenuActivity extends AppCompatActivity {
                                         Log.d("MACHSAAAADASAS", e.toString());
                                     }
                                 });
+                        Toast.makeText(MenuActivity.this,"Menu uploaded",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MenuActivity.this,MainActivity.class);
+                        startActivity(intent);
                     }
 
                 }
-                Toast.makeText(MenuActivity.this,"Menu uploaded",Toast.LENGTH_SHORT).show();
+                else{
+                    Toast.makeText(MenuActivity.this,"Enter Price",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -207,14 +260,38 @@ public class MenuActivity extends AppCompatActivity {
 
 
     public void selectItems(View view) {
+        String[] list = getResources().getStringArray(R.array.food_array);
+        List<String> l = Arrays.<String>asList(list);
+        Log.d("THIS IS l ARRAY",l.toString());
+        ArrayList<String> al = new ArrayList<String>(l);
+        Log.d("THIS IS al ARRAY before",al.toString());
+        al.addAll(seller.getCustomItems());
 
-        final String[] list = getResources().getStringArray(R.array.food_array);
+        Log.d("THIS IS al ARRAY",al.toString());
+        Log.d("menuadapter",menuAdapter.getItemNames().toString());
+        for(String s:al){
+
+            if(menuAdapter.getItemNames().contains(s) && !present.contains(s))
+            {
+                present.add(s);
+            }
+            else if(!absent.contains(s) && !present.contains(s)){
+                absent.add(s);
+            }
+        }
+        Log.d("THIS IS present ARRAY",present.toString());
+        Log.d("THIS IS absent ARRAY",absent.toString());
+        stringA = new String[absent.size()];
+        absent.toArray(stringA);
+        for(int i=0;i<absent.size();i++)
+            Log.d("stringA",stringA[i]);
+
         final ArrayList<Integer> selectedList = new ArrayList<>();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), R.style.myDialog);
         builder.setTitle("Select Items");
 
-        builder.setMultiChoiceItems(list, null,
+        builder.setMultiChoiceItems(stringA, null,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -238,7 +315,7 @@ public class MenuActivity extends AppCompatActivity {
                 for (Integer i : selectedList) {
 
                     MenuItem menuItem = new MenuItem();
-                    menuItem.setName(list[i]);
+                    menuItem.setName(stringA[i]);
                     menuItem.setPrice(0L);
                     menuItems.add(menuItem);
                     menuAdapter.added(menuItem);
@@ -252,6 +329,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void fetch() {
+
         Log.d("TYPEBRO",type);
         firebaseFirestore.collection("Provider").document(FirebaseAuth.getInstance().getUid())
                 .collection("menu").document(type)

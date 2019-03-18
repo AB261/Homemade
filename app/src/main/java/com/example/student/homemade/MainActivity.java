@@ -77,10 +77,13 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
         Log.v(TAG,settings.getString("email","homemade"));
         c = settings.getInt("ProviderOrConsumerFlag", 0);
+        Log.d("BRO","" + c);
         navigationView = findViewById(R.id.nav_view);
 
         Menu menu = navigationView.getMenu();
         menu.add(0, 0, 0, "Dashboard");
+
+
 
 
         if(c==1){
@@ -120,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+        mDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawer.setDrawerListener(mDrawerToggle);
         setupDrawerContent(navigationView);
@@ -129,9 +133,12 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
         final ProgressBar progressBar = hView.findViewById(R.id.progress_bar_header);
         Sprite wave = new Wave();
         progressBar.setIndeterminateDrawable(wave);
-        Log.i(TAG,"ID: "+FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Log.v(TAG+"c:",String.valueOf(c));
+        StringBuilder url = (c!=2) ? new StringBuilder("providers_photos/profile_pictures/") : new StringBuilder("consumers_photos/");
+        url.append(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Log.v(TAG+"url:",url.toString());
         StorageReference mImageRef =
-                FirebaseStorage.getInstance().getReference("consumers_photos/"+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                FirebaseStorage.getInstance().getReference(url.toString().trim());
         final long ONE_MEGABYTE = 1024 * 1024;
         mImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -139,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                 Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 DisplayMetrics dm = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(dm);
-
+                Log.v(TAG,"Got image");
                 imageView.setMinimumHeight(dm.heightPixels);
                 imageView.setMinimumWidth(dm.widthPixels);
                 imageView.setImageBitmap(bm);
@@ -264,16 +271,16 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
         Fragment fragment = null;
 
-        Class fragmentClass;
+        Class fragmentClass=null;
 
         switch (menuItem.getItemId()) {
             case 0:
-                if(c == 1)
+                if(c != 2)
                     fragmentClass = ProviderUIFragment.class;
                 else if(c == 2)
                     fragmentClass = ConsumerUIFragment.class;
-                else
-                    fragmentClass = null;
+//                else
+//                    fragmentClass = null;
                 break;
             case 4:
                 fragmentClass = RestaurantFragment.class;
@@ -300,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
             case 1:
 //                Intent intent1 = new Intent(context, ConsumerDetailsFragment.class);
 //                startActivity(intent1);
-                fragmentClass = ConsumerDetailsFragment.class;
+                //fragmentClass = ConsumerDetailsFragment.class;
                 break;
             case 8:
                 fragmentClass = CancelOrderFragment.class;
@@ -381,6 +388,10 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
             fragment = (Fragment) fragmentClass.newInstance();
 
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -390,9 +401,6 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
 
         // Insert the fragment by replacing any existing fragment
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 
 
         // Highlight the selected item has been done by NavigationView

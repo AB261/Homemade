@@ -1,3 +1,3 @@
 # Homemade
 ## Homemade Food Lovers
-I like homemade foods. LuL
+I like homemade food.

@@ -1,6 +1,8 @@
 package com.example.student.homemade;
 
-public class MenuItem {
+import java.io.Serializable;
+
+public class MenuItem implements Serializable {
     public MenuItem() {
     }
 

@@ -1,113 +1,129 @@
 package com.example.student.homemade;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class OrderInfo {
+public class OrderInfo{
 
-    int Provider;
-    int client;
+    String provider;
+    String consumer;
     boolean completed;
     boolean delivered;
-    int delivery_person;
-    int orderID;
+    String deliveryPerson;
+    boolean isMassOrder;
     boolean paid;
-    ArrayList<String> things_ordered;
-    String time_and_date;
-    float total_cost;
+    ArrayList<HashMap<String,Object>> itemsOrdered;
+    double orderTotal;
+    String orderTime;
+    String orderDate;
 
-    public OrderInfo(int Provider, int client, boolean completed, boolean delivered, int delivery_person, int orderID, boolean paid, ArrayList<String> things_ordered, String time_and_date, float total_cost){
-        this.Provider = Provider;
-        this.client =  client;
-        this.completed = completed;
-        this.delivered = delivered;
-        this.delivery_person = delivery_person;
-        this.orderID = orderID;
-        this.paid = paid;
-        this.things_ordered = things_ordered;
-        this.time_and_date = time_and_date;
-        this.total_cost = total_cost;
+    public OrderInfo() {
     }
 
-    public int getNoOrders(){ return things_ordered.size();}
+    public OrderInfo(String provider, String consumer, boolean completed, boolean delivered, String deliveryPerson, boolean isMassOrder, boolean paid, ArrayList<HashMap<String,Object>> itemsOrdered, double orderTotal, String orderTime, String orderDate) {
+        this.provider = provider;
+        this.consumer = consumer;
 
-    public int getClient() {
-        return client;
+        this.completed = completed;
+        this.delivered = delivered;
+        this.deliveryPerson = deliveryPerson;
+        this.isMassOrder = isMassOrder;
+        this.paid = paid;
+        this.itemsOrdered = itemsOrdered;
+        this.orderTotal = orderTotal;
+        this.orderTime = orderTime;
+        this.orderDate = orderDate;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public String getConsumer() {
+        return consumer;
+    }
+
+    public void setConsumer(String consumer) {
+        this.consumer = consumer;
     }
 
     public boolean isCompleted() {
         return completed;
     }
 
-    public boolean isDelivered() {
-        return delivered;
-    }
-
-    public int getDelivery_person() {
-        return delivery_person;
-    }
-
-    public int getOrderID() {
-        return orderID;
-    }
-
-    public boolean isPaid() {
-        return paid;
-    }
-
-    public ArrayList<String> getThings_ordered() {
-        return things_ordered;
-    }
-
-    public String getTime_and_date() {
-        return time_and_date;
-    }
-
-    public float getTotal_cost() {
-        return total_cost;
-    }
-
-
-    public void setProvider(int provider) {
-        Provider = provider;
-    }
-
-    public void setClient(int client) {
-        this.client = client;
-    }
-
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isDelivered() {
+        return delivered;
     }
 
     public void setDelivered(boolean delivered) {
         this.delivered = delivered;
     }
 
-    public void setDelivery_person(int delivery_person) {
-        this.delivery_person = delivery_person;
+    public String getDeliveryPerson() {
+        return deliveryPerson;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setDeliveryPerson(String deliveryPerson) {
+        this.deliveryPerson = deliveryPerson;
+    }
+
+    public boolean isMassOrder() {
+        return isMassOrder;
+    }
+
+    public void setMassOrder(boolean massOrder) {
+        isMassOrder = massOrder;
+    }
+
+    public boolean isPaid() {
+        return paid;
     }
 
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
 
-    public void setThings_ordered(ArrayList<String> things_ordered) {
-        this.things_ordered = things_ordered;
+    public ArrayList<HashMap<String,Object>> getItemsOrdered() {
+        return itemsOrdered;
     }
 
-    public void setTime_and_date(String time_and_date) {
-        this.time_and_date = time_and_date;
+    public void setItemsOrdered(ArrayList<HashMap<String,Object>> itemsOrdered) {
+        this.itemsOrdered = itemsOrdered;
     }
 
-    public void setTotal_cost(float total_cost) {
-        this.total_cost = total_cost;
+    public double getOrderTotal() {
+        return orderTotal;
     }
 
-    public float gettotal_cost(){ return total_cost;}
+    public void setOrderTotal(double orderTotal) {
+        this.orderTotal = orderTotal;
+    }
 
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+    public int getNoOrders(){ return itemsOrdered.size();}
 }
+

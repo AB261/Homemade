@@ -13,6 +13,8 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:paddingTop="70dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:paddingBottom="0dp">
 
         <TextView
@@ -21,6 +23,7 @@
             android:layout_height="wrap_content"
             android:theme="@style/Title"
             android:text="@string/no_restaurants_found"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -36,11 +39,11 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/GPSbutton" />
 
         <EditText
             android:theme="@style/normaltext"
@@ -59,17 +62,17 @@
             android:id="@+id/filter_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintBottom_toTopOf="@id/Inputaddress"
             app:layout_constraintTop_toBottomOf="@id/inputSearch"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/min_rating_text"/>
+            />
         <TextView
             android:id="@+id/min_rating_text"
             android:theme="@style/normaltext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/min_rating"
-            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintBottom_toTopOf="@id/Inputaddress"
             app:layout_constraintTop_toBottomOf="@id/inputSearch"
             app:layout_constraintLeft_toRightOf="@id/filter_spinner"
             app:layout_constraintRight_toLeftOf="@id/min_rating_edit_text"/>
@@ -81,25 +84,67 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintBottom_toTopOf="@id/Inputaddress"
             app:layout_constraintTop_toBottomOf="@id/inputSearch"
             app:layout_constraintLeft_toRightOf="@id/min_rating_text"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <EditText
+            android:theme="@style/normaltext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textVisiblePassword"
+            android:id="@+id/Inputaddress"
+            android:singleLine="true"
+            android:hint="@string/enter_location"
+            app:layout_constraintBottom_toTopOf="@id/addressButton"
+            app:layout_constraintTop_toBottomOf="@id/min_rating_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+             />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use Address"
+            android:id="@+id/addressButton"
+            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/Inputaddress"
+
+            app:layout_constraintLeft_toLeftOf="parent"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use GPS"
+            android:id="@+id/GPSbutton"
+            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/Inputaddress"
+            app:layout_constraintRight_toLeftOf="@id/LocationDecider"
+            app:layout_constraintLeft_toRightOf="@id/addressButton"/>
+        <Button
+            android:textColor="@color/white"
+            android:background="@drawable/buttonstyle"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Find Location"
+            android:id="@+id/LocationDecider"
+            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/Inputaddress"
             app:layout_constraintRight_toRightOf="parent"/>
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/cardView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_alignTop="@+id/inputSearch"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:paddingTop="0dp"
-            android:visibility="gone"
+            android:layout_alignTop="@+id/LocationDecider"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/filter_spinner" />
+            app:layout_constraintTop_toBottomOf="@id/LocationDecider" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

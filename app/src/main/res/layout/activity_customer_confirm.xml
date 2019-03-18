@@ -6,6 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".CustomerConfirmActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/actionBar"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:padding="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:background="@color/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+
     <TextView
         android:id="@+id/statusInfo"
         android:layout_width="wrap_content"
@@ -14,7 +38,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Nothing"
+        android:textSize="20dp"
+        android:textStyle="italic|bold"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,23 +54,26 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar">
+        app:layout_constraintTop_toTopOf="@+id/actionBar">
 
         <TextView
             android:id="@+id/walletSentence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/subtext"
             android:text="The current amount in your wallet is " />
 
         <TextView
             android:id="@+id/walletCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="World" />
+            android:textSize="40dp"
+            android:layout_marginHorizontal="60dp"
+            android:text="" />
 
     </LinearLayout>
 
@@ -56,7 +85,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,23 +95,26 @@
             android:id="@+id/totalSentence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/subtext"
             android:text="The total cost of the current order is" />
 
         <TextView
             android:id="@+id/totalCost"
             android:layout_width="wrap_content"
+            android:textSize="40dp"
+            android:layout_marginHorizontal="60dp"
             android:layout_height="wrap_content"
-            android:text="World2" />
+            android:text="" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--tools:layout_editor_absoluteX="0dp"-->
+        <!--tools:layout_editor_absoluteY="0dp" />-->
 
     <Button
         android:id="@+id/btnlast"
@@ -95,6 +127,8 @@
         android:layout_marginStart="8dp"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/buttonstyle"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent" />

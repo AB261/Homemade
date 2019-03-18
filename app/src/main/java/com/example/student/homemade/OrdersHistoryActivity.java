@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 
 public class OrdersHistoryActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
     private static final String TAG = "ORDERSHISTORYACTIVITY";
     private OrdersHistoryRecyclerViewAdapter ordersHistoryRecyclerViewAdapter;
     //vars
@@ -28,26 +30,31 @@ public class OrdersHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_history);
         Log.d(TAG, "onCreate: started.");
-
+        mAuth = FirebaseAuth.getInstance();
         //PLEASE PASS provider ID to this activity from login page
-        int myproviderID = 13;
+//        int myproviderID = 13;
         //PLEASE PASS provider ID to this activity from login page
-
+        String myProviderId = mAuth.getUid();
         final RecyclerView recyclerView = findViewById(R.id.orders_history_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ordersHistoryRecyclerViewAdapter = new OrdersHistoryRecyclerViewAdapter(this, orderInfos);
         recyclerView.setAdapter(ordersHistoryRecyclerViewAdapter);
 
-        db.collection("Orders").whereEqualTo("Provider",myproviderID).whereEqualTo("delivered", true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Orders").whereEqualTo("provider",myProviderId).whereEqualTo("delivered", true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 OrderInfo orderInfo;
+                Log.d(TAG,"Entered");
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d(TAG, document.getId() + " => " + document.getData());
                         HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
                         Log.d(TAG, "client id :" + map.get("client"));
-                        orderInfo = new OrderInfo(Integer.parseInt(map.get("Provider").toString()), Integer.parseInt(map.get("client").toString()), (Boolean) map.get("completed"), (Boolean) map.get("delivered"), Integer.parseInt(map.get("delivery_person").toString()), Integer.parseInt(map.get("orderID").toString()), (Boolean) map.get("paid"), (ArrayList) map.get("things_ordered"), (String) map.get("time_and_date"), Float.parseFloat(map.get("total_cost").toString()));
+//                        orderInfo = new OrderInfo(Integer.parseInt(map.get("Provider").toString()), Integer.parseInt(map.get("client").toString()), (Boolean) map.get("completed"), (Boolean) map.get("delivered"), Integer.parseInt(map.get("delivery_person").toString()), Integer.parseInt(map.get("orderID").toString()), (Boolean) map.get("paid"), (ArrayList) map.get("things_ordered"), (String) map.get("time_and_date"), Float.parseFloat(map.get("total_cost").toString()));
+                        orderInfo = new OrderInfo(map.get("provider").toString(), map.get("consumer").toString(), (Boolean)map.get("completed"), (Boolean)map.get("delivered"), map.get("deliveryPerson").toString(),(Boolean)map.get("isMassOrder"), (Boolean)map.get("paid"), (ArrayList<HashMap<String,Object>>) map.get("itemsOrdered"), (double)map.get("orderTotal"),map.get("orderTime").toString(), map.get("orderDate").toString());
+//                        orderInfo = document.toObject(OrderInfo.class);
+//                        Log.d("ORDERINFO",orderInfo.toString());
+
                         ordersHistoryRecyclerViewAdapter.added(orderInfo);
                     }
                 } else {

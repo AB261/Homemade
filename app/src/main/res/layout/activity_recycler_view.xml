@@ -26,8 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Time Of Order :   "
+        android:text="Time and Date Of Order :   "
         android:textSize="18sp" />
+
 
     <TextView
         android:id="@+id/no_order_items"
@@ -46,7 +47,7 @@
         android:layout_below="@id/no_order_items"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Order ID :   "
+        android:text="Ordered by :   "
         android:textSize="18sp" />
     <TextView
         android:id="@+id/things_ordered"
@@ -55,7 +56,7 @@
         android:layout_below="@id/order_id"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Things Ordered :   "
+        android:text="Things Ordered (with quantity):   "
         android:textSize="18sp"
         android:layout_marginBottom="24sp"/>
         </LinearLayout>

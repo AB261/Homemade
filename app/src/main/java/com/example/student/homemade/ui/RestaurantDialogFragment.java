@@ -1,5 +1,8 @@
 package com.example.student.homemade.ui;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -8,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.student.homemade.OrderPageActivity;
 import com.example.student.homemade.R;
 
 import java.util.ArrayList;
@@ -36,7 +41,9 @@ public class RestaurantDialogFragment extends DialogFragment implements View.OnC
     String stars;
     String title;
     TextView review;
+    Bitmap bmp;
     String review_text;
+    String TAG="RestaurantDialogFragment";
     private Callback callback;
     public RestaurantDialogFragment() {
         this.stars="4";
@@ -68,11 +75,32 @@ public class RestaurantDialogFragment extends DialogFragment implements View.OnC
             for(String i: reviews) {
                 review_text.append(i +"\n");
             }
+            byte[] byteArray = args.getByteArray("image");
+            if(byteArray!=null&&byteArray.length>0){
+                bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                Log.d(TAG,"Mapping ");
+            } else{
+                bmp=null;
+            }
+
+
             Log.d("review_text",review_text.toString());
             descr = args.getString("description", "Be the first to describe this place!");
         }
         ImageView imageView = Objects.requireNonNull(getView()).findViewById(R.id.dialog_image);
-        Glide.with(Objects.requireNonNull(getActivity())).load(R.drawable.default_rest).into(imageView);
+        if(bmp==null){
+            Glide.with(Objects.requireNonNull(getActivity())).load(R.drawable.default_rest).into(imageView);
+        }
+        else{
+            DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+//                DisplayMetrics dm = new DisplayMetrics();
+//                mContext.getResources().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            imageView.setMinimumHeight(dm.heightPixels);
+            imageView.setMinimumWidth(dm.widthPixels);
+            imageView.setImageBitmap(bmp);
+        }
+
+
         description=getView().findViewById(R.id.description);
         description.setText(descr);
         review = getView().findViewById(R.id.reviews);
@@ -83,6 +111,16 @@ public class RestaurantDialogFragment extends DialogFragment implements View.OnC
         ratingBar= getView().findViewById(R.id.rating);
         ratingBar.setRating(Float.valueOf(stars));
         ratingBar.setIsIndicator(true);
+        Button button = getView().findViewById(R.id.dismiss);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),OrderPageActivity.class);
+                intent.putExtra("restaurantName",title);
+                startActivity(intent);
+            }
+        });
+
 
 
 

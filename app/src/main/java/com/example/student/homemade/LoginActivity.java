@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private Button login, register, btnForgot, signInButton;
+    private ProgressBar loginProgressBar;
     private EditText etEmail, etPass;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -78,6 +80,9 @@ public class LoginActivity extends AppCompatActivity {
         etPass = findViewById(R.id.etPass);
         btnForgot = findViewById(R.id.btnForgot);
         signInButton = findViewById(R.id.sign_in_button);
+        loginProgressBar = findViewById(R.id.loginProgressBar);
+
+        loginProgressBar.setVisibility(View.INVISIBLE);
 
         mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
@@ -86,7 +91,8 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openStartPageActivity();
+                //openStartPageActivity();
+                openSplashPageActivity();
             }
         });
 
@@ -168,6 +174,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //----------when clicked on login make the button invisible and make the progress bar visible
+                login.setVisibility(View.INVISIBLE);
+                loginProgressBar.setVisibility(View.VISIBLE);
+
                 //----------login button prompt
 
                 if(etEmail.getText().toString().isEmpty()){
@@ -196,6 +206,10 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception e) {
                                     //Toast.makeText(getApplicationContext(), "Invalid Username/Password", Toast.LENGTH_LONG).show();
                                     inform("Incorrect Username / Password");
+
+                                    //------------If login fails make the login button visible again and the progress bar invisible
+                                    login.setVisibility(View.VISIBLE);
+                                    loginProgressBar.setVisibility(View.INVISIBLE);
                                 }
                             });
                 }
@@ -373,7 +387,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        db.collection("user").whereEqualTo("email", email).whereEqualTo("type_of_user", "Provider").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("user").whereEqualTo("email", email).whereEqualTo("typeOfUser", "Provider").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -478,6 +492,12 @@ public class LoginActivity extends AppCompatActivity {
     //----------------Opens the start activity page i.e Signup pages and intro's
     public void openStartPageActivity() {
         Intent startIntent = new Intent(this, StartPage.class);
+        startActivity(startIntent);
+    }
+    
+    //----------------Opens the splash activity page which goes to slider and then to start page.
+    public void openSplashPageActivity() {
+        Intent startIntent = new Intent(this, SplashActivity.class);
         startActivity(startIntent);
     }
 }

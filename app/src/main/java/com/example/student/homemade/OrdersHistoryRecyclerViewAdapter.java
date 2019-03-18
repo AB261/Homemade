@@ -3,18 +3,27 @@ package com.example.student.homemade;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class  OrdersHistoryRecyclerViewAdapter extends RecyclerView.Adapter<OrdersHistoryRecyclerViewAdapter.ViewHolder> {
     private ArrayList<OrderInfo> info;
     private Context context;
-
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mAuth;
+    private String consumer;
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView time_and_date;
@@ -50,26 +59,36 @@ public class  OrdersHistoryRecyclerViewAdapter extends RecyclerView.Adapter<Orde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         final OrderInfo orderInfo = info.get(i);
-        viewHolder.time_and_date.append(orderInfo.getTime_and_date());
+        String consumerId = orderInfo.getConsumer();
+        firebaseFirestore.collection("user").document(consumerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Log.d("USERINFO ",document.get("username").toString());
+                    consumer = document.get("username").toString();
+                    Log.d("HERE", consumer);
+                    viewHolder.order_id.append(consumer);
+                }
+                else {
+                    Log.d("INSIDE ERROR", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+        viewHolder.time_and_date.append(orderInfo.getOrderTime() + "  " + orderInfo.getOrderDate());
         viewHolder.no_order_items.append("" + orderInfo.getNoOrders());
-        viewHolder.order_id.append("" + orderInfo.getOrderID());
-        viewHolder.things_ordered.append("" + orderInfo.getThings_ordered());
 
+        String item = "";
+        for(int j=0;j<orderInfo.getNoOrders();j++) {
+            item += orderInfo.getItemsOrdered().get(j).get("itemName").toString() + "(" + orderInfo.getItemsOrdered().get(j).get("itemNumber").toString() + ") ," ;
+            Log.d("THIS",orderInfo.getItemsOrdered().get(j).get("itemNumber").toString() + " " + orderInfo.getItemsOrdered().get(j).get("itemName").toString());
+        }
+        viewHolder.things_ordered.append("" + item);
 
-//        viewHolder.layout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, orderInfo.getOrderID(), Toast.LENGTH_LONG).show();
-//                Log.d("SELECTION", v.toString());
-//                Log.d("SELECTION", orderInfo.toString());
-//                int order_id = orderInfo.getOrderID();
-//                Intent newintent = new Intent(context, EachOrderDisplayByID.class);
-//                newintent.putExtra("order_id", order_id);
-//                context.startActivity(newintent);
-//            }
-//        });
     }
 
     @Override

@@ -41,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -320,21 +321,20 @@ public class SignUpSeller extends AppCompatActivity {
                             input += "Restaurant Details: " + textInputRestaurantDetails.getText().toString();
                             input += "\n";
 
+                            /////////////////////////////////////////////////////////////////////////////////////////////////
+
                             Map<String, Object> user = new HashMap<>();
-                            user.put("active",true);
-
-                            user.put("address",geoPoint);
-
-                            user.put("address",null);
-
+                            user.put("availability",true);
+                            user.put("address", geoPoint);
                             user.put("description", textInputRestaurantDetails.getText().toString());
                             user.put("email", textInputEmail.getText().toString());
                             //user.put("imageResourceId", textInputImageResourceId.getText().toString());
                             //user.menu("menu",)
+
                             user.put("phone",textInputPhoneNumber.getText().toString());
                             //user.put("profilepictures",textInputProfilePicture.getText().toString());
-                            user.put("restaurantname", textInputRestaurantName.getText().toString());
-                            user.put("userid", mAuth.getCurrentUser().getUid().toString());
+                            user.put("restaurantName", textInputRestaurantName.getText().toString());
+                            user.put("id", mAuth.getCurrentUser().getUid().toString());
                             user.put("username", textInputUsername.getText().toString());
                             user.put("wallet", 100);
                             user.put("password", textInputPassword.getText().toString());
@@ -355,7 +355,34 @@ public class SignUpSeller extends AppCompatActivity {
                                     });
 
 
-                            db.collection("Provider").document(mAuth.getCurrentUser().getUid()).set(user)
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            ArrayList<String> customItems = new ArrayList<>();
+                            HashMap<String, String> itemPictures = new HashMap<>();
+                            Map<String, Object> provider = new HashMap<>();
+
+                            provider.put("availability",true);
+                            provider.put("address", geoPoint);
+                            provider.put("description", textInputRestaurantDetails.getText().toString());
+                            provider.put("email", textInputEmail.getText().toString());
+                            provider.put("itemPictures", itemPictures);
+                            provider.put("customItems", customItems);
+                            provider.put("longTermSubscriptionDiscount", 0);
+                            provider.put("massOrderDiscount", 0);
+                            provider.put("noOfMassOrders", 0);
+                            provider.put("timeBeforeCancel", 0);
+                            //user.put("imageResourceId", textInputImageResourceId.getText().toString());
+                            //user.menu("menu",)
+                            provider.put("phone",textInputPhoneNumber.getText().toString());
+                            //user.put("profilepictures",textInputProfilePicture.getText().toString());
+                            provider.put("restaurantName", textInputRestaurantName.getText().toString());
+                            provider.put("id", mAuth.getCurrentUser().getUid().toString());
+                            provider.put("username", textInputUsername.getText().toString());
+                            provider.put("wallet", 100);
+                            provider.put("password", textInputPassword.getText().toString());
+                            provider.put("typeOfUser", "Provider");
+
+                            db.collection("Provider").document(mAuth.getCurrentUser().getUid()).set(provider)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
@@ -368,6 +395,9 @@ public class SignUpSeller extends AppCompatActivity {
                                             Log.w("Provider SignUP", "Signup of " + textInputEmail.getText().toString() + " to Provider document failure.");
                                         }
                                     });
+
+
+                            ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
                             StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("providers_photos");

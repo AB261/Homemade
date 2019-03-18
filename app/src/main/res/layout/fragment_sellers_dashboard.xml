@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="56dp"
-        android:background="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,67 +29,80 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Restaurant Name"
+                android:text="User Name"
                 android:textSize="32sp" />
 
-            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/main_content"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/current_orders"
                     android:layout_width="match_parent"
                     android:layout_height="175dp"
+                    android:layout_weight="0.5"
                     card_view:cardCornerRadius="10dp"
                     card_view:cardElevation="5dp"
                     card_view:cardUseCompatPadding="true">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/current_orders_image"
-                        android:layout_width="130dp"
-                        android:layout_height="130dp"
-                        android:layout_marginTop="30dp"
-                        android:padding="10sp"
-                        android:src="@mipmap/current_orders_picture_round" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/current_orders_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="150dp"
-                        android:layout_marginTop="70dp"
-                        android:text="Current Orders"
-                        android:textSize="32sp" />
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/current_orders_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="7dp"
+                            android:src="@mipmap/current_orders_picture_round" />
+
+                        <TextView
+                            android:id="@+id/current_orders_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Current Orders"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/orders_history"
                     android:layout_width="match_parent"
                     android:layout_height="175dp"
+                    android:layout_weight="0.5"
                     card_view:cardCornerRadius="10dp"
                     card_view:cardElevation="5dp"
                     card_view:cardUseCompatPadding="true">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/order_history_image"
-                        android:layout_width="130dp"
-                        android:layout_height="130dp"
-                        android:layout_marginTop="30dp"
-                        android:padding="10sp"
-                        android:src="@mipmap/orders_history_picture_round" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/order_history_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/current_orders"
-                        android:layout_marginLeft="150dp"
-                        android:layout_marginTop="70dp"
-                        android:text="Order History"
-                        android:textSize="32sp" />
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/order_history_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="7dp"
+                            android:src="@mipmap/orders_history_picture_round" />
+
+                        <TextView
+                            android:id="@+id/order_history_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Orders History"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
             </LinearLayout>
@@ -103,21 +115,23 @@
                 card_view:cardElevation="5dp"
                 card_view:cardUseCompatPadding="true">
 
-                <RelativeLayout
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="78dp">
 
                     <TextView
+                        android:id="@+id/avail_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="45dp"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginStart="67dp"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginBottom="19dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="12dp"
                         android:text="Availability Status"
-                        android:textSize="24dp" />
+                        android:textSize="24dp"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
 
                     <android.support.v7.widget.SwitchCompat
                         android:id="@+id/switchButton"
@@ -125,58 +139,362 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginEnd="79dp"
-                        android:layout_marginRight="79dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_toEndOf="@id/avail_text"
                         android:checked="true"
                         android:padding="2dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:theme="@style/BrandedSwitch" />
-                </RelativeLayout>
+                        android:theme="@style/BrandedSwitch"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintHorizontal_bias="0.528"
+                        card_view:layout_constraintStart_toEndOf="@+id/avail_text"
+                        card_view:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/reviews"
+
+            <LinearLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
-                card_view:cardCornerRadius="10dp"
-                card_view:cardElevation="5dp"
-                card_view:cardUseCompatPadding="true">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_marginTop="30dp"
-                    android:padding="10sp"
-                    android:src="@mipmap/orders_history_picture_round" />
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_weight="0.5"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/current_orders"
-                    android:layout_marginLeft="150dp"
-                    android:layout_marginTop="70dp"
-                    android:text="Reviews"
-                    android:textSize="32sp" />
-            </android.support.v7.widget.CardView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/reviews_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="7dp"
+                            android:src="@mipmap/discount_subs" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Reviews"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/add_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_weight="0.5"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/add_menu_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:padding="7dp"
+                            android:src="@mipmap/menu" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Add Menu"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/subscription_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="0.5"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/subs_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:padding="7dp"
+                            android:src="@mipmap/discount_mass" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Subscription "
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/discount_subs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Current Discount : 0%"
+                            android:textAlignment="center"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/mass_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="0.5"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/mass_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:padding="7dp"
+                            android:src="@mipmap/poeple2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Mass Order"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/discount_mass"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="Current Discount : 0%"
+                            android:textAlignment="center"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/no_of_mass_orders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2"
+                            android:text="Number of Items : 0"
+                            android:textAlignment="center"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cancellation"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="0.5"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/cancellation_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:padding="7dp"
+                            android:src="@mipmap/back" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cancellation"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/cancellation_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                                android:text="Min time : 0 minutes"
+                            android:textAlignment="center"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/mass_display_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="0.5"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="5dp"
+                    card_view:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/mass_display_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:padding="7dp"
+                            android:src="@mipmap/poeple2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:text="My Mass Orders"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/subscription_discount"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="175dp"-->
+            <!--card_view:cardCornerRadius="10dp"-->
+            <!--card_view:cardElevation="5dp"-->
+            <!--card_view:cardUseCompatPadding="true">-->
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:padding="10sp"-->
+            <!--android:src="@mipmap/orders_history_picture_round" />-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/current_orders"-->
+            <!--android:layout_marginLeft="150dp"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:text="Subscription Discount"-->
+            <!--android:textSize="32sp" />-->
+
+            <!--</android.support.v7.widget.CardView>-->
+
+            <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/mass_order"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="175dp"-->
+            <!--card_view:cardCornerRadius="10dp"-->
+            <!--card_view:cardElevation="5dp"-->
+            <!--card_view:cardUseCompatPadding="true">-->
+
+            <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="130dp"-->
+            <!--android:layout_height="130dp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:padding="10sp"-->
+            <!--android:src="@mipmap/orders_history_picture_round" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/mass_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginLeft="150dp"-->
+            <!--android:layout_marginTop="28dp"-->
+            <!--android:text="Mass Orders"-->
+            <!--android:textSize="32sp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/discount_mass"-->
+            <!--android:layout_width="214dp"-->
+            <!--android:layout_height="75dp"-->
+            <!--android:layout_alignTop="@+id/mass_text"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginTop="51dp"-->
+            <!--android:layout_marginEnd="35dp"-->
+            <!--android:text="Discount : 0%"-->
+            <!--android:textSize="24sp" />-->
+            <!--</RelativeLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
 
         </LinearLayout>
+
     </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_menu"
-        android:layout_width="59dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right|end"
-        android:layout_margin="16dp"
-        android:outlineAmbientShadowColor="@color/colorPrimaryDark"
-        android:outlineSpotShadowColor="@color/colorPrimaryDark"
-        android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/green2"
-        app:elevation="5dp"
-        app:layout_anchorGravity="bottom|right|end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:rippleColor="@color/colorSecondaryDark" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/add_menu"-->
+    <!--android:layout_width="59dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|right|end"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:src="@drawable/ic_add_black_24dp"-->
+    <!--app:backgroundTint="@color/colorPrimaryDark"-->
+    <!--app:elevation="5dp"-->
+    <!--app:layout_anchorGravity="bottom|right|end"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:rippleColor="@color/colorSecondaryDark" />-->
+
 
 </android.support.constraint.ConstraintLayout>
