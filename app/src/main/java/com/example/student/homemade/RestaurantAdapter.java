@@ -50,29 +50,28 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         final RestaurantModel restaurantModel = myList.get(i);
-        String dis = mContext.getString(R.string.dist_from_curr_loc) + ": " + restaurantModel.getDistance();
+        String dis = mContext.getString(R.string.dist_from_curr_loc) +": " + restaurantModel.getDistance();
         myViewHolder.distanceFromCurrLoc.setText(dis + " km");
         // myViewHolder.rating.setText("Rating:" + String.valueOf(5));
         myViewHolder.restaurantName.setText(restaurantModel.getRestaurantName());
-        myViewHolder.rating.setRating((float) restaurantModel.getRating());
-        myViewHolder.btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(mContext.getApplicationContext(), Subscription_time.class);
-                intent.putExtra("restaurantName", restaurantModel.getRestaurantName());
-
-                mContext.getApplicationContext().startActivity(intent);
-
-            }
-        });
+        myViewHolder.rating.setRating((float)restaurantModel.getRating());
+//        myViewHolder.btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                        Intent intent = new Intent(mContext.getApplicationContext(),Subscription_time.class);
+//                        // intent.putExtra("restaurantName",title);
+//                        mContext.getApplicationContext().startActivity(intent);
+//
+//            }
+//        });
 
 //Glide is a library used to put images in image view
         StringBuilder url = new StringBuilder("providers_photos/restaurant_pictures/");
         url.append(restaurantModel.getUserID());
         StorageReference mImageRef =
                 FirebaseStorage.getInstance().getReference(url.toString().trim());
-        if (restaurantModel.getRestaurantImage() == null) {
+        if(restaurantModel.getRestaurantImage()==null){
             final long ONE_MEGABYTE = 1024 * 1024;
             mImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
@@ -81,7 +80,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
                     DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
 //                DisplayMetrics dm = new DisplayMetrics();
 //                mContext.getResources().getWindowManager().getDefaultDisplay().getMetrics(dm);
-                    Log.v(TAG, "Got image");
+                    Log.v(TAG,"Got image");
                     myViewHolder.thumbnail.setMinimumHeight(dm.heightPixels);
                     myViewHolder.thumbnail.setMinimumWidth(dm.widthPixels);
                     restaurantModel.setRestaurantImage(bm);
@@ -94,7 +93,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
                 }
             });
-        } else {
+        }
+        else {
             DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
 //                DisplayMetrics dm = new DisplayMetrics();
 //                mContext.getResources().getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -108,21 +108,21 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             public void onClick(View v) {
                 RestaurantDialogFragment dialogFragment = new RestaurantDialogFragment();
                 Bundle args = new Bundle();
-                args.putString("stars", String.valueOf(restaurantModel.getRating()));
-                args.putString("title", restaurantModel.getRestaurantName());
-                args.putStringArrayList("reviews", restaurantModel.getReview());
-                args.putString("description", restaurantModel.getDescription());
+                args.putString("stars",String.valueOf(restaurantModel.getRating()));
+                args.putString("title",restaurantModel.getRestaurantName());
+                args.putStringArrayList("reviews",restaurantModel.getReview());
+                args.putString("description",restaurantModel.getDescription());
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                if (restaurantModel.getRestaurantImage() != null) {
+                if(restaurantModel.getRestaurantImage()!=null){
                     restaurantModel.getRestaurantImage().compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
-                    args.putByteArray("image", byteArray);
+                    args.putByteArray("image",byteArray);
                 }
 
 
-                Log.d(TAG, String.valueOf(restaurantModel.getRating()));
-                Log.d(TAG, restaurantModel.getRestaurantName());
-                Log.d(TAG, restaurantModel.getReview().toString());
+                Log.d(TAG,String.valueOf(restaurantModel.getRating()));
+                Log.d(TAG,restaurantModel.getRestaurantName());
+                Log.d(TAG,restaurantModel.getReview().toString());
 
                 dialogFragment.setArguments(args);
                 dialogFragment.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "Simple Dialog");
@@ -153,14 +153,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
         MyViewHolder(View view) {
             super(view);
-
             restaurantName = view.findViewById(R.id.restaurantname);
             distanceFromCurrLoc = view.findViewById(R.id.distance);
             thumbnail = view.findViewById(R.id.coverImageView);
-            rating = view.findViewById(R.id.rating_bar);
-            btn = view.findViewById(R.id.btn_sub);
-
+            rating=view.findViewById(R.id.rating_bar);
+//            btn=view.findViewById(R.id.btn_sub);
         }
 
     }
+
 }
