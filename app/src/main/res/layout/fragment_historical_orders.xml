@@ -7,7 +7,7 @@
     tools:context="ui.TrendingItemsFragment">
 
     <ListView
-        android:id="@+id/listview"
+        android:id="@+id/lvHistory"
         android:layout_width="match_parent"
         android:layout_height="513dp"
         android:layout_marginStart="8dp"
