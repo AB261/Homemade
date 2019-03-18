@@ -31,13 +31,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_home_made_round2"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MassOrderItems"></activity>
+ 
+        <activity android:name=".ListOfMassOrderItems"></activity>
+        <activity android:name=".MassOrderItems" />
         <activity android:name=".SignUpSeller2" />
         <activity android:name=".EditConsumerDetails" />
-
 
         <activity android:name=".ForgotActivity" />
         <!--
