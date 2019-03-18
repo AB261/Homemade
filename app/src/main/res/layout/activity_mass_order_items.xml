@@ -7,17 +7,17 @@
     tools:context=".MassOrderItems">
 
     <TextView
+
+        style="@style/normaltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/tvBreakfast"
-        android:layout_width="105dp"
-        android:layout_height="37dp"
+
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/green2"
-        android:gravity="center"
         android:text="BREAKFAST"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
@@ -26,17 +26,16 @@
         app:layout_constraintVertical_bias="0.119" />
 
     <TextView
+        style="@style/normaltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:id="@+id/tvLunch"
-        android:layout_width="105dp"
-        android:layout_height="37dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/green2"
-        android:gravity="center"
         android:text="LUNCH"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
@@ -45,17 +44,17 @@
         app:layout_constraintVertical_bias="0.185" />
 
     <TextView
+        style="@style/normaltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/tvSnacks"
-        android:layout_width="105dp"
-        android:layout_height="37dp"
+
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/green2"
-        android:gravity="center"
+
         android:text="SNACKS"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
@@ -64,17 +63,17 @@
         app:layout_constraintVertical_bias="0.219" />
 
     <TextView
+        style="@style/normaltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:id="@+id/tvDinner"
-        android:layout_width="105dp"
-        android:layout_height="37dp"
+
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/green2"
-        android:gravity="center"
         android:text="DINNER"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
@@ -143,15 +142,16 @@
         app:layout_constraintVertical_bias="0.186" />
 
     <EditText
+        style="@style/normaltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/etLunch"
-        android:layout_width="123dp"
-        android:layout_height="41dp"
+
         android:hint="Enter Amount"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:ems="10"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -160,32 +160,15 @@
         app:layout_constraintVertical_bias="0.203" />
 
     <EditText
-        android:id="@+id/etDinner"
-        android:layout_width="123dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Enter Amount"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSnacks"
-        app:layout_constraintVertical_bias="0.427" />
-
-    <EditText
+        style="@style/normaltext"
         android:id="@+id/etSnacks"
-        android:layout_width="123dp"
-        android:layout_height="41dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:hint="Enter Amount"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:ems="10"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -194,15 +177,35 @@
         app:layout_constraintVertical_bias="0.303" />
 
     <EditText
+        style="@style/normaltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etDinner"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Enter Amount"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSnacks"
+        app:layout_constraintVertical_bias="0.427" />
+
+
+
+    <EditText
+        style="@style/normaltext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/etBreakfast"
-        android:layout_width="123dp"
-        android:layout_height="41dp"
         android:hint="Enter Amount"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:ems="10"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

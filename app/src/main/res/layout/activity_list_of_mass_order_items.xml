@@ -37,21 +37,31 @@
         app:layout_constraintVertical_bias="0.967" />
 
     <Button
+
         android:id="@+id/btnSubmitToSeller"
-        android:layout_width="202dp"
-        android:layout_height="70dp"
+        style="@style/normaltext"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/green2"
+
+        android:background="@drawable/buttonstyle"
+
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center"
         android:text="SUBMIT ORDER"
-        android:textSize="18sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+
+        android:textColor="@android:color/white"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnAddItems"
-        app:layout_constraintHorizontal_bias="0.395"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lvItemsAdded"
-        app:layout_constraintVertical_bias="0.864" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.957" />
 
 </android.support.constraint.ConstraintLayout>
