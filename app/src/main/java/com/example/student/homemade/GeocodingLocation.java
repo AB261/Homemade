@@ -22,7 +22,10 @@ public class GeocodingLocation {
             public void run() {
                 Geocoder geocoder = new Geocoder(context, Locale.getDefault());
                 String result = null;
+                double latitude =0;
+                double longitude =0;
                 try {
+                    Log.d(TAG,"Yep Here");
                     List<Address> addressList = geocoder.getFromLocationName(locationAddress, 1);
                     if (addressList != null && addressList.size() > 0) {
                         Address address = addressList.get(0);
@@ -30,6 +33,8 @@ public class GeocodingLocation {
                         sb.append(address.getLatitude()).append("\n");
                         sb.append(address.getLongitude()).append("\n");
                         result = sb.toString();
+                        latitude = address.getLatitude();
+                        longitude = address.getLongitude();
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "Unable to connect to Geocoder", e);
@@ -37,13 +42,17 @@ public class GeocodingLocation {
                     Message message = Message.obtain();
                     message.setTarget(handler);
                     if (result != null) {
+                        Log.d(TAG,"Worked?");
                         message.what = 1;
                         Bundle bundle = new Bundle();
                         result = "Address: " + locationAddress +
                                 "\n\nLatitude and Longitude :\n" + result;
+                        bundle.putDouble("latitude",latitude);
+                        bundle.putDouble("longitude",longitude);
                         bundle.putString("address", result);
                         message.setData(bundle);
                     } else {
+                        Log.d(TAG,"Noooo");
                         message.what = 1;
                         Bundle bundle = new Bundle();
                         result = "Address: " + locationAddress +
