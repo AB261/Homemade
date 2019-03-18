@@ -96,7 +96,6 @@ public class EditConsumerDetails extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
-
             }
         });
 
@@ -120,7 +119,7 @@ public class EditConsumerDetails extends AppCompatActivity {
         noteRef.set(details);
         Toast.makeText(this, "Details Saved Successfully", Toast.LENGTH_SHORT).show();
 
-    
+
     }
 
 
@@ -189,7 +188,7 @@ public class EditConsumerDetails extends AppCompatActivity {
     void showOldDetails(){
 
         DocumentReference myref =  db.collection("Consumer").document(currentUID);
-        
+
 
         myref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
