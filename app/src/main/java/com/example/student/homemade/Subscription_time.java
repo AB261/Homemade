@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 
 public class Subscription_time extends AppCompatActivity {
@@ -51,12 +52,21 @@ public class Subscription_time extends AppCompatActivity {
 
                 radioButton = findViewById(radioId);
                 String choice = (String) radioButton.getText();
+                choice = choice.substring(0,1);
                 textView.setText("Your choice: " + choice);
-                Intent intent = new Intent(getBaseContext(), Success_sub.class);
+                Intent intent = new Intent(getBaseContext(), CustomerConfirmSubscriptionActivity.class);
                 //intent.putExtra("EXTRA_SESSION_ID", sessionId);
-                intent.putExtra("subscriptionTime", choice);
+
                 intent.putExtra("consumerID", mAuth.getUid());
-                intent.putExtra("providerID",restaurantName);
+
+                intent.putExtra("providerID", "vMR09oO90SbUtCapURrudg5QMlw2 ");
+
+                intent.putExtra("subscriptionTime", choice);
+                Log.d("time",choice);
+                Log.d("providerID",restaurantName);
+                Log.d("consumerID",mAuth.getUid());
+
+
                 startActivity(intent);
 
             }
