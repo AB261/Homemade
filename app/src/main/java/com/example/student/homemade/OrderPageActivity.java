@@ -511,6 +511,9 @@ public class OrderPageActivity extends AppCompatActivity {
 //                intentHash.put("orderTotal",orderTotal);
 //                Log.d("newone",foodItems.get(0).itemName + " " +foodItems.get(0).itemNumber + " " + foodItems.get(0).itemCost);
 ////                Log.d("newone",intentHash.get("foodItems").toString());
+//
+//
+//
                                     Intent intentNew = new Intent(OrderPageActivity.this,CustomerConfirmActivity.class);
 
 
@@ -521,6 +524,16 @@ public class OrderPageActivity extends AppCompatActivity {
 //                intentNew.putExtra("BUNDLE",args);
 ////                intentNew.putStringArrayListExtra("foodItems",foodItems);
                                     startActivity(intentNew);
+
+
+
+                                    ///////////////
+//                                    Intent intent = new Intent(OrderPageActivity.this,CustomerConfirmSubscriptionActivity.class);
+//                                    intent.putExtra("subscriptionTime","4");
+//                                    intent.putExtra("customerID","crlWbcGPeSPpIUD4ZhGSkuGbkQG2");
+//                                    intent.putExtra("providerID","vMR09oO90SbUtCapURrudg5QMlw2");
+//                                    startActivity(intent);
+                                    ///////////////////
                                 }
                             });
 

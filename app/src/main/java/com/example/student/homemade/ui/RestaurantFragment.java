@@ -508,7 +508,7 @@ public class RestaurantFragment extends Fragment {
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(MyLayoutManager);
-        myAdapter = new RestaurantAdapter(getContext(), restaurantList);
+        myAdapter = new RestaurantAdapter(getActivity(), restaurantList);
         mRecyclerView.setAdapter(myAdapter);
 //        Log.d(TAG, "Stop10");
 //        getLocation();
