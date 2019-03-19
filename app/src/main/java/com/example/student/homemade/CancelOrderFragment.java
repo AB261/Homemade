@@ -399,6 +399,25 @@ public class CancelOrderFragment extends Fragment {
                         });
 //-----------------------------------------
                         Log.d("===========", "here2");
+
+                        Log.d("==========",orderInfos.get(position1).toString());
+                        Log.d("=============",currOrder.provider + " " + currOrder.orderTotal + " " + currOrder.consumer);
+
+                        db.collection("Provider").document(currOrder.provider).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                double cost = Double.parseDouble(documentSnapshot.getData().get("wallet").toString()) - currOrder.orderTotal;
+                                db.collection("Provider").document(currOrder.provider).update("wallet",cost);
+                            }
+                        });
+
+                        db.collection("Consumer").document(currOrder.consumer).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                double cost = Double.parseDouble(documentSnapshot.getData().get("wallet").toString()) + currOrder.orderTotal;
+                                db.collection("Provider").document(currOrder.consumer).update("wallet",cost);
+                            }
+                        });
                         orderInfos.remove(position1);
                         mAdapter.notifyItemRemoved(position1);
                         Log.d("============","Successfully cancelled order");
