@@ -29,7 +29,7 @@ public class CustomerConfirmSubscriptionActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_confirm);
+        setContentView(R.layout.activity_customer_confirm_subscription);
         FirebaseApp.initializeApp(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -41,8 +41,17 @@ public class CustomerConfirmSubscriptionActivity extends AppCompatActivity {
         final String providerID = intent.getStringExtra("providerID");
         final double costPerMonth =  150;
 
+        Log.d("consumerID",consumerID);
+        Log.d("providerID",providerID);
+        Log.d("subscriptionTime",time);
+
         TextView totalCostS = findViewById(R.id.totalCostS);
         final double costSub = (Integer.parseInt(time) * costPerMonth);
+        Log.d("costSub",costSub + "");
+        if(totalCostS == null){
+            Log.d("ido","null");
+        }
+        Log.d("ido",totalCostS.toString());
         totalCostS.setText( costSub + "");
 
         db.collection("Consumer").document(consumerID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -70,7 +79,10 @@ public class CustomerConfirmSubscriptionActivity extends AppCompatActivity {
                     TextView status = findViewById(R.id.statusInfoS);
                     status.setText("Please proceed to pay");
 
+
+
                     Button lastBtnS = findViewById(R.id.btnlastS);
+                    lastBtnS.setText("Pay");
 
                     lastBtnS.setOnClickListener(new View.OnClickListener() {
                         @Override
