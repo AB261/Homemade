@@ -341,6 +341,26 @@ public class CancelOrderFragment extends Fragment {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
+
+//                        Log.d("ayyyyyyyyyyyyyyyyyy",orderInfos.get(position1).toString());
+                        Log.d("ayyyyyyyyyyyyyyyyyyy",currOrder.provider + " " + currOrder.orderTotal + " " + currOrder.consumer);
+
+                        db.collection("Provider").document(currOrder.provider).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                double cost = Double.parseDouble(documentSnapshot.getData().get("wallet").toString()) - currOrder.orderTotal;
+                                db.collection("Provider").document(currOrder.provider).update("wallet",cost);
+                            }
+                        });
+
+                        db.collection("Consumer").document(currOrder.consumer).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                double cost = Double.parseDouble(documentSnapshot.getData().get("wallet").toString()) + currOrder.orderTotal;
+                                db.collection("Provider").document(currOrder.consumer).update("wallet",cost);
+                            }
+                        });
+
                         orderInfos.remove(position1);
                         mAdapter.notifyItemRemoved(position1);
                         inform("Successfully cancelled order");

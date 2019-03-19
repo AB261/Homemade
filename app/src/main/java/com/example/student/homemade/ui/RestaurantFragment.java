@@ -681,7 +681,7 @@ public class RestaurantFragment extends Fragment {
                                 if(review.size()==0){
                                     review.add("None");
                                 }
-                                Log.d(TAG,"Hey"+review.get(0));;
+                                Log.d(TAG,"Hey"+review.get(0));
                                 ArrayList<String> localReviews= new ArrayList<>();
                                 localReviews.addAll(review);
                                 if(localReviews.isEmpty()){
