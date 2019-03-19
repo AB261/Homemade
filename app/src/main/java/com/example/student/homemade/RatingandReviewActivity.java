@@ -68,7 +68,7 @@ public class RatingandReviewActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("Review" ,review);
+//        Log.d("Review" ,review);
     }
     private void validate(String rev){
 
@@ -83,12 +83,13 @@ public class RatingandReviewActivity extends AppCompatActivity {
         reviewID = reviewID+1;
         String timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
         date=timeStamp;
+        String reviewString=String.valueOf(reviewID);
         Map<String, Object> user = new HashMap<>();
         user.put("date ",date);
         user.put("ratings", rating);
         user.put("review", review);
-        user.put("reviewID", reviewID);
-        user.put("reviewee", 1815);
+        user.put("reviewID", reviewString);
+        user.put("reviewee", "wG2L2NyLHiOmLg0bdOfpMbd7OJu2a");
         user.put("reviewer",mAuth.getUid() );
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 

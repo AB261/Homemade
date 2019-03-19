@@ -59,9 +59,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             @Override
             public void onClick(View v) {
 
-                        Intent intent = new Intent(mContext.getApplicationContext(),Subscription_time.class);
-                        // intent.putExtra("restaurantName",title);
-                        mContext.getApplicationContext().startActivity(intent);
+                        Intent intent = new Intent(mContext,Subscription_time.class);
+                        Log.d(TAG,restaurantModel.getRestaurantName());
+                        intent.putExtra("restaurantName",restaurantModel.getRestaurantName());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                        myViewHolder.btn.setBackgroundColor(v.getResources().getColor(R.color.grey));
+                        myViewHolder.btn.setText("Subscribed");
 
             }
         });
