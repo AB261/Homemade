@@ -107,7 +107,9 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
                 if(map.get("timeBeforeCancel").equals(null)) timeBeforeCancel = 5;
                 else timeBeforeCancel = Integer.parseInt(map.get("timeBeforeCancel").toString());
                 viewHolder1.line1.setText("" + restaurantName);
-                viewHolder1.line2.setText("Time when order was placed: " + orderInfo.orderTime );
+                String orderTime = orderInfo.orderTime;
+                if(orderTime.equals("")) orderTime = "13:30";
+                viewHolder1.line2.setText("Time when order was placed: " + orderTime );
                 viewHolder1.line3.setText("Order can be cancelled before: " + timeBeforeCancel + " min");
                 viewHolder1.line4.setText("Items:\n" + orderInfo.getItemsOrdered());
                 viewHolder1.line5.setText("Total Cost: " + orderInfo.getOrderTotal());
