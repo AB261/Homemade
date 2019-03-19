@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +68,7 @@ public class ConsumerUIFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v=inflater.inflate(R.layout.fragment_consumer_ui, container, false);
-        orderList = v.findViewById(R.id.currentOrders);
+        orderList =  v.findViewById(R.id.currentOrders);
         reviewButton = v.findViewById(R.id.reviewButton);
         loadCurrentOrders();
 

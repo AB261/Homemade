@@ -50,7 +50,7 @@
 
                 <EditText
                     android:id="@+id/tvEditName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="30dp"
@@ -59,8 +59,7 @@
                     android:text="Name"
                     android:textColor="#fff"
                     android:textSize="21sp"
-                    android:singleLine="true"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -85,18 +84,15 @@
                     android:src="@drawable/ic_phone_android_black_24dp" />
 
                 <EditText
-
                     android:id="@+id/tvEditContact"
-                    android:layout_width="wrap_content"
+                    android:layout_width="239dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="top"
                     android:fontFamily="@font/roboto_regular"
                     android:hint="number"
                     android:layout_marginLeft="20dp"
-                    android:textSize="20dp"
-                    android:singleLine="true"
-                    />
+                    android:textSize="20dp" />
 
             </LinearLayout>
 
@@ -115,7 +111,7 @@
 
                 <EditText
                     android:id="@+id/tvEditAddress"
-                    android:layout_width="wrap_content"
+                    android:layout_width="239dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:gravity="top"
@@ -141,9 +137,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/buttonstyle"
                 android:text="Save Details"
-                android:textColor="#ffffff"
-                android:singleLine="true"
-                />
+                android:textColor="#ffffff" />
 
 
 

@@ -118,6 +118,9 @@
         <activity android:name=".CustomerConfirmActivity"
             android:label="Confirm Order"
             android:theme="@style/AppTheme" />
+        <activity android:name=".CustomerConfirmSubscriptionActivity"
+            android:label="Confirm Subscription"
+            android:theme="@style/AppTheme" />
         <activity android:name=".OrderPageActivity"
             android:label="Choose Items"
             android:theme="@style/AppTheme" />
