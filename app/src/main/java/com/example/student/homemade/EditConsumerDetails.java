@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.student.homemade.ui.ConsumerDetailsFragment;
+import com.example.student.homemade.ui.ConsumerUIFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +38,7 @@ import com.squareup.picasso.Picasso;
 
 public class EditConsumerDetails extends AppCompatActivity {
 
-    EditText editName,editAddress,editcontact;
+    EditText editName,editAddress,editContact;
     ImageView editPhoto;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageReference = FirebaseStorage.getInstance().getReference("consumers_photos");
@@ -64,7 +65,7 @@ public class EditConsumerDetails extends AppCompatActivity {
 
         editName = findViewById(R.id.tvEditName);
         editAddress = findViewById(R.id.tvEditAddress);
-        editcontact = findViewById(R.id.tvEditContact);
+        editContact = findViewById(R.id.tvEditContact);
         editPhoto = findViewById(R.id.ivEditPic);
         editDetailsbtn = findViewById(R.id.saveDetails);
         showOldPic();
@@ -76,7 +77,6 @@ public class EditConsumerDetails extends AppCompatActivity {
         editPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flagImage = true;
                 Intent intent = new Intent();
                 intent.setType("image/*");//image IS FOR IMAGE, WE CAN USE APPLICATION/*,AUDIO/*
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -92,7 +92,10 @@ public class EditConsumerDetails extends AppCompatActivity {
                 setDetails();
                 if(flagImage == true) setimage();
                 flagImage = false;
-
+                ConsumerUIFragment fragment = new ConsumerUIFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
             }
         });
 
@@ -109,14 +112,14 @@ public class EditConsumerDetails extends AppCompatActivity {
         String name,address,contact;
         name = editName.getText().toString();
         address = editAddress.getText().toString();
-        contact = editcontact.getText().toString();
+        contact = editContact.getText().toString();
 
         ConsumerDetailsClass details = new ConsumerDetailsClass(name,detailsOld.getPassword(),address,contact,detailsOld.getWallet(),detailsOld.getEmail(),detailsOld.getTypeOfUser());
 
         noteRef.set(details);
         Toast.makeText(this, "Details Saved Successfully", Toast.LENGTH_SHORT).show();
 
-    
+
     }
 
 
@@ -149,7 +152,7 @@ public class EditConsumerDetails extends AppCompatActivity {
         String name,address,contact;
         name = editName.getText().toString();
         address = editAddress.getText().toString();
-        contact = editcontact.getText().toString();
+        contact = editContact.getText().toString();
         if( name.equals("") || address.equals("")  || contact.equals(""))   return false;
 
         return true;
@@ -185,7 +188,7 @@ public class EditConsumerDetails extends AppCompatActivity {
     void showOldDetails(){
 
         DocumentReference myref =  db.collection("Consumer").document(currentUID);
-        
+
 
         myref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -193,7 +196,7 @@ public class EditConsumerDetails extends AppCompatActivity {
                 detailsOld = documentSnapshot.toObject(ConsumerDetailsClass.class);
                 editName.setText(detailsOld.getUsername());
                 editAddress.setText(detailsOld.getAddress());
-                editcontact.setText(detailsOld.getContactNumber());
+                editContact.setText(detailsOld.getContactNumber());
 
             }
         });
@@ -208,6 +211,7 @@ public class EditConsumerDetails extends AppCompatActivity {
         if(requestCode == PICK_IMAGE && resultCode == RESULT_OK && data.getData() != null){
             imagePath = data.getData();
             try {
+                flagImage = true;
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
                 editPhoto.setImageBitmap(bitmap);
             }catch(Exception e){

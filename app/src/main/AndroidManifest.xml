@@ -53,6 +53,7 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+
         <activity
             android:name=".SliderActivity"
             android:label="SliderIntro" />

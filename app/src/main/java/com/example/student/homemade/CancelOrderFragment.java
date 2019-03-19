@@ -53,6 +53,15 @@ class Order2 {
     ArrayList<FoodItem2> itemsOrdered;
     String deliveryPerson;
     boolean isMassOrder;
+    String orderDate;
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
 
     public void setMassOrder(boolean massOrder) {
         isMassOrder = massOrder;
@@ -265,7 +274,7 @@ public class CancelOrderFragment extends Fragment {
 
 //        Log.v("========", "order id is " + orderID);
 
-        db.collection("Orders").whereEqualTo("consumer", myconsumerID).whereEqualTo("delivered", false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Orders").whereEqualTo("consumer", myconsumerID).whereEqualTo("delivered", false).whereEqualTo("paid", true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                OrderInfo orderInfo;
@@ -332,6 +341,26 @@ public class CancelOrderFragment extends Fragment {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
+
+//                        Log.d("ayyyyyyyyyyyyyyyyyy",orderInfos.get(position1).toString());
+                        Log.d("ayyyyyyyyyyyyyyyyyyy",currOrder.provider + " " + currOrder.orderTotal + " " + currOrder.consumer);
+
+                        db.collection("Provider").document(currOrder.provider).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                double cost = Double.parseDouble(documentSnapshot.getData().get("wallet").toString()) - currOrder.orderTotal;
+                                db.collection("Provider").document(currOrder.provider).update("wallet",cost);
+                            }
+                        });
+
+                        db.collection("Consumer").document(currOrder.consumer).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                double cost = Double.parseDouble(documentSnapshot.getData().get("wallet").toString()) + currOrder.orderTotal;
+                                db.collection("Provider").document(currOrder.consumer).update("wallet",cost);
+                            }
+                        });
+
                         orderInfos.remove(position1);
                         mAdapter.notifyItemRemoved(position1);
                         inform("Successfully cancelled order");
@@ -389,6 +418,7 @@ public class CancelOrderFragment extends Fragment {
                 Order2 orderToCancel = orderInfos.get(position);
 
                 final String time_and_date = orderToCancel.orderTime;
+                final String orderDate = orderToCancel.orderDate;
                 int timeBeforeCancel;
 
                 db.collection("Provider").document(orderToCancel.provider).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -397,7 +427,7 @@ public class CancelOrderFragment extends Fragment {
                         HashMap<String, Object> map = (HashMap<String, Object>) documentSnapshot.getData();
                         final int timeBeforeCancel = Integer.parseInt(map.get("timeBeforeCancel").toString());
 
-                        int hour, mins;
+                        int hour, mins, day, year, month;
 
                         if(time_and_date.equals("")){
                             hour = 13;
@@ -407,14 +437,45 @@ public class CancelOrderFragment extends Fragment {
                             hour = Integer.parseInt(time_and_date.substring(0, time_and_date.indexOf(':')));
                             mins = Integer.parseInt(time_and_date.substring(time_and_date.indexOf(':') + 1));
                         }
+
+                        if(orderDate.equals("")){
+                            day = 12;
+                            month = 3;
+                            year = 2019;
+                        }
+                        else{
+                            int index1 = 0, index2 = 0;
+                            for(int i=0; i<orderDate.length(); i++){
+                                if(orderDate.charAt(i) == '/'){
+                                    index1 = i;
+                                    break;
+                                }
+                            }
+                            day = Integer.parseInt(orderDate.substring(0, index1));
+
+                            for(int i=index1 + 1; i < orderDate.length(); i++){
+                                if(orderDate.charAt(i) == '/'){
+                                    index2 = i;
+                                    break;
+                                }
+                            }
+                            month = Integer.parseInt(orderDate.substring(index1+1, index2));
+                            year = Integer.parseInt(orderDate.substring(index2+1, orderDate.length()));
+                        }
                         Calendar calendar = Calendar.getInstance();
                         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                         int currentMinute = calendar.get(Calendar.MINUTE);
+                        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+                        int currentMonth = calendar.get(Calendar.MONTH);
+                        int currentYear = calendar.get(Calendar.YEAR);
 
                         Log.d("=========", "hour " + hour + " mins " + mins + " currentHour " + currentHour + " currentMinute " + currentMinute + " timeBeforeCancel " + timeBeforeCancel);
 
-                        if((currentHour * 60 + currentMinute < hour * 60 + mins + timeBeforeCancel) && (currentHour * 60 + currentMinute > hour * 60 + mins)) {
-                            removeItem(position2);
+                        if(((currentDay-1)*1440 + (currentMonth-1)*43800 /*+ (currentYear-1)*525600*/ + currentHour * 60 + currentMinute <
+                                (day-1)*1440 + (month-1)*43800 + /*(year-1)*525600*/ + hour * 60 + mins + timeBeforeCancel) && (currentHour * 60 + currentMinute > hour * 60 + mins)
+                                ) {
+
+                                removeItem(position2);
                         }
                         else{
                             inform("Sorry, too late to cancel this order.");
@@ -440,7 +501,7 @@ public class CancelOrderFragment extends Fragment {
             }
         });
 
-        db.collection("Orders").whereEqualTo("consumer", myconsumerID).whereEqualTo("delivered", false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Orders").whereEqualTo("consumer", myconsumerID).whereEqualTo("delivered", false).whereEqualTo("paid", true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 OrderInfo orderInfo;

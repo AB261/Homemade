@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.student.homemade.ListOfMassOrderItems;
 import com.example.student.homemade.MainActivity;
 import com.example.student.homemade.MassOrderItems;
 import com.example.student.homemade.R;
@@ -36,6 +38,7 @@ import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -49,14 +52,14 @@ public class MassOrderFragment extends Fragment {
     TextView submitTextView, headingText;
     EditText dateText, timeText, addressText;
     Button submitButton;
-    Spinner spinnerItems, spinnerSeller,spinnerNoOfItems;
+    Spinner  spinnerSeller;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference providerIds = db.collection("Provider");
-    ArrayList<String> sellerList;
-    ImageView addItems;
-    int noOfItems = 0;
-    ArrayList<String> arrayOfItems = new ArrayList<String>();
-    ArrayList<Integer> arrayOfRespectiveAmountOfItemsChoosen = new ArrayList<Integer>();
+    ArrayList<String> sellerList  = new ArrayList<String>();
+    String address1,time1,date1;
+    Map<String,String> sellerMapContainsNameAndID;
+
+    ArrayAdapter<String> arrayAdapterSeller;
 
 
 
@@ -97,28 +100,18 @@ public class MassOrderFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_mass_order, container, false);
 
-
         dateText =  v.findViewById(R.id.dateText);
         timeText = v.findViewById(R.id.timeText);
         addressText = v.findViewById(R.id.addressText);
-        submitButton = v.findViewById(R.id.submitToSellerButton);
+        submitButton = v.findViewById(R.id.btnNextPage);
         spinnerSeller = v.findViewById(R.id.spinnerSeller);
-        ListView listView = v.findViewById(R.id.lvItemsAdded);
-        addItems = v.findViewById(R.id.btnAddItems);
+        sellerMapContainsNameAndID = new HashMap<>();
 
 
-        MassOrderFragment.CustomAdapter customAdapter = new MassOrderFragment.CustomAdapter();
-        listView.setAdapter(customAdapter);
 
 
         //CREATING 2ND SPINNER FOR SELLER AND SELLER ARRAY IS IN res/vales/strings.xml NAMED "seller"
         loadSellerSpinner();
-        addItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MassOrderItems.class));
-            }
-        });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,9 +124,39 @@ public class MassOrderFragment extends Fragment {
     }
 
 
+    ////////// WHEN CONSUMER CLICKS ON NEXT BUTTON
+    void  goToNextPage(){
+        Intent intent = new Intent(getActivity(), ListOfMassOrderItems.class);
+        String resturant;
+
+        try {
+            resturant = spinnerSeller.getSelectedItem().toString();
+            intent.putExtra("nameOfResturant", resturant);
+            intent.putExtra("date",date1);
+            intent.putExtra("time", time1);
+            intent.putExtra("address",address1);
+            String providerID = sellerMapContainsNameAndID.get(resturant);
+            intent.putExtra("providerID",providerID);
+
+        }catch(Exception e){
+            Toast.makeText(getActivity(), "NO RESTAURANT SELECTED", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ArrayList<String> arrayOfItems = new ArrayList<String>();
+        ArrayList<Integer> arrayOfRespectiveAmountOfItemsChoosen = new ArrayList<Integer>();///ARRAY LIST MADE
+
+        intent.putStringArrayListExtra("items",arrayOfItems);
+        intent.putIntegerArrayListExtra("amount",arrayOfRespectiveAmountOfItemsChoosen);        //ARRAY LIST PASSED
+        startActivity(intent);
+
+    }
+    ////////// WHEN CONSUMER CLICKS ON NEXT BUTTON
+
+
+
     ///////////////THIS IS ADD PROVIDER NAMES TO SPINNER
     void loadSellerSpinner() {
-        sellerList = new ArrayList<String>();
+
         providerIds.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -141,16 +164,24 @@ public class MassOrderFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
                                 Map map = queryDocumentSnapshot.getData();
-                                if (map.get("restaurantname") != null) {
-                                    sellerList.add((String) map.get("restaurantname"));
+
+                                if (map.get("restaurantName") != null && map.get("id") != null) {
+                                    sellerList.add((String) map.get("restaurantName"));
+                                    sellerMapContainsNameAndID.put(map.get("restaurantName").toString(),map.get("id").toString());
                                 }
 
+
+
                             }
+                            if(getActivity() != null) {
+                                arrayAdapterSeller = new ArrayAdapter<String>(getActivity(),
+                                        android.R.layout.simple_list_item_1, sellerList);
+                                arrayAdapterSeller.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerSeller.setAdapter(arrayAdapterSeller);
+                            }
+
                         }
-                        ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(getActivity(),
-                                android.R.layout.simple_list_item_1, sellerList);
-                        arrayAdapterSeller.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerSeller.setAdapter(arrayAdapterSeller);
+
                     }
 
                 });
@@ -161,12 +192,12 @@ public class MassOrderFragment extends Fragment {
     ////////////////CHECKS IF ENTERED DETAILS ARE RIGHT OR NOT
     public void checkForValidInput() {
 
-        String date1;
+
         date1 = dateText.getText().toString();
-        String time1 = timeText.getText().toString();
-        String address1 = addressText.getText().toString();
+        time1 = timeText.getText().toString();
+        address1 = addressText.getText().toString();
         Pattern DATE_PATTERN = Pattern.compile("^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$");
-        Pattern TIME_PATTERN = Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\\\s)?(?i)(am|pm)");
+        Pattern TIME_PATTERN = Pattern.compile("(1[012]|[1-9]):[0-5][0-9](\\\\s)?(?i)(\\s)(am|pm)");
 
 
         if (!DATE_PATTERN.matcher(date1).matches()) {
@@ -176,107 +207,12 @@ public class MassOrderFragment extends Fragment {
         } else if (address1.length() == 0) {
             Toast.makeText(getActivity(), "ADDRESS BAR EMPTY", Toast.LENGTH_SHORT).show();
         } else {
-            submitToUserButton(v);
+            goToNextPage();
         }
 
 
     }
     ////////////////CHECKS IF ENTERED DETAILS ARE RIGHT OR NOT
-
-
-    //SUBMIT BUTTON IN ACTION
-    public int submitToUserButton(View view) {
-
-        Toast.makeText(getActivity(), "ORDER SUBMITTED TO USER", Toast.LENGTH_SHORT).show();
-        //INITIALISING ALL THE TEXTS
-        headingText = (TextView) v.findViewById(R.id.headingText);
-        dateText = (EditText) v.findViewById(R.id.dateText);
-        addressText = (EditText) v.findViewById(R.id.addressText);
-        timeText = (EditText) v.findViewById(R.id.timeText);
-        submitTextView = (TextView) v.findViewById(R.id.submitTextView);
-        submitButton = (Button) v.findViewById(R.id.submitToSellerButton);
-        //INITIALISING DONE
-
-        //NOW MAKING EVERYTHING INVISIBLE
-        headingText.setVisibility(view.GONE);
-        dateText.setVisibility(view.GONE);
-        addressText.setVisibility(view.GONE);
-        timeText.setVisibility(view.GONE);
-        submitTextView.setVisibility(view.GONE);
-        submitButton.setVisibility(view.GONE);
-        spinnerItems.setVisibility(view.GONE);
-        spinnerSeller.setVisibility(view.GONE);
-        //EVERYTHING INVISIBLE ON BUTTON CLICK
-
-        submitTextView.setVisibility(View.VISIBLE);
-        return 1;
-
-    }
-    //SUBMIT BUTTON IN ACTION
-
-
-    ////////CUSTOM ADAPTER FOR LIST OF ITEMS ADDED
-//    class CustomAdapter extends BaseAdapter {
-//
-//        @Override
-//        public int getCount() {
-//            return IMAGES.length;
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return null;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return 0;
-//        }
-//
-//        @Override
-//        public View getView(int i, View view, ViewGroup parent) {
-//            view = getLayoutInflater().inflate(R.layout.trending_items_custom_view,null);
-//            ImageView imageView = (ImageView) view.findViewById(R.id.imageView2);
-//            TextView textView_name = (TextView) view.findViewById(R.id.textView_names);
-//            TextView textView_description = (TextView) view.findViewById(R.id.textView_description);
-//
-//            imageView.setImageResource(IMAGES[i]);
-//            textView_name.setText(NAMES[i]);
-//            textView_description.setText(DESCRIPTION[i]);
-//            return view;
-//        }
-//    }
-    ////////CUSTOM ADAPTER FOR LIST OF ITEMS ADDED
-
-    /////////////////CUSTOM ADADPTER FOR LIST OF CURRENT ITEMS
-    class CustomAdapter extends BaseAdapter{
-
-        @Override
-        public int getCount() {
-            return noOfItems;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup parent) {
-            view = getLayoutInflater().inflate(R.layout.custom_layout_for_massorder_items,null);
-            TextView nameOfItem = view.findViewById(R.id.foodItemsName);
-            TextView numberOfItem = view.findViewById(R.id.foodItemsAmount);
-            nameOfItem.setText(arrayOfItems.toArray()[i].toString());
-            numberOfItem.setText(arrayOfRespectiveAmountOfItemsChoosen.toArray()[i].toString());
-            return view;
-        }
-    }
-    /////////////////CUSTOM ADADPTER FOR LIST OF CURRENT ITEMS
 
 
 

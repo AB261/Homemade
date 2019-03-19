@@ -52,7 +52,7 @@ public class Subscription_time extends AppCompatActivity {
                 radioButton = findViewById(radioId);
                 String choice = (String) radioButton.getText();
                 textView.setText("Your choice: " + choice);
-                Intent intent = new Intent(getBaseContext(), OrderPageActivity.class);
+                Intent intent = new Intent(getBaseContext(), Success_sub.class);
                 //intent.putExtra("EXTRA_SESSION_ID", sessionId);
                 intent.putExtra("subscriptionTime", choice);
                 intent.putExtra("consumerID", mAuth.getUid());

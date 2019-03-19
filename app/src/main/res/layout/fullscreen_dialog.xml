@@ -154,15 +154,26 @@
                 app:layout_constraintTop_toBottomOf="@id/rating"
                 app:layout_constraintBottom_toTopOf="@id/reviews"
                 />
+            <!--<TextView-->
+                <!--android:id="@+id/reviews"-->
+                <!--android:theme="@style/normaltext"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="BLAHAHAHAHS"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintBottom_toTopOf="@id/dismiss"-->
+                <!--app:layout_constraintTop_toBottomOf="@id/reviewtitle" />-->
+
             <TextView
                 android:id="@+id/reviews"
                 android:theme="@style/normaltext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BLAHAHAHAHS"
+                android:text="None"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/dismiss"
                 app:layout_constraintTop_toBottomOf="@id/reviewtitle" />
+
 
             <Button
                 android:textColor="@color/white"

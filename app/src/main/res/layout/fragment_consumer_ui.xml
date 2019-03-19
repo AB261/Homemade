@@ -1,125 +1,87 @@
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".ui.ConsumerUIFragment">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.ConsumerUIFragment">
 
 
-        <TextView
-            android:id="@+id/textView6"
-            style="@android:style/Widget.DeviceDefault.TextView"
-            android:layout_width="329dp"
-            android:layout_height="111dp"
-            android:background="@color/com_facebook_button_background_color_focused"
-            android:fontFamily="casual"
-            android:gravity="center"
-            android:text="HOMEMADE FOOD LOVERS"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@color/GoogleButtonColor"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.634"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.119" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="202dp"
-            android:layout_height="54dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/com_facebook_button_login_silver_background_color"
-            android:fontFamily="casual"
-            android:gravity="center"
-            android:text="CURRENT ORDERS "
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.148"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.332" />
 
-    <!--<TextView-->
-    <!--android:id="@+id/textView5"-->
-    <!--android:layout_width="183dp"-->
-    <!--android:layout_height="40dp"-->
-    <!--android:layout_marginTop="284dp"-->
-    <!--android:background="@color/colorPrimary"-->
-    <!--android:fontFamily="casual"-->
-    <!--android:gravity="center"-->
-    <!--android:text="HISTORY OF ORDERS"-->
-    <!--android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
-    <!--android:textColor="@android:color/black"-->
-    <!--android:textStyle="bold"-->
-    <!--app:layout_constraintHorizontal_bias="0.298"-->
-    <!--app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--app:layout_constraintRight_toRightOf="parent"-->
-    <!--app:layout_constraintTop_toTopOf="parent" />-->
+    <Button
+        android:id="@+id/reviewButton"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorSecondaryLight"
+        android:fontFamily="casual"
+        android:text="REVIEWS"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentOrders"
+        app:layout_constraintVertical_bias="0.556" />
 
-        <Button
-            android:id="@+id/review_button"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/colorSecondaryLight"
-            android:fontFamily="casual"
-            android:text="REVIEWS"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.95" />
+    <Button
+        android:id="@+id/orderButton"
+        android:layout_width="120dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorSecondaryLight"
+        android:fontFamily="casual"
+        android:text="ORDER NOW"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentOrders"
+        app:layout_constraintVertical_bias="0.546" />
 
-        <Button
-            android:id="@+id/orderButton"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/colorSecondaryLight"
-            android:fontFamily="casual"
-            android:text="ORDER NOW"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.95" />
+    <ListView
+        android:id="@+id/currentOrders"
+        android:layout_width="352dp"
+        android:layout_height="247dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:cacheColorHint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.651" />
 
-        <ListView
-            android:id="@+id/currentOrders"
-            android:layout_width="352dp"
-            android:layout_height="210dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="304dp"
-            android:layout_marginEnd="8dp"
-            android:cacheColorHint="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.488"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="136dp"
+        android:layout_height="116dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@mipmap/ic_launcher_home_made_round2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.08" />
 
     <!--<ListView-->
     <!--android:id="@+id/historyOfOrders"-->
@@ -135,4 +97,4 @@
     <!--app:layout_constraintStart_toStartOf="parent"-->
     <!--app:layout_constraintTop_toBottomOf="@+id/textView5"-->
     <!--app:layout_constraintVertical_bias="0.949" />-->
-    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

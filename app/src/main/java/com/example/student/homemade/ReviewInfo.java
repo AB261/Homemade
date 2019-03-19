@@ -17,6 +17,9 @@ public class ReviewInfo {
         this.reviewer = reviewer;
         this.timeAndDate = timeAndDate;
     }
+    public ReviewInfo(){
+
+    }
 
     public int getRatings() {
         return ratings;
@@ -65,4 +68,6 @@ public class ReviewInfo {
     public void setTimeAndDate(String timeAndDate) {
         this.timeAndDate = timeAndDate;
     }
+
+
 }

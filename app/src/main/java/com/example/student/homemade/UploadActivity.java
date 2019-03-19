@@ -88,7 +88,7 @@ public class UploadActivity extends AppCompatActivity {
         type = (String) getIntent().getExtras().get("type");
         menuItems = (ArrayList<MenuItem>) getIntent().getExtras().get("menuItems");
         mButtonChooseImage = findViewById(R.id.button_choose_image);
-        seller = (Seller)getIntent().getExtras().getSerializable("seller");
+        seller = (Seller)getIntent().getExtras().getParcelable("seller");
         present = (ArrayList<String>) getIntent().getExtras().get("present");
         absent = (ArrayList<String>) getIntent().getExtras().get("absent");
         mButtonUpload = findViewById(R.id.button_upload);

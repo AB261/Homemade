@@ -56,7 +56,9 @@ public class ProviderUIFragment extends Fragment {
     TextView discount_subs;
     TextView discount_mass;
     TextView no_of_mass_orders;
-
+    CardView cancellation;
+    TextView cancellation_time;
+    CardView mass_display_order;
     CardView sub_discount;
     private FirebaseFirestore firebaseFirestore;
     private HashMap<String, String> itemPictures = new HashMap<>();
@@ -156,6 +158,7 @@ public class ProviderUIFragment extends Fragment {
                         discount_mass.setText("Current Discount : " + df.format(seller.getMassOrderDiscount()) +"%");
                         no_of_mass_orders.setText("Number of Items : " + df.format(seller.getNoOfMassOrders()));
                         discount_subs.setText("Current Discount : " + df.format(seller.getLongTermSubscriptionDiscount()) + "%");
+                        cancellation_time.setText("Min Time : " + seller.getTimeBeforeCancel() + " minutes");
                         Log.d("SELLEE", seller.toString());
                         Log.d("DOCSNAP", "DocumentSnapshot data: " + document.get("username"));
                         itemPictures = (HashMap<String, String>) document.get("itemPictures");
@@ -246,7 +249,14 @@ public class ProviderUIFragment extends Fragment {
                 showChangeLangDialog1();
             }
         });
-
+        cancellation_time = view.findViewById(R.id.cancellation_time);
+        cancellation = view.findViewById(R.id.cancellation);
+        cancellation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeLangDialog2();
+            }
+        });
 
         return view;
     }
@@ -317,6 +327,50 @@ public class ProviderUIFragment extends Fragment {
                 discount_subs.setText("Current Discount : " + disc +"%");
                 HashMap<String,Object> map = new HashMap<>();
                 map.put("longTermSubscriptionDiscount",disc);
+                firebaseFirestore.collection("Provider").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(),"Updated",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("FSA",e.toString());
+                            }
+                        });
+
+
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+
+    public void showChangeLangDialog2() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),R.style.myDialog);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.cancellation_time, null);
+        dialogBuilder.setView(dialogView);
+
+        final NumberPicker time = (NumberPicker) dialogView.findViewById(R.id.time);
+        time.setMaxValue(100);
+        time.setMinValue(0);
+        time.setValue(2);
+        dialogBuilder.setTitle("Enter Minimum time");
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                int time1 = time.getValue();
+
+                cancellation_time.setText("Min time : " + time1 +" minutes ");
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("timeBeforeCancel",time1);
                 firebaseFirestore.collection("Provider").document(mAuth.getUid()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

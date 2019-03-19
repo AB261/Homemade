@@ -51,7 +51,7 @@ public class ChooseActivity extends AppCompatActivity {
 
 itemPictures = (HashMap<String,String>)getIntent().getExtras().get("itemPictures");
         breakfast = findViewById(R.id.button_breakfast);
-        seller = (Seller)getIntent().getExtras().getSerializable("seller");
+        seller = (Seller)getIntent().getExtras().getParcelable("seller");
         firebaseFirestore = FirebaseFirestore.getInstance();
         breakfast.setOnClickListener(new View.OnClickListener() {
             @Override

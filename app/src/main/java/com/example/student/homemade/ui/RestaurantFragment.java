@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,6 +40,7 @@ import com.example.student.homemade.GpsUtils;
 import com.example.student.homemade.R;
 import com.example.student.homemade.RestaurantAdapter;
 import com.example.student.homemade.RestaurantModel;
+import com.example.student.homemade.ReviewInfo;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.CubeGrid;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -54,6 +56,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.maps.model.PlaceDetails;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -87,7 +90,10 @@ public class RestaurantFragment extends Fragment {
     private LocationCallback locationCallback;
     private boolean isContinue = false;
     private boolean isGPS = false;
-
+    RadioButton gpsRadioButton;
+    RadioButton addressRadioButton;
+    EditText address;
+    ArrayList<ReviewInfo> reviewInfos;
 
     //Sets up the database
 
@@ -100,8 +106,10 @@ public class RestaurantFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        getRestaurants();
         context = getActivity();
+        reviewInfos=new ArrayList<ReviewInfo>();
+
         v = inflater.inflate(R.layout.restaurant_card, container, false);
         Toast.makeText(context,"Please select a way to find Location before continuing",Toast.LENGTH_LONG).show();
         mRecyclerView = v.findViewById(R.id.cardView);
@@ -122,10 +130,10 @@ public class RestaurantFragment extends Fragment {
         // Apply the adapter to the spinner
         filterSpinner.setAdapter(adapter);
 //        setinitVis();
-        Log.d(TAG, "Stop2");
-        RadioButton gpsRadioButton = v.findViewById(R.id.GPSbutton);
-        RadioButton addressRadioButton = v.findViewById(R.id.addressButton);
-        EditText address = v.findViewById(R.id.Inputaddress);
+//        Log.d(TAG, "Stop2");
+         gpsRadioButton = v.findViewById(R.id.GPSbutton);
+         addressRadioButton = v.findViewById(R.id.addressButton);
+         address = v.findViewById(R.id.Inputaddress);
         gpsRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +173,7 @@ public class RestaurantFragment extends Fragment {
                         restaurantList.clear();
                         dupRestaurantList.clear();
                         adapter.notifyDataSetChanged();
-                        Log.d(TAG,address.getText().toString());
+//                        Log.d(TAG,address.getText().toString());
                         Toast.makeText(context,"At most 20km radius Homemade food providers will be shown",Toast.LENGTH_LONG).show();
                         addressLocationChosen(address.getText().toString());
                     }
@@ -315,7 +323,7 @@ public class RestaurantFragment extends Fragment {
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     if (locationResult == null) {
-                        Log.d(TAG,"Stop16");
+//                        Log.d(TAG,"Stop16");
                         return;
                     }
                     for (Location location : locationResult.getLocations()) {
@@ -325,7 +333,7 @@ public class RestaurantFragment extends Fragment {
                             if (!isContinue && mFusedLocationClient != null) {
                                 mFusedLocationClient.removeLocationUpdates(locationCallback);
                             }
-                            Log.d(TAG,"Stop17");
+//                            Log.d(TAG,"Stop17");
                             getLocation();
                         }
                     }
@@ -338,7 +346,7 @@ public class RestaurantFragment extends Fragment {
 
     public void addressLocationChosen(String address) {
         setinitVis();
-        Log.d(TAG,"Yep Here");
+//        Log.d(TAG,"Yep Here");
         GeocodingLocation locationAddress = new GeocodingLocation();
         locationAddress.getAddressFromLocation(address,
                 context, new GeocoderHandler());
@@ -355,7 +363,7 @@ public class RestaurantFragment extends Fragment {
                     latitude = bundle.getDouble("latitude");
                     longitude = bundle.getDouble("longitude");
                     locationAddress = String.valueOf(latitude)+String.valueOf(longitude);
-                    Log.d(TAG,"Yessss");
+//                    Log.d(TAG,"Yessss");
 
                     if(longitude!=0&&latitude!=0){
                         initializeList();
@@ -375,17 +383,17 @@ public class RestaurantFragment extends Fragment {
     }
 
     private void getLocation() {
-        Log.d(TAG, "Stop3");
+//        Log.d(TAG, "Stop3");
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     LOCATION_REQUEST);
-            Log.d(TAG, "Stop13");
+//            Log.d(TAG, "Stop13");
 
         } else {
             if (isContinue) {
                 mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                Log.d(TAG, "Stop14");
+//                Log.d(TAG, "Stop14");
             } else {
                 mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) context, location -> {
                     if (location != null) {
@@ -393,11 +401,11 @@ public class RestaurantFragment extends Fragment {
                         longitude = location.getLongitude();
                         initializeList();
 
-                        Log.d(TAG, "Latitude3:" + latitude + "Longitude3" + longitude);
+//                        Log.d(TAG, "Latitude3:" + latitude + "Longitude3" + longitude);
                     } else {
                         mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
-                        Log.d(TAG, "Stop15");
+//                        Log.d(TAG, "Stop15");
                     }
                 });
             }
@@ -416,19 +424,19 @@ public class RestaurantFragment extends Fragment {
 
                     if (isContinue) {
                         mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                        Log.d(TAG, "Stop4");
+//                        Log.d(TAG, "Stop4");
                         initializeList();
                     } else {
-                        Log.d(TAG, "Stop5");
+//                        Log.d(TAG, "Stop5");
                         mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) context, location -> {
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
                                 initializeList();
-                                Log.d(TAG, "Stop6");
-                                Log.d(TAG, "Latitude:" + latitude + "Longitude" + longitude);
+//                                Log.d(TAG, "Stop6");
+//                                Log.d(TAG, "Latitude:" + latitude + "Longitude" + longitude);
                             } else {
-                                Log.d(TAG, "Stop7");
+//                                Log.d(TAG, "Stop7");
                                 mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
                                 initializeList();
 
@@ -436,7 +444,7 @@ public class RestaurantFragment extends Fragment {
                         });
                     }
                 } else {
-                    Log.d(TAG, "Stop8");
+//                    Log.d(TAG, "Stop8");
                     Toast.makeText(context, "Permission denied", Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -447,7 +455,7 @@ public class RestaurantFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "Stop9");
+//        Log.d(TAG, "Stop9");
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == GPS_REQUEST) {
                 isGPS = true;
@@ -502,7 +510,7 @@ public class RestaurantFragment extends Fragment {
         mRecyclerView.setLayoutManager(MyLayoutManager);
         myAdapter = new RestaurantAdapter(getContext(), restaurantList);
         mRecyclerView.setAdapter(myAdapter);
-        Log.d(TAG, "Stop10");
+//        Log.d(TAG, "Stop10");
 //        getLocation();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -511,10 +519,44 @@ public class RestaurantFragment extends Fragment {
                 restaurantList.clear();
                 dupRestaurantList.clear();
                 myAdapter.notifyDataSetChanged();
-                setinitVis();
-                getLocation();
-                myAdapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+
+                if(gpsRadioButton.isChecked()){
+                    restaurantList.clear();
+                    dupRestaurantList.clear();
+                    myAdapter.notifyDataSetChanged();
+                    Toast.makeText(context,"At most 20km radius Homemade food providers will be shown",Toast.LENGTH_LONG).show();
+                    gpsLocationChosen();
+                    getLocation();
+                    myAdapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
+                } else if (addressRadioButton.isChecked()){
+                    if(address.getText()==null){
+                        Toast.makeText(context,"Please enter address",Toast.LENGTH_LONG).show();
+                        myAdapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+
+                    }
+                    else{
+                        restaurantList.clear();
+                        dupRestaurantList.clear();
+                        myAdapter.notifyDataSetChanged();
+//                        Log.d(TAG,address.getText().toString());
+                        Toast.makeText(context,"At most 20km radius Homemade food providers will be shown",Toast.LENGTH_LONG).show();
+                        addressLocationChosen(address.getText().toString());
+                        myAdapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
+                }
+                else {
+                    Toast.makeText(context,"Please choose either find by GPS or by address",Toast.LENGTH_LONG).show();
+                    myAdapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+//                setinitVis();
+//                getLocation();
+//                myAdapter.notifyDataSetChanged();
+//                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -534,7 +576,7 @@ public class RestaurantFragment extends Fragment {
         ArrayList<Float> rating = new ArrayList<>();
         ArrayList<String> userID = new ArrayList<>();
 //        Log.d(TAG,"Latitudeis:"+latitude+"Longitudeis"+longitude);
-        Log.d(TAG, "Stop11");
+//        Log.d(TAG, "Stop11");
 
         final Object[] restaurantModels = {restaurantName, description, review, distance, imageResourceId, rating, userID};
 
@@ -564,8 +606,8 @@ public class RestaurantFragment extends Fragment {
                                 ArrayList<Float> distances = (ArrayList<Float>) restaurantModels[3];
                                 ArrayList<String>userIDs = (ArrayList<String>)restaurantModels[6];
 
-                                userIDs.add(document.getId().toString());
-                                Log.d(TAG,document.getId());
+                                userIDs.add(document.getId());
+//                                Log.d(TAG,document.getId());
 
                                 if (map.get("restaurantName") == null) {
                                     restaurantNames.add("NITK NC");
@@ -608,110 +650,174 @@ public class RestaurantFragment extends Fragment {
                                     d = round(d, 2);
                                     distances.add((float) d);
                                 }
+                                double totalrating=0;
+                                double numOfRatings=0;
+                                ArrayList<Integer>individualRating =  new ArrayList<Integer>();
+                                ArrayList<String> review = new ArrayList<>();
+                                ArrayList<String>userNames =  new ArrayList<>();
+//                                getRestaurants(restaurantNames.get(0),descriptions.get(0),distances.get(0),imageResourceIds.get(0),userIDs.get(0));
+                                for(int j =0;j<reviewInfos.size();j++){
+                                    if(reviewInfos.get(j).getReviewee().equalsIgnoreCase(userIDs.get(0))){
+                                        totalrating+=reviewInfos.get(j).getRatings();
+                                        numOfRatings++;
+                                        individualRating.add(reviewInfos.get(j).getRatings());
+                                        review.add(reviewInfos.get(j).getReview());
+                                        userNames.add(reviewInfos.get(j).getReviewer());
+
+                                    }
+                                }
+                                double finalRating = totalrating/numOfRatings;
+                                if (review.size() == 0) {
+                                    review.add("None");
+                                }
+                                if (individualRating.size() == 0) {
+                                    finalRating=4.0;
+                                    individualRating.add(4);
+
+                                }
+                                if(userNames.size()==0){
+                                    userNames.add("Developers");
+                                }
+                                if(review.size()==0){
+                                    review.add("None");
+                                }
+                                Log.d(TAG,"Hey"+review.get(0));
+                                ArrayList<String> localReviews= new ArrayList<>();
+                                localReviews.addAll(review);
+                                if(localReviews.isEmpty()){
+                                    localReviews.add("None");
+                                }
+                                RestaurantModel restaurantModel = new RestaurantModel(restaurantNames.get(0), descriptions.get(0), localReviews, distances.get(0), imageResourceIds.get(0), finalRating);
+                                Log.d(TAG,"Model has"+restaurantModel.getReview().get(0));
+                                if(restaurantModel.getDistance()<=20){
+                                    restaurantList.add(restaurantModel);
+                                    dupRestaurantList.add(restaurantModel);
+                                }
+                                Log.d(TAG,restaurantModel.getRestaurantName());
+                                myAdapter.notifyDataSetChanged();
+
+                                if (restaurantList.isEmpty()) {
+                                    setVisIfNoResult();
+                                } else {
+                                    setfinVis();
+                                }
+
+                                restaurantNames.clear();
+                                descriptions.clear();
+                                distances.clear();
+                                imageResourceIds.clear();
+                                userIDs.clear();
+                                finalRating=0;
+                                userNames.clear();
+                                review.clear();
+                                individualRating.clear();
+
 
 
 //                                Log.d(TAG, restaurantNames.get(0)+ imageResourceIds.get(0) + descriptions.get(0));
 
 
-                                Log.d(TAG, userIDs.get(0));
-
-                                final CollectionReference ratingsAndReviews = db.collection("Reviews and Ratings");
-                                OnCompleteListener<QuerySnapshot> completeListener;
-                                ratingsAndReviews.whereEqualTo("reviewee", userID.get(0))
-                                        .get()
-                                        .addOnCompleteListener(completeListener = new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                int i = 1;
-                                                int counter = 0;
-                                                Double totalRating = new Double(0);
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                                        Map map = document.getData();
-                                                        Log.d(TAG, document.getId() + " => " + map);
-
-                                                        ArrayList<String> reviews = (ArrayList<String>) restaurantModels[2];
-                                                        reviews.add((String) map.get("review"));
-//                                                        Log.d(TAG, reviews.get(i));
-                                                        ArrayList<Double> ratings = (ArrayList<Double>) restaurantModels[5];
-                                                        Long ratingLong = new Long((Long) map.get("ratings"));
-                                                        double ratingdouble = ratingLong.doubleValue();
-                                                        totalRating += ratingdouble;
-                                                        ratings.add(0, totalRating / i);
-
-                                                        Log.d(TAG, ratings.get(0).toString() + reviews.get(i - 1));
-                                                        i++;
 
 
-//                                                        Log.d(TAG, "MAP SIZE" + map.size());
-
-
-                                                    }
-                                                }
-
-                                            }
-                                        })
-                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                ArrayList<String> restaurantNames = (ArrayList<String>) restaurantModels[0];
-                                                ArrayList<String> imageResourceIds = (ArrayList<String>) restaurantModels[4];
-                                                ArrayList<String> descriptions = (ArrayList<String>) restaurantModels[1];
-                                                ArrayList<Float> distances = (ArrayList<Float>) restaurantModels[3];
-                                                ArrayList<Double> ratings = (ArrayList<Double>) restaurantModels[5];
-                                                ArrayList<String> reviews = (ArrayList<String>) restaurantModels[2];
-                                                ArrayList<String> userIDs = (ArrayList<String>)restaurantModels[6];
-                                                ArrayList<String> reviewsToBeCopied = new ArrayList<>(reviews.size());
-                                                for (String x : reviews) {
-                                                    reviewsToBeCopied.add(x);
-                                                }
-
-//                                                Log.d(TAG,restaurantNames.get(0) );
-//                                                Log.d(TAG,imageResourceId.get(0) );
-//                                                Log.d(TAG,descriptions.get(0) );
-//                                                Log.d(TAG,String.valueOf(distances.get(0)));
-//                                                Log.d(TAG,String.valueOf(ratings );
-//                                                Log.d(TAG,reviews.toString());
-
-//                                                Log.d(TAG, String.valueOf(counter[0]));
-                                                if (reviews.size() == 0) {
-                                                    reviewsToBeCopied.add("None");
-                                                }
-                                                if (ratings.size() == 0) {
-                                                    ratings.add(4.0);
-                                                }
-
+//                                final CollectionReference ratingsAndReviews = db.collection("Reviews and Ratings");
+//                                OnCompleteListener<QuerySnapshot> completeListener;
+//                                ratingsAndReviews.whereEqualTo("reviewee", userIDs.get(userIDs.size()-1))
+//                                        .get()
+//                                        .addOnCompleteListener(completeListener = new OnCompleteListener<QuerySnapshot>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                                int i = 1;
+//                                                int counter = 0;
+//                                                Double totalRating = new Double(0);
+//                                                if (task.isSuccessful()) {
+//                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                                                        Map map = document.getData();
+//                                                        Log.d(TAG, document.getId() + " => " + map);
+//
+//                                                        ArrayList<String> reviews = (ArrayList<String>) restaurantModels[2];
+//                                                        reviews.add((String) map.get("review"));
+////                                                        Log.d(TAG, reviews.get(i));
+//                                                        ArrayList<Double> ratings = (ArrayList<Double>) restaurantModels[5];
+//                                                        Long ratingLong = new Long((Long) map.get("ratings"));
+//                                                        double ratingdouble = ratingLong.doubleValue();
+//                                                        totalRating += ratingdouble;
+//                                                        ratings.add(0, totalRating / i);
+//
+//                                                        Log.d(TAG, ratings.get(0).toString() + reviews.get(i - 1));
+//                                                        i++;
+//
+//
+////                                                        Log.d(TAG, "MAP SIZE" + map.size());
+//
+//
+//                                                    }
+//                                                }
+//
+//                                            }
+//                                        })
+//                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                                            @Override
+//                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                                                Log.d(TAG, document.getId() + " I am here => " + map);
+//                                                ArrayList<String> restaurantNames = (ArrayList<String>) restaurantModels[0];
+//                                                ArrayList<String> imageResourceIds = (ArrayList<String>) restaurantModels[4];
+//                                                ArrayList<String> descriptions = (ArrayList<String>) restaurantModels[1];
+//                                                ArrayList<Float> distances = (ArrayList<Float>) restaurantModels[3];
+//                                                ArrayList<Double> ratings = (ArrayList<Double>) restaurantModels[5];
+//                                                ArrayList<String> reviews = (ArrayList<String>) restaurantModels[2];
+//                                                ArrayList<String> userIDs = (ArrayList<String>)restaurantModels[6];
+//                                                ArrayList<String> reviewsToBeCopied = new ArrayList<>(reviews.size());
+//                                                for (String x : reviews) {
+//                                                    reviewsToBeCopied.add(x);
+//                                                }
+//
+////                                                Log.d(TAG,restaurantNames.get(0) );
+////                                                Log.d(TAG,imageResourceId.get(0) );
+////                                                Log.d(TAG,descriptions.get(0) );
+////                                                Log.d(TAG,String.valueOf(distances.get(0)));
+////                                                Log.d(TAG,String.valueOf(ratings );for (QueryDocumentSnapshot document : task.getResult()) {
+////                                                Log.d(TAG,reviews.toString());
+//
+////                                                Log.d(TAG, String.valueOf(counter[0]));
+//                                                if (reviews.size() == 0) {
+//                                                    reviewsToBeCopied.add("None");
+//                                                }
+//                                                if (ratings.size() == 0) {
+//                                                    ratings.add(4.0);
+//                                                }
+//
+//
+////
+//
+//
+//                                                RestaurantModel restaurantModel = new RestaurantModel(restaurantNames.get(counter[0]), descriptions.get(counter[0]), reviewsToBeCopied, distances.get(counter[0]), imageResourceIds.get(counter[0]), ratings.get(0),userIDs.get(counter[0]));
+//                                                if(restaurantModel.getDistance()<=100){
+//                                                    restaurantList.add(restaurantModel);
+//                                                    dupRestaurantList.add(restaurantModel);
+//                                                }
 
 //
+//                                                counter[0] = counter[0] + 1;
+//
+////                                                Log.d(TAG,String.valueOf(counter[0]));
+//
+//
+//                                                myAdapter.notifyDataSetChanged();
+//                                                if (restaurantList.isEmpty()) {
+//                                                    setVisIfNoResult();
+//                                                } else {
+//                                                    setfinVis();
+//                                                }
 
-
-                                                RestaurantModel restaurantModel = new RestaurantModel(restaurantNames.get(counter[0]), descriptions.get(counter[0]), reviewsToBeCopied, distances.get(counter[0]), imageResourceIds.get(counter[0]), ratings.get(0),userIDs.get(counter[0]));
-                                                if(restaurantModel.getDistance()<=20){
-                                                    restaurantList.add(restaurantModel);
-                                                    dupRestaurantList.add(restaurantModel);
-                                                }
-
-
-                                                counter[0] = counter[0] + 1;
-
-//                                                Log.d(TAG,String.valueOf(counter[0]));
-
-
-                                                myAdapter.notifyDataSetChanged();
-                                                if (restaurantList.isEmpty()) {
-                                                    setVisIfNoResult();
-                                                } else {
-                                                    setfinVis();
-                                                }
-
-                                                reviews.clear();
-                                                ratings.clear();
-//                                                Log.d(TAG, restaurantList.get(0).getReview().toString());
-
-
-                                            }
-                                        });
+//                                                reviews.clear();
+////                                                reviewsToBeCopied.clear();
+//                                                ratings.clear();
+////                                                Log.d(TAG, restaurantList.get(0).getReview().toString());
+//
+//
+//                                            }
+//                                        });
 
 
 //                                restaurantNames.clear();
@@ -736,6 +842,116 @@ public class RestaurantFragment extends Fragment {
 
 
     }
+//
+//    public void getRestaurants(String restaurantName, String description,  float distance, String imageResourceId,String userID){
+//        Log.d(TAG,"HERE");
+//        Log.d(TAG, "user id is "+userID);
+//        ArrayList<ReviewInfo> reviewInfos = new ArrayList<>();
+//        final FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        final CollectionReference ratingsAndReviews = database.collection("Reviews and Ratings");
+//        ratingsAndReviews.whereEqualTo("reviewee", userID)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        Log.d(TAG,"AND HERE");
+//                        Double totalRating = new Double(0);
+//                        if (task.isSuccessful()) {
+//                            int counter =0;
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//
+//                                Map map = document.getData();
+//                                ReviewInfo reviewInfo = document.toObject(ReviewInfo.class);
+//                                reviewInfos.add(reviewInfo);
+//                                if(counter==task.getResult().size())
+//                                {
+//
+//                                }
+//
+//
+//
+//                            }
+//                        }
+//
+//                    }
+//                }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//
+//            }
+//        });
+//
+//    }
+    public void getRestaurants(){
+
+        final FirebaseFirestore database = FirebaseFirestore.getInstance();
+        final CollectionReference ratingsAndReviews = database.collection("Reviews and Ratings");
+        ratingsAndReviews
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d(TAG,"AND HERE");
+                        if (task.isSuccessful()) {
+                            int counter =0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                Map map = document.getData();
+                                ReviewInfo reviewInfo = document.toObject(ReviewInfo.class);
+                                reviewInfos.add(reviewInfo);
+                                Log.d(TAG,reviewInfos.get(reviewInfos.size()-1).toString());
+                                Log.d(TAG,reviewInfos.get(reviewInfos.size()-1).getReview());
+
+
+                            }
+                        }
+
+                    }
+                });
+    }
+
+//    public ArrayList<ReviewInfo> getRestaurants(String restaurantName, String description,  float distance, String imageResourceId,String userID){
+//        Log.d(TAG,"HERE");
+//        Log.d(TAG, "user id is "+userID);
+//        ArrayList<ReviewInfo> reviewInfos = new ArrayList<>();
+//        final FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        final CollectionReference ratingsAndReviews = database.collection("Reviews and Ratings");
+//        ratingsAndReviews.whereEqualTo("reviewee", userID)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        Log.d(TAG,"AND HERE");
+//                        Double totalRating = new Double(0);
+//                        if (task.isSuccessful()) {
+//                            int counter =0;
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//
+//                                Map map = document.getData();
+//                                ReviewInfo reviewInfo = document.toObject(ReviewInfo.class);
+//                                reviewInfos.add(reviewInfo);
+//                                if(counter==task.getResult().size())
+//                                {
+//                                    return reviewInfos;
+//                                }
+//
+//
+//
+//                            }
+//                        }
+//
+//                    }
+//                }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//
+//            }
+//        });
+//        return reviewInfos;
+//
+//    }
 
     public void updateList(ArrayList<RestaurantModel> list) {
         restaurantList.clear();

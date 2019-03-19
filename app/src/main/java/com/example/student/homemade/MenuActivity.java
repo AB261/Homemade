@@ -60,7 +60,7 @@ public class MenuActivity extends AppCompatActivity {
         itemPictures = (HashMap<String,String>)getIntent().getExtras().get("itemPictures");
         type = (String) getIntent().getExtras().get("type");
         recyclerView = findViewById(R.id.rv);
-        seller = (Seller)getIntent().getExtras().getSerializable("seller");
+        seller = (Seller)getIntent().getExtras().getParcelable("seller");
         fab = findViewById(R.id.add_item);
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();

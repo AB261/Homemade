@@ -2,12 +2,11 @@ package com.example.student.homemade;
 
 public class ConsumerDetailsClass {
     String username, password, address, contactNumber, email,typeOfUser;
-    float wallet;
-
+    Double wallet;
     public ConsumerDetailsClass() {
     }
 
-    public ConsumerDetailsClass(String username, String password, String address, String contactNo, float wallet, String email, String typeOfUser) {
+    public ConsumerDetailsClass(String username, String password, String address, String contactNo, Double wallet, String email, String typeOfUser) {
         this.username = username;
         this.password = password;
         this.address = address;
@@ -49,11 +48,11 @@ public class ConsumerDetailsClass {
         this.contactNumber = contactNumber;
     }
 
-    public float getWallet() {
+    public Double getWallet() {
         return wallet;
     }
 
-    public void setWallet(float wallet) {
+    public void setWallet(Double wallet) {
         this.wallet = wallet;
     }
 

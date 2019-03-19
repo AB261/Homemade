@@ -28,7 +28,7 @@ public class Success_sub extends AppCompatActivity {
         b_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mintent = new Intent(Success_sub.this, ConsumerUIFragment.class);
+                Intent mintent = new Intent(Success_sub.this, MainActivity.class);
                 // myIntent.putExtra("key", value); //Optional parameters
                 startActivity(mintent);
             }

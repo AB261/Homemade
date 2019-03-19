@@ -18,9 +18,9 @@ public class Offers extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mintent = new Intent(Offers.this, ConsumerUIFragment.class);
+                Intent mintent = new Intent(Offers.this, MainActivity.class);
                 // myIntent.putExtra("key", value); //Optional parameters
-                startActivity(mintent);
+                  startActivity(mintent);
             }
         });
     }
