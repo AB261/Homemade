@@ -28,7 +28,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.student.homemade.ConsumerDetailsClass;
 import com.example.student.homemade.EditConsumerDetails;
 import com.example.student.homemade.R;
 import com.firebase.client.Firebase;
@@ -67,6 +66,7 @@ public class ConsumerDetailsFragment extends Fragment {
     DocumentReference notebookRef  = db.collection("Consumer").document(currentUserUID);
     StorageReference storageReference = FirebaseStorage.getInstance().getReference("consumers_photos").child(currentUserUID);
     ProgressDialog progressDialog;
+
 
 
     public ConsumerDetailsFragment(){
@@ -113,6 +113,12 @@ public class ConsumerDetailsFragment extends Fragment {
             }
         });
 
+        changeUserPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ChangePassword.class));
+            }
+        });
 
         return v;
 
@@ -127,13 +133,13 @@ public class ConsumerDetailsFragment extends Fragment {
         notebookRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ConsumerDetailsClass details = documentSnapshot.toObject(ConsumerDetailsClass.class);
-
-                userName.setText(details.getUsername());
-                userAddress.setText(details.getAddress());
-                userContact.setText(details.getContactNumber());
-                userEmail.setText(details.getEmail());
-                userWallet.setText(Double.toString(details.getWallet()));
+//                ConsumerDetailsClass details = documentSnapshot.toObject(ConsumerDetailsClass.class);
+                Map details = documentSnapshot.getData();
+                userName.setText( details.get("username").toString() );
+                userAddress.setText( details.get("address").toString() );
+                userContact.setText(details.get("contactNumber").toString() );
+                userEmail.setText( details.get("email").toString() );
+                userWallet.setText( details.get("wallet").toString()  );
 
             }
         })

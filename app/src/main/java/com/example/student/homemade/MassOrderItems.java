@@ -59,6 +59,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
         lunchSpinner = findViewById(R.id.spinnerLunch);
         snacksSpinner = findViewById(R.id.spinnerSnacks);
         dinnerSpinner = findViewById(R.id.spinnerDinner);
+
         saveItems= findViewById(R.id.btnAddItems);
         arrayOfRespectiveAmountOfItemsChoosen = new ArrayList<Integer>();
         arrayOfItems = new ArrayList<String>();

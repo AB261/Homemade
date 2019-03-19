@@ -32,11 +32,11 @@
         android:roundIcon="@mipmap/ic_launcher_home_made_round2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ListOfMassOrderItems"/>
+        <activity android:name=".ui.ChangePassword"></activity>
+        <activity android:name=".ListOfMassOrderItems" />
         <activity android:name=".MassOrderItems" />
         <activity android:name=".SignUpSeller2" />
         <activity android:name=".EditConsumerDetails" />
-
         <activity android:name=".ForgotActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

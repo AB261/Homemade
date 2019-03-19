@@ -49,16 +49,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="William Snow"
                     android:textColor="#fff"
                     android:textSize="21sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/testSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    style="@style/normaltext"/>
 
             </LinearLayout>
 
@@ -85,12 +80,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Orders"
+                            android:fontFamily="@font/roboto_regular"
                             android:textSize="20sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="125"
+                            android:fontFamily="@font/roboto_regular"
+
                             android:textStyle="bold"
                             android:paddingTop="10dp"
                             android:textColor="#66AF4C"/>
@@ -108,6 +106,8 @@
                             android:id="@+id/tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+
                             android:text="Wallet"
                             android:textSize="20sp" />
 
@@ -135,6 +135,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
                                 android:text="3090"
+                                android:fontFamily="@font/roboto_regular"
                                 android:textColor="#66AF4C"
                                 android:textStyle="bold" />
 
@@ -153,12 +154,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Points"
+                            android:fontFamily="@font/roboto_regular"
+
+
                             android:textSize="20sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="360"
+                            android:fontFamily="@font/roboto_regular"
+
                             android:textStyle="bold"
                             android:paddingTop="10dp"
                             android:textColor="#66AF4C"/>
@@ -195,6 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Wiliam@gmail.com" />
 
             </LinearLayout>
@@ -215,6 +222,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="+91-8912834192" />
 
             </LinearLayout>
@@ -235,6 +243,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Block 4, NITK Surathkal, NH66 Highway, Surathkal, Mangalore." />
 
             </LinearLayout>
@@ -242,18 +251,22 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/btnEditDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginVertical="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/roboto_regular"
                 android:background="@drawable/buttonstyle"
-                android:text="Edit Profile"
+                android:text="Edit\n Profile"
                 android:textColor="#ffffff" />
 
             <Button
@@ -263,9 +276,9 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/buttonstyle"
-                android:text="Change Password"
+                android:text="Change \nPassword"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="#ffffff" />
-
 
 
         </LinearLayout>
