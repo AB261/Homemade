@@ -508,7 +508,7 @@ public class RestaurantFragment extends Fragment {
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(MyLayoutManager);
-        myAdapter = new RestaurantAdapter(getContext(), restaurantList);
+        myAdapter = new RestaurantAdapter(getActivity(), restaurantList);
         mRecyclerView.setAdapter(myAdapter);
 //        Log.d(TAG, "Stop10");
 //        getLocation();
@@ -532,6 +532,8 @@ public class RestaurantFragment extends Fragment {
                 } else if (addressRadioButton.isChecked()){
                     if(address.getText()==null){
                         Toast.makeText(context,"Please enter address",Toast.LENGTH_LONG).show();
+                        restaurantList.clear();
+                        dupRestaurantList.clear();
                         myAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
 
@@ -687,7 +689,7 @@ public class RestaurantFragment extends Fragment {
                                 if(localReviews.isEmpty()){
                                     localReviews.add("None");
                                 }
-                                RestaurantModel restaurantModel = new RestaurantModel(restaurantNames.get(0), descriptions.get(0), localReviews, distances.get(0), imageResourceIds.get(0), finalRating);
+                                RestaurantModel restaurantModel = new RestaurantModel(restaurantNames.get(0), descriptions.get(0), localReviews, distances.get(0), imageResourceIds.get(0), finalRating,document.getId());
                                 Log.d(TAG,"Model has"+restaurantModel.getReview().get(0));
                                 if(restaurantModel.getDistance()<=20){
                                     restaurantList.add(restaurantModel);
@@ -710,6 +712,7 @@ public class RestaurantFragment extends Fragment {
                                 finalRating=0;
                                 userNames.clear();
                                 review.clear();
+                                userIDs.clear();
                                 individualRating.clear();
 
 

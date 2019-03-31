@@ -1,19 +1,23 @@
 package com.example.student.homemade.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student.homemade.R;
+import com.example.student.homemade.RatingandReviewActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +44,7 @@ public class HistoricalOrdersFragment extends Fragment {
 
     View v;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ArrayList<String> nameArrayList,dateArrayList,timeArrayList;
+    ArrayList<String> nameArrayList,dateArrayList,timeArrayList,providerIDArrayList,providersNameArrayList;
     ArrayList<Double> priceArrayList;
     ListView historyOfOrdersListView;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -109,6 +114,9 @@ public class HistoricalOrdersFragment extends Fragment {
         timeArrayList = new ArrayList<>();
         priceArrayList = new ArrayList<>();
         nameArrayList = new ArrayList<>();
+        providerIDArrayList = new ArrayList<>();
+        providersNameArrayList = new ArrayList<>();
+
 
         ordersRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -133,6 +141,15 @@ public class HistoricalOrdersFragment extends Fragment {
                                     dateArrayList.add(currDate);
                                     timeArrayList.add(currTime);
                                     priceArrayList.add( Double.valueOf(String.valueOf(orders.get(i).get("itemCost"))));
+                                    if(map.get("provider")!= null){
+                                        providerIDArrayList.add(map.get("provider").toString());
+                                    }
+                                    else providerIDArrayList.add("");
+                                    if(map.get("providerName") !=null)
+                                        providersNameArrayList.add(map.get("providerName").toString());
+                                    else
+                                        providersNameArrayList.add("The Yellow Chilli");
+
 //                                    Log.i("items", nameArrayList.get(i) + "\t" + dateArrayList.get(i) + "\t" + timeArrayList.get(i) +"\t"
 //                                                        + statusArrayList.get(i) + "\t" + Double.toString(priceArrayList.get(i)));
                                 }
@@ -184,19 +201,36 @@ public class HistoricalOrdersFragment extends Fragment {
 
         @Override
         public View getView(int i, View view, ViewGroup parent) {
-            view = getLayoutInflater().inflate(R.layout.custom_list_view_for_orders,null);
+            view = getLayoutInflater().inflate(R.layout.custom_view_for_history_of_orders,null);
 
 
             TextView name =  view.findViewById(R.id.tvNameOfFood);
             TextView price = view.findViewById(R.id.tvPriceOfFood);
             TextView date = view.findViewById(R.id.tvDateOfFood);
             TextView time = view.findViewById(R.id.tvTimeOfFood);
+            TextView nameOfProvider = view.findViewById(R.id.tvNameOfResturant);
+            Button reviewButton = view.findViewById(R.id.btnToReviewsPage);
 
+            reviewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent intent = new Intent(getActivity(), RatingandReviewActivity.class);
+                        intent.putExtra("providerID", providerIDArrayList.get(i));
+                        startActivity(intent);
+                    }
+                    catch (Exception e){
 
+                        Log.i("sending Intent",e.getStackTrace().toString());
+                    }
+                }
+            });
             name.setText(nameArrayList.get(i));
             price.setText(priceArrayList.get(i).toString());
             date.setText(dateArrayList.get(i));
             time.setText(timeArrayList.get(i));
+            nameOfProvider.setText(providersNameArrayList.get(i));
+
 
             return view;
         }
@@ -232,3 +266,5 @@ public class HistoricalOrdersFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
+
+///some comment to make changes

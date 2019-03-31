@@ -93,8 +93,6 @@ public class CustomerConfirmActivity extends AppCompatActivity {
                                 boolean iss = false;
                                 if(map.containsKey("Subscriptions")){
                                     final HashMap<String,String> subscriptions = (HashMap<String,String>)(map.get("Subscriptions"));
-                                    Log.d("mfuck",subscriptions.toString());
-
                                     if(subscriptions.containsKey(providerID)){
                                         long t = Long.parseLong(subscriptions.get(providerID).trim());
                                         long now = System.currentTimeMillis();

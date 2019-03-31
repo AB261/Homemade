@@ -1,6 +1,5 @@
 package com.example.student.homemade;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -47,7 +46,6 @@ public class EditConsumerDetails extends AppCompatActivity {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String currentUID = firebaseAuth.getUid();
     Button editDetailsbtn;
-    ProgressDialog progressDialog;
     boolean flagImage = false;
     Map detailsOld;
 
@@ -70,8 +68,7 @@ public class EditConsumerDetails extends AppCompatActivity {
         editPhoto = findViewById(R.id.ivEditPic);
         editDetailsbtn = findViewById(R.id.saveDetails);
         showOldPic();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("WAIT ,WE ARE WORKING ON IT");
+
 
 
         ////////////LOADINGIIMAGE2 LOADING IMAGE FROM GALARY
@@ -138,20 +135,18 @@ public class EditConsumerDetails extends AppCompatActivity {
 
     void setimage(){
         ////////////////////////////////////////for image uplaod  #partToSetImage
-        progressDialog.show();
         StorageReference imageReference = FirebaseStorage.getInstance().getReference().child("consumers_photos").child(currentUID);
         UploadTask uploadTask = imageReference.putFile(imagePath);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(EditConsumerDetails.this, "Upload Failed", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(EditConsumerDetails.this, "Upoad successful", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+
 
             }
         });
