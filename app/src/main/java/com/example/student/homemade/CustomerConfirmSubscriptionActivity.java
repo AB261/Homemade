@@ -37,7 +37,7 @@ public class CustomerConfirmSubscriptionActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         final String time = intent.getStringExtra("subscriptionTime");
-        final String consumerID = intent.getStringExtra("customerID");
+        final String consumerID = intent.getStringExtra("consumerID");
         final String providerID = intent.getStringExtra("providerID");
         final double costPerMonth =  150;
 
