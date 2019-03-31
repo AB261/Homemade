@@ -16,13 +16,14 @@ public class RestaurantModel {
     Bitmap restaurantImage;
     ArrayList<Integer>individualRating;
 
-    public RestaurantModel(String restaurantName, String description, ArrayList<String> review,  float distance, String imageResourceId,double rating) {
+    public RestaurantModel(String restaurantName, String description, ArrayList<String> review,  float distance, String imageResourceId,double rating,String userID) {
         this.restaurantName = restaurantName;
         this.description = description;
         this.review = review;
         this.distance =  distance;
         this.imageResourceId = imageResourceId;
         this.rating = rating;
+        this.userID=userID;
 
     }
 

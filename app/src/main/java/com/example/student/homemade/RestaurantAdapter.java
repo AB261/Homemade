@@ -73,9 +73,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 //Glide is a library used to put images in image view
         StringBuilder url = new StringBuilder("providers_photos/restaurant_pictures/");
         url.append(restaurantModel.getUserID());
+        Log.d(TAG,url+restaurantModel.getUserID());
         StorageReference mImageRef =
                 FirebaseStorage.getInstance().getReference(url.toString().trim());
+
         if (restaurantModel.getRestaurantImage() == null) {
+
             final long ONE_MEGABYTE = 1024 * 1024;
             mImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override

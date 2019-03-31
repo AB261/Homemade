@@ -258,6 +258,18 @@ public class ProviderUIFragment extends Fragment {
             }
         });
 
+        mass_display_order=view.findViewById(R.id.mass_display_order);
+
+        mass_display_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MassDisplaySellerActivity.class);
+                intent.putExtra("seller", seller);
+                startActivity(intent);
+
+            }
+        });
+
         return view;
     }
 
