@@ -33,6 +33,7 @@ import java.util.Map;
 public class MassOrderItems extends AppCompatActivity implements Serializable {
 
     Spinner breakfastSpinner, lunchSpinner, snacksSpinner, dinnerSpinner;
+    Map<String,Integer> breakfastMap,lunchMap,snacksMap,dinnerMap;
     EditText amountBreakfast, amountLunch, amountSnacks, amountDinner;
     ArrayList<String> breakfastList, lunchList, snacksList, dinnerList;
     DocumentReference breakfastCollection, lunchCollection, snacksCollection, dinnerCollection;
@@ -42,6 +43,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
     String nameOfResturant,date,time,address,providerID;  ///GETTING THESE THINGS VIA INTENT
     String item1,item2,item3,item4;
     int amount1,amount2,amount3,amount4;
+    Integer totalPrice;
 
 
     @Override
@@ -59,6 +61,10 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
         lunchSpinner = findViewById(R.id.spinnerLunch);
         snacksSpinner = findViewById(R.id.spinnerSnacks);
         dinnerSpinner = findViewById(R.id.spinnerDinner);
+        breakfastMap = new HashMap<>();
+        lunchMap = new HashMap<>();
+        snacksMap= new HashMap<>();
+        dinnerMap = new HashMap<>();
 
         saveItems= findViewById(R.id.btnAddItems);
         arrayOfRespectiveAmountOfItemsChoosen = new ArrayList<Integer>();
@@ -73,6 +79,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
         time = intentGet.getStringExtra("time");
         address = intentGet.getStringExtra("address");
         providerID = intentGet.getStringExtra("providerID");
+        totalPrice = Integer.parseInt( intentGet.getStringExtra("totalPrice"));
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -93,6 +100,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
 
                 try {
                     item1 = breakfastSpinner.getSelectedItem().toString();
+
                 }catch(Exception e){}
 
                 try {
@@ -141,21 +149,28 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
             if(amount1 != 0 && item1 != null) {
                 arrayOfItems.add(item1);
                 arrayOfRespectiveAmountOfItemsChoosen.add(amount1);
+                totalPrice += breakfastMap.get(item1)*amount1;
             }
 
             if(amount2 != 0 && item2 != null) {
                 arrayOfItems.add(item2);
                 arrayOfRespectiveAmountOfItemsChoosen.add(amount2);
+                totalPrice += lunchMap.get(item2)*amount2;
+
             }
 
             if(amount3 != 0 && item3 != null) {
                 arrayOfItems.add(item3);
                 arrayOfRespectiveAmountOfItemsChoosen.add(amount3);
+                totalPrice += snacksMap.get(item3)*amount3;
+
             }
 
             if(amount4 != 0 && item4 != null) {
                 arrayOfItems.add(item4);
                 arrayOfRespectiveAmountOfItemsChoosen.add(amount4);        ////ALL ITEMS ADDED TO ARRAY AND NOW ARRAY WILL BE PASSED AS INTENT
+                totalPrice += dinnerMap.get(item4)*amount4;
+
             }
 
 
@@ -174,6 +189,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
         intentSend.putExtra("address", address);
         intentSend.putExtra("time", time);
         intentSend.putExtra("providerID", providerID);
+        intentSend.putExtra("totalPrice" , Integer.toString(totalPrice));
 
         startActivity(intentSend);
         finish();
@@ -202,6 +218,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
                         HashMap<String, Object> map = (HashMap<String, Object>) documentM.getData().get("items");
                         for (String key : map.keySet()) {
                             breakfastList.add(key);
+                            breakfastMap.put(key,Integer.parseInt(map.get(key).toString()) );
                         }
 
                         ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(MassOrderItems.this, android.R.layout.simple_list_item_1, breakfastList);
@@ -247,6 +264,8 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
                         HashMap<String, Object> map = (HashMap<String, Object>) documentM.getData().get("items"); //GETS THE HASHMAP CONTAINING ITEMS
                         for (String key : map.keySet()) {
                             lunchList.add(key);
+                            lunchMap.put(key,Integer.parseInt(map.get(key).toString()) );
+
                         }
                         ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(MassOrderItems.this, android.R.layout.simple_list_item_1, lunchList);
                         arrayAdapterSeller.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -290,6 +309,8 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
                         HashMap<String, Object> map = (HashMap<String, Object>) documentM.getData().get("items");
                         for (String key : map.keySet()) {
                             snacksList.add(key);
+                            snacksMap.put(key,Integer.parseInt(map.get(key).toString()) );
+
                         }
                         ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(MassOrderItems.this, android.R.layout.simple_list_item_1, snacksList);
                         arrayAdapterSeller.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -331,6 +352,8 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
                         HashMap<String, Object> map = (HashMap<String, Object>) documentM.getData().get("items");
                         for (String key : map.keySet()) {
                             dinnerList.add(key);
+                            breakfastMap.put(key,Integer.parseInt(map.get(key).toString()) );
+
                         }
                         ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(MassOrderItems.this, android.R.layout.simple_list_item_1, dinnerList);
                         arrayAdapterSeller.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

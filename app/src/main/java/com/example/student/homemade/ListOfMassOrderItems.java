@@ -50,7 +50,8 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
     Button submitButton;
     CollectionReference massOrderRef;
     DocumentReference providerRef;
-
+    Integer totalPrice ;
+    TextView totalpriceTextView;
 
 
     @Override
@@ -61,8 +62,10 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
         listView = findViewById(R.id.lvItemsAdded);
         addItems = findViewById(R.id.btnAddItems);
         submitButton = findViewById(R.id.btnSubmitToSeller);
+        totalpriceTextView = findViewById(R.id.tvTotalPriceMassOrders);
 
         intent = getIntent();
+        totalPrice = Integer.parseInt(intent.getStringExtra("totalPrice"));
         resturantName = intent.getStringExtra("nameOfResturant");           //GETTING ARRAY LIST FROM INTENT
         arrayOfItems = intent.getStringArrayListExtra("items");
         arrayOfRespectiveAmountOfItemsChoosen = intent.getIntegerArrayListExtra("amount");
@@ -72,6 +75,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
         providerID = intent.getStringExtra("providerID");
         massOrderRef = FirebaseFirestore.getInstance().collection("Mass Orders");
         providerRef = massOrderRef.document(providerID);
+        totalpriceTextView.setText("Total Price : Rs " + Integer.toString(totalPrice) );
 
         getAllDetailsAndPutInListView();
 
@@ -88,6 +92,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
                 intentSend.putExtra("address", address);
                 intentSend.putExtra("time", time);
                 intentSend.putExtra("providerID", providerID);
+                intentSend.putExtra("totalPrice",Integer.toString(totalPrice));
 
                 startActivity(intentSend);
                 finish();
@@ -108,6 +113,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
                 massOrder.put("provider",providerID);
                 massOrder.put("delivered",false);
                 massOrder.put("paid",false);
+                massOrder.put("orderTotal",totalPrice);
                 Map<String,Integer> orderItemsMap = new HashMap<>();
                 for(int i=0 ;i < arrayOfItems.size() ; i++){
                     orderItemsMap.put(arrayOfItems.get(i) , arrayOfRespectiveAmountOfItemsChoosen.get(i));
@@ -140,6 +146,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
     void getAllDetailsAndPutInListView(){
 
         removeSameOccurancesOfItems();
+        totalpriceTextView.setText("Total Price : Rs " + Integer.toString(totalPrice) );
         customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
 
