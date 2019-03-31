@@ -83,7 +83,7 @@ public class CurrentOrdersRecyclerViewAdapter extends RecyclerView.Adapter<Curre
                 }
             }
         });
-        viewHolder.time_and_date.append(orderInfo.getOrderTime());
+        viewHolder.time_and_date.append(orderInfo.getOrderTime()+ " " + orderInfo.getOrderDate());
         viewHolder.no_order_items.append("" + orderInfo.getNoOrders());
 
         String item = "";

@@ -31,11 +31,12 @@
         android:roundIcon="@mipmap/ic_launcher_home_made_round2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewExistingMassOrders"></activity>
+        <activity android:name=".MassDisplaySellerActivity"></activity>
+        <activity android:name=".ViewExistingMassOrders" />
         <activity android:name=".ui.ChangePassword" />
         <activity android:name=".ListOfMassOrderItems" />
         <activity android:name=".MassOrderItems" />
-        <activity android:name=".SucessSub"></activity>
+        <activity android:name=".SucessSub" />
         <activity android:name=".OffersActivity" />
         <activity android:name=".SignUpSeller2" />
         <activity android:name=".EditConsumerDetails" />
@@ -121,11 +122,12 @@
             android:name=".CustomerConfirmActivity"
             android:label="Confirm Order"
             android:theme="@style/AppTheme" />
-        <activity android:name=".CustomerConfirmSubscriptionActivity"
+        <activity
+            android:name=".CustomerConfirmSubscriptionActivity"
             android:label="Confirm Subscription"
             android:theme="@style/AppTheme" />
-        <activity android:name=".OrderPageActivity"
-
+        <activity
+            android:name=".OrderPageActivity"
             android:label="Choose Items"
             android:theme="@style/AppTheme" />
         <activity

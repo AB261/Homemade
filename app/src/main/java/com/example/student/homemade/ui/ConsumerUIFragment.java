@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ public class ConsumerUIFragment extends Fragment {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String currentUserUID = firebaseAuth.getUid();
     CollectionReference ordersRef  = db.collection("Orders");
+    TrendingItemsFragment dialogFragment = new TrendingItemsFragment();
 
     public ConsumerUIFragment() {
         // Required empty public constructor
@@ -70,7 +73,7 @@ public class ConsumerUIFragment extends Fragment {
         // Inflate the layout for this fragment
         v=inflater.inflate(R.layout.fragment_consumer_ui, container, false);
         orderList = v.findViewById(R.id.currentOrders);
-        reviewButton = v.findViewById(R.id.reviewButton);
+        reviewButton = v.findViewById(R.id.btntrendingItems);
         loadCurrentOrders();
 
 
@@ -84,8 +87,11 @@ public class ConsumerUIFragment extends Fragment {
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity() , RatingandReviewActivity.class);
-                startActivity(intent);
+                TrendingItemsFragment fragment = new TrendingItemsFragment();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.commit();
             }
         });
 

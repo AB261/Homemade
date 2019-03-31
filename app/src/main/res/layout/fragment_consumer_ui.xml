@@ -72,8 +72,8 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/reviewButton"
-                android:layout_width="120dp"
+                android:id="@+id/btntrendingItems"
+                android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:background="@drawable/buttonstyle"
@@ -83,7 +83,7 @@
                 android:textStyle="bold"
                 android:layout_marginHorizontal="120dp"
                 android:layout_marginVertical="20dp"
-                android:text="REVIEWS"
+                android:text="Trending Items"
                 />
 
         </LinearLayout>

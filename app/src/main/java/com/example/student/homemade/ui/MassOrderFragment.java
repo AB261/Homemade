@@ -25,6 +25,7 @@ import com.example.student.homemade.ListOfMassOrderItems;
 import com.example.student.homemade.MainActivity;
 import com.example.student.homemade.MassOrderItems;
 import com.example.student.homemade.R;
+import com.example.student.homemade.ViewExistingMassOrders;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -51,7 +52,7 @@ public class MassOrderFragment extends Fragment {
     //MAKING VARIBALES FOR TEXT VIEWS
     TextView submitTextView, headingText;
     EditText dateText, timeText, addressText;
-    Button submitButton;
+    Button submitButton,existingMassOrdersButton;
     Spinner  spinnerSeller;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference providerIds = db.collection("Provider");
@@ -105,6 +106,7 @@ public class MassOrderFragment extends Fragment {
         addressText = v.findViewById(R.id.addressText);
         submitButton = v.findViewById(R.id.btnNextPage);
         spinnerSeller = v.findViewById(R.id.spinnerSeller);
+        existingMassOrdersButton = v.findViewById(R.id.btnToExistingMassOrders);
         sellerMapContainsNameAndID = new HashMap<>();
 
 
@@ -117,6 +119,13 @@ public class MassOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 checkForValidInput();
+            }
+        });
+
+        existingMassOrdersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ViewExistingMassOrders.class));
             }
         });
 

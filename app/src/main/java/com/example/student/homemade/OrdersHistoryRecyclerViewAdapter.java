@@ -88,7 +88,6 @@ public class  OrdersHistoryRecyclerViewAdapter extends RecyclerView.Adapter<Orde
             Log.d("THIS",orderInfo.getItemsOrdered().get(j).get("itemNumber").toString() + " " + orderInfo.getItemsOrdered().get(j).get("itemName").toString());
         }
         viewHolder.things_ordered.append("" + item);
-
     }
 
     @Override
