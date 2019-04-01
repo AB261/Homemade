@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
@@ -49,9 +50,12 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
     CustomAdapter customAdapter;
     Button submitButton;
     CollectionReference massOrderRef;
-    DocumentReference providerRef;
+    CollectionReference providerRef;
     Integer totalPrice ;
     TextView totalpriceTextView;
+    DocumentReference consumerDetails,providerDetails;
+    Map detailsMapConsumer,detailsMapProvider;
+    Boolean paidStatus;
 
 
     @Override
@@ -63,6 +67,20 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
         addItems = findViewById(R.id.btnAddItems);
         submitButton = findViewById(R.id.btnSubmitToSeller);
         totalpriceTextView = findViewById(R.id.tvTotalPriceMassOrders);
+        //getting consumer's details so as to change wallet
+        consumerDetails =   FirebaseFirestore.getInstance().collection("Consumer").document(FirebaseAuth.getInstance().getUid());
+
+
+        consumerDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                detailsMapConsumer = documentSnapshot.getData();
+                Toast.makeText(ListOfMassOrderItems.this,"AMOUNT IN WALLET IS" +  detailsMapConsumer.get("wallet").toString(), Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(ListOfMassOrderItems.this, detailsMapConsumer.get("wallet").toString(), Toast.LENGTH_SHORT).show();
+               }
+        });
+
+
 
         intent = getIntent();
         totalPrice = Integer.parseInt(intent.getStringExtra("totalPrice"));
@@ -74,8 +92,19 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
         address = intent.getStringExtra("address");
         providerID = intent.getStringExtra("providerID");
         massOrderRef = FirebaseFirestore.getInstance().collection("Mass Orders");
-        providerRef = massOrderRef.document(providerID);
+        providerRef = massOrderRef;
         totalpriceTextView.setText("Total Price : Rs " + Integer.toString(totalPrice) );
+
+
+        providerDetails =   FirebaseFirestore.getInstance().collection("Provider").document(providerID);
+        providerDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                detailsMapProvider = documentSnapshot.getData();
+            }
+        });
+
+
 
         getAllDetailsAndPutInListView();
 
@@ -104,37 +133,84 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String,Object> massOrder = new HashMap<>();
-                massOrder.put("orderDate",date);
-                massOrder.put("orderTime",time);
-                massOrder.put("address",address);
-                massOrder.put("resturantName",resturantName);
-                massOrder.put("Consumer", FirebaseAuth.getInstance().getUid());
-                massOrder.put("provider",providerID);
-                massOrder.put("delivered",false);
-                massOrder.put("paid",false);
-                massOrder.put("orderTotal",totalPrice);
-                Map<String,Integer> orderItemsMap = new HashMap<>();
-                for(int i=0 ;i < arrayOfItems.size() ; i++){
-                    orderItemsMap.put(arrayOfItems.get(i) , arrayOfRespectiveAmountOfItemsChoosen.get(i));
+
+                if(  totalPrice > Double.parseDouble(detailsMapConsumer.get("wallet").toString()) )
+                {
+                    Toast.makeText(ListOfMassOrderItems.this, "NOT ENOUGH MONEY IN WALLET\nCASH ON DELIVERY", Toast.LENGTH_SHORT).show();
+                    paidStatus = false;
+                    submitOrder();
                 }
-                massOrder.put("orderItems",orderItemsMap);
-                providerRef.set(massOrder)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+                else{
+                    Double finalWalletConsumer = Double.parseDouble(detailsMapConsumer.get("wallet").toString()) - Double.parseDouble(Integer.toString(totalPrice));
+                    detailsMapConsumer.put("wallet",finalWalletConsumer);
+                    Double finalWalletProvider = Double.parseDouble(detailsMapProvider.get("wallet").toString()) +  Double.parseDouble(Integer.toString(totalPrice));
+                    detailsMapProvider.put("wallet",finalWalletProvider);
+
+                    consumerDetails.set(detailsMapConsumer).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                            providerDetails.set(detailsMapProvider).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(ListOfMassOrderItems.this, "PAYMENT DONE", Toast.LENGTH_SHORT).show();
+                                    paidStatus = true;
+                                    submitOrder();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() { //provider's failure
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    Toast.makeText(ListOfMassOrderItems.this, "PAYMENT CANNOT BE DONE\nCASH ON DELIVERY", Toast.LENGTH_SHORT).show();
+                                    paidStatus = false;
+                                }
+                            });
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {  /////consumer's failure
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ListOfMassOrderItems.this, "PAYMENT CANNOT BE DONE\nCASH ON DELIVERY", Toast.LENGTH_SHORT).show();
+                            paidStatus = false;
+                        }
+                    });
+                }
+            }
+        });
 
 
-                                Toast.makeText(ListOfMassOrderItems.this, "SUCCESSFULLY ORDER PLACED", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(ListOfMassOrderItems.this, "SORRY ORDER COULD NOT BE PLACED", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+
+    }
+
+
+    void submitOrder(){
+
+        Map<String,Object> massOrder = new HashMap<>();
+        massOrder.put("orderDate",date);
+        massOrder.put("orderTime",time);
+        massOrder.put("address",address);
+        massOrder.put("resturantName",resturantName);
+        massOrder.put("Consumer", FirebaseAuth.getInstance().getUid());
+        massOrder.put("provider",providerID);
+        massOrder.put("delivered",false);
+        massOrder.put("paid",paidStatus);
+        massOrder.put("orderTotal",totalPrice);
+        Map<String,Integer> orderItemsMap = new HashMap<>();
+        for(int i=0 ;i < arrayOfItems.size() ; i++){
+            orderItemsMap.put(arrayOfItems.get(i) , arrayOfRespectiveAmountOfItemsChoosen.get(i));
+        }
+        massOrder.put("orderItems",orderItemsMap);
+        providerRef.add(massOrder).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(ListOfMassOrderItems.this, "SUCCESSFULLY ORDER PLACED", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ListOfMassOrderItems.this, "SORRY ORDER COULD NOT BE PLACED", Toast.LENGTH_SHORT).show();
+
             }
         });
 

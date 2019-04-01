@@ -165,6 +165,7 @@ public class LoginActivity extends AppCompatActivity {
         //----------Facebook below
 
         loginButton = findViewById(R.id.login_button);
+//        loginButton.setReadPermissions("email", "public_profile");
 
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() != null) {
@@ -221,14 +222,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loginManager.logInWithReadPermissions(activity,
-                        Arrays.asList("email"));
+                        Arrays.asList("email", "public_profile"));
             }
         });
         loginManager.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                Log.i(TAG,"Hello"+loginResult.getAccessToken().getToken());
+                Log.d("=======","Hello"+loginResult.getAccessToken().getUserId());
                 //  Toast.makeText(MainActivity.this, "Token:"+loginResult.getAccessToken(), Toast.LENGTH_LONG).show();
 
                 handleFacebookAccessToken(loginResult.getAccessToken());
@@ -308,9 +309,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            postLogin();
-//                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Log.d("========", "google email" + user.getEmail() + " " + credential.getProvider());
+                            postLoginWithIntent(user.getEmail());
+//                            postLogin();
+//
 //                            postLoginWithIntent(user.getEmail());
                         } else {
                             // If sign in fails, display a message to the user.
@@ -336,12 +339,15 @@ public class LoginActivity extends AppCompatActivity {
 //                            Log.w(TAG, "signInWithCredential", task.getException());
 //                            Toast.makeText(LoginActivity.this, "Success",
 //                                    Toast.LENGTH_LONG).show();
-                            postLogin();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Log.d("========", "facebook email" + user.getEmail() + " " + credential.getProvider());
+                            postLoginWithIntent(user.getEmail());
+//                            postLogin();
 
                         }else{
-                            Log.e("------Error------", task.getException().toString());
+                            Log.d("======", task.getException().toString());
                             //Toast.makeText(LoginActivity.this, "Authentication error. Consider updating the Facebook app if you have one.", Toast.LENGTH_LONG).show();
-                            inform("Facebook Authentication Error. Consider updating the Facebook App");
+                            inform("Use Google credentials to sign in using this email.");
 
                         }
 
@@ -379,7 +385,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void postLoginWithIntent(final String email){
 
-        Log.d("LoginActivity", "string is "+email);
+        Log.d("=====", "string is "+email);
         SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("email",email);
@@ -393,33 +399,81 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     QuerySnapshot document = task.getResult();
-                    Log.d("LoginActivity", "---printing"+document.getDocuments().toString());
+                    Log.d("======", "---printing"+document.getDocuments().toString());
                     if(document.getDocuments().size() != 0){
                         SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putInt("ProviderOrConsumerFlag",1);
                         editor.commit();
 
-                        Log.d("LoginActivity", "-----------Successfully found user in Provider");
-                        //---------------------------Send intent to provider UI
+                        Log.d("======", "-----------Successfully found user in Provider");
+
                         Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
                         //mainIntent.putExtra("ProviderOrConsumer", 1);
                         startActivity(mainIntent);
                         finish();
                     }
+
+
                     else{
-                        SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putInt("ProviderOrConsumerFlag",2);
-                        editor.commit();
-                        Log.d("LoginActivity", "-----------Successfully found user in Consumer");
-                        //---------------------------Send intent to consumer UI
-                        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                        //mainIntent.putExtra("ProviderOrConsumer", 2);
-                        startActivity(mainIntent);
-                        finish();
+
+
+
+
+//                        db.collection("user").whereEqualTo("email", email).whereEqualTo("typeOfUser", "Consumer").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful()) {
+//
+//                                    QuerySnapshot document = task.getResult();
+//                                    Log.d("=======", "---printing"+document.getDocuments().toString());
+//                                    if(document.getDocuments().size() != 0){
+                                        SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
+                                        SharedPreferences.Editor editor = settings.edit();
+                                        editor.putInt("ProviderOrConsumerFlag",2);
+                                        editor.commit();
+
+                                        Log.d("=====", "-----------Successfully found user in Consumer");
+                                        //---------------------------Send intent to conusmer UI
+                                        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                                        //mainIntent.putExtra("ProviderOrConsumer", 1);
+                                        startActivity(mainIntent);
+                                        finish();
+//                                    }
+//
+//
+//
+//                                    else{
+//                                        inform("You have not registered using this email before. ");
+//
+//
+//
+//
+//                                        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                                                .requestIdToken("853704140115-a7gjo5s8uvvsfig7ij7s1t6cg9ejh1ld.apps.googleusercontent.com")
+//                                                .requestEmail()
+//                                                .build();
+//                                        FirebaseAuth.getInstance().signOut();
+//                                        GoogleSignIn.getClient(getApplicationContext(), gso).signOut();
+//                                        LoginManager.getInstance().logOut();
+//
+//                                    }
+
+
+
+
+
+//                                }
+//                            }
+//                        });
+
+
+
 
                     }
+
+
+
 
 //                        for (QueryDocumentSnapshot document : task.getResult()) {
 //                            if (((String) document.getData().get("email")).equals(email)) {

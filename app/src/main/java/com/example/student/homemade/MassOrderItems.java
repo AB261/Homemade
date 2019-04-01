@@ -352,7 +352,7 @@ public class MassOrderItems extends AppCompatActivity implements Serializable {
                         HashMap<String, Object> map = (HashMap<String, Object>) documentM.getData().get("items");
                         for (String key : map.keySet()) {
                             dinnerList.add(key);
-                            breakfastMap.put(key,Integer.parseInt(map.get(key).toString()) );
+                            dinnerMap.put(key,Integer.parseInt(map.get(key).toString()) );
 
                         }
                         ArrayAdapter<String> arrayAdapterSeller = new ArrayAdapter<String>(MassOrderItems.this, android.R.layout.simple_list_item_1, dinnerList);
