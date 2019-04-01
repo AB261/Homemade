@@ -43,12 +43,14 @@ public class RatingandReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
+//        getActionBar().setTitle("Review");
 
         Intent intent = getIntent();
         String providerID = intent.getStringExtra("providerID");
         Toast.makeText(this, providerID, Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("RatingandReviewActivity");
+        toolbar.setTitle("Review");
+        toolbar.setTitleTextColor(0xFFFFFFFF);
         setSupportActionBar(toolbar);
         mAuth = FirebaseAuth.getInstance();
         et = findViewById(R.id.editText3);
@@ -91,9 +93,9 @@ public class RatingandReviewActivity extends AppCompatActivity {
         user.put("date ",date);
         user.put("ratings", rating);
         user.put("review", review);
-        user.put("reviewID", reviewID);
-        user.put("reviewee", 1815);
-        user.put("reviewer",mAuth.getUid() );
+        user.put("reviewID", String.valueOf(reviewID));
+        user.put("reviewee", "1815");
+        user.put("reviewer",String.valueOf(mAuth.getUid()));
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 // Add a new document with a generated ID

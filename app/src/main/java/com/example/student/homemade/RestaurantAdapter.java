@@ -64,8 +64,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
                 Intent intent = new Intent(mContext.getApplicationContext(), Subscription_time.class);
                 intent.putExtra("restaurantName", restaurantModel.getRestaurantName());
-
-                mContext.getApplicationContext().startActivity(intent);
+                intent.putExtra("providerID",restaurantModel.getUserID());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
 
             }
         });

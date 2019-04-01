@@ -37,13 +37,13 @@ public class CustomerConfirmSubscriptionActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         final String time = intent.getStringExtra("subscriptionTime");
-        final String consumerID = intent.getStringExtra("customerID");
+        final String consumerID = intent.getStringExtra("consumerID");
         final String providerID = intent.getStringExtra("providerID");
         final double costPerMonth =  150;
 
-        Log.d("consumerID",consumerID);
-        Log.d("providerID",providerID);
-        Log.d("subscriptionTime",time);
+//        Log.d("consumerID",consumerID);
+//        Log.d("providerID",providerID);
+//        Log.d("subscriptionTime",time);
 
         TextView totalCostS = findViewById(R.id.totalCostS);
         final double costSub = (Integer.parseInt(time) * costPerMonth);

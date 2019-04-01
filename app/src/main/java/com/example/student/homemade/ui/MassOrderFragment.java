@@ -59,7 +59,7 @@ public class MassOrderFragment extends Fragment {
     ArrayList<String> sellerList  = new ArrayList<String>();
     String address1,time1,date1;
     Map<String,String> sellerMapContainsNameAndID;
-
+    int totalprice = 0;
     ArrayAdapter<String> arrayAdapterSeller;
 
 
@@ -146,6 +146,7 @@ public class MassOrderFragment extends Fragment {
             intent.putExtra("address",address1);
             String providerID = sellerMapContainsNameAndID.get(resturant);
             intent.putExtra("providerID",providerID);
+            intent.putExtra("totalPrice","0");
 
         }catch(Exception e){
             Toast.makeText(getActivity(), "NO RESTAURANT SELECTED", Toast.LENGTH_SHORT).show();
