@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -61,12 +62,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
         myViewHolder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                myViewHolder.btn.setText("Subscribed");
+                myViewHolder.btn.setBackgroundColor(Color.DKGRAY);
                 Intent intent = new Intent(mContext.getApplicationContext(), Subscription_time.class);
                 intent.putExtra("restaurantName", restaurantModel.getRestaurantName());
                 intent.putExtra("providerID",restaurantModel.getUserID());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
+
 
             }
         });
