@@ -3,9 +3,12 @@ package com.example.student.homemade.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -110,8 +113,25 @@ public class RestaurantFragment extends Fragment {
         context = getActivity();
         reviewInfos=new ArrayList<ReviewInfo>();
 
+        SharedPreferences settings = getActivity().getSharedPreferences("ProviderOrConsumerPreference", 0);
         v = inflater.inflate(R.layout.restaurant_card, container, false);
-        Toast.makeText(context,"Please select a way to find Location before continuing",Toast.LENGTH_LONG).show();
+//        Toast.makeText(context,"Please select a way to find Location before continuing",Toast.LENGTH_LONG).show();
+        if(settings.getInt("alert",0)!=1){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
+                    .setTitle("Find Locations Near You")
+                    .setMessage("Find homemade food providers closest to you by using GPS or entering address!");
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("alert",1);
+                    editor.apply();
+                }
+            });
+            alertDialogBuilder.show();
+        }
+
         mRecyclerView = v.findViewById(R.id.cardView);
         swipeRefreshLayout = v.findViewById(R.id.swipeToRefresh);
         editText = v.findViewById(R.id.inputSearch);

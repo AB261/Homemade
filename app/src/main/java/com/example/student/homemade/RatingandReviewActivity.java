@@ -16,11 +16,16 @@ import android.widget.Toast;
 
 import com.example.student.homemade.ui.ConsumerUIFragment;
 import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +40,7 @@ public class RatingandReviewActivity extends AppCompatActivity {
     double rating;
     String review;
     String date;
+    String providerID;
     int reviewID = 1234;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -43,10 +49,10 @@ public class RatingandReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
-//        getActionBar().setTitle("Review");
+
 
         Intent intent = getIntent();
-        String providerID = intent.getStringExtra("providerID");
+        providerID = intent.getStringExtra("providerID");
         Toast.makeText(this, providerID, Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Review");
@@ -76,6 +82,9 @@ public class RatingandReviewActivity extends AppCompatActivity {
 
         //Log.d("Review" ,review);
     }
+
+
+
     private void validate(String rev){
 
         if(rev.isEmpty()){
@@ -94,7 +103,7 @@ public class RatingandReviewActivity extends AppCompatActivity {
         user.put("ratings", rating);
         user.put("review", review);
         user.put("reviewID", String.valueOf(reviewID));
-        user.put("reviewee", "1815");
+        user.put("reviewee",providerID );
         user.put("reviewer",String.valueOf(mAuth.getUid()));
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 

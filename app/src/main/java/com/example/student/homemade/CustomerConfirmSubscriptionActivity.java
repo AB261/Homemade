@@ -98,8 +98,8 @@ public class CustomerConfirmSubscriptionActivity extends AppCompatActivity {
 
                             db.collection("Consumer").document(consumerID).update("wallet",wallet + costSub);
 
-                            Toast.makeText(getApplicationContext(),"Ordered placed successfully",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(CustomerConfirmSubscriptionActivity.this,MainActivity.class);
+                            Toast.makeText(getApplicationContext(),"Payment succesfull",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),Success_sub.class);
                             startActivity(intent);
                         }
                     });

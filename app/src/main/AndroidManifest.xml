@@ -33,11 +33,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MassDisplaySellerActivity"></activity>
         <activity android:name=".ViewExistingMassOrders" />
+        <activity android:name=".Success_sub" />
+        <activity android:name=".Offers"/>
         <activity android:name=".ui.ChangePassword" />
         <activity android:name=".ListOfMassOrderItems" />
         <activity android:name=".MassOrderItems" />
-        <activity android:name=".SucessSub" />
-        <activity android:name=".OffersActivity" />
         <activity android:name=".SignUpSeller2" />
         <activity android:name=".EditConsumerDetails" />
         <activity android:name=".ForgotActivity" />

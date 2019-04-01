@@ -389,8 +389,11 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("ProviderOrConsumerPreference", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("email",email);
-        editor.apply();
 
+        if(settings.getInt("alert",0)==1){
+            editor.putInt("alert",0);
+        }
+        editor.apply();
 
 
         db.collection("user").whereEqualTo("email", email).whereEqualTo("typeOfUser", "Provider").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
