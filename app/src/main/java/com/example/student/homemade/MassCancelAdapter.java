@@ -25,8 +25,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder> {
-    private ArrayList<Order2> info;
+public class MassCancelAdapter extends RecyclerView.Adapter<MassCancelAdapter.ViewHolder> {
+    private ArrayList<MassOrder2> info;
     private OnItemClickListner mListner;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public interface OnItemClickListner{
@@ -80,7 +80,7 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
             });
         }
     }
-    public CancelAdapter(ArrayList<Order2>info){
+    public MassCancelAdapter(ArrayList<MassOrder2>info){
         this.info=info;
 
     }
@@ -89,7 +89,6 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.cancel_item,parent,false);
-
         ViewHolder evh=new ViewHolder(v,mListner);
         return evh;
 
@@ -97,11 +96,11 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        final Order2 orderInfo=info.get(position);
+        final MassOrder2 massOrderInfo=info.get(position);
 //        String restaurantName;
 //        int timeBeforeCancel;
         final ViewHolder viewHolder1 = viewHolder;
-        db.collection("Provider").document(orderInfo.provider).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.collection("Provider").document(massOrderInfo.provider).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 HashMap<String, Object> map = (HashMap<String, Object>) documentSnapshot.getData();
@@ -110,12 +109,12 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
                 if(map.get("timeBeforeCancel").equals(null)) timeBeforeCancel = 5;
                 else timeBeforeCancel = Integer.parseInt(map.get("timeBeforeCancel").toString());
                 viewHolder1.line1.setText("" + restaurantName);
-                String orderTime = orderInfo.orderTime;
-                if(orderTime.equals("")) orderTime = "13:30";
-                viewHolder1.line2.setText("Order placed at: " + orderTime + " ,  " + orderInfo.orderDate);
-                viewHolder1.line3.setText("Order can be cancelled before: " + timeBeforeCancel + " min");
-                viewHolder1.line4.setText("Items:  " + orderInfo.getItemsOrdered());
-                viewHolder1.line5.setText("Total Cost: " + orderInfo.getOrderTotal());
+                String orderTime = massOrderInfo.orderTime;
+                if(orderTime.equals("")) orderTime = "1:30 pm";
+                viewHolder1.line2.setText("Order to be delivered at: \n" + orderTime + " ,  " + massOrderInfo.orderDate);
+                viewHolder1.line3.setText("Order can be cancelled before: " + timeBeforeCancel + " day(s)");
+                viewHolder1.line4.setText("Items:  " + massOrderInfo.getOrderItems());
+                viewHolder1.line5.setText("Total Cost: " + massOrderInfo.getOrderTotal());
             }
         });
 
@@ -131,9 +130,9 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.ViewHolder
         return info.size();
     }
 
-    public void added(Order2 order2){
-        info.add(order2);
-        notifyItemInserted(info.indexOf(order2));
+    public void added(MassOrder2 massOrder2){
+        info.add(massOrder2);
+        notifyItemInserted(info.indexOf(massOrder2));
 
     }
 }

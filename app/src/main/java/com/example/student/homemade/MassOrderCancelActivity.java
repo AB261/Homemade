@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,34 +42,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
-class Order2 {
+class MassOrder2 {
     String provider;
-    String consumer;
-    boolean completed;
+    String Consumer;
     boolean delivered;
+    String address;
     boolean paid;
     String orderTime;
     double orderTotal;
-    ArrayList<FoodItem2> itemsOrdered;
-    String deliveryPerson;
-    boolean isMassOrder;
+    String restaurantName;
+    HashMap<String, Integer> orderItems;
     String orderDate;
 
-    public String getOrderDate() {
-        return orderDate;
-    }
+    public MassOrder2(){
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public void setMassOrder(boolean massOrder) {
-        isMassOrder = massOrder;
-    }
-
-    public boolean isMassOrder() {
-        return isMassOrder;
     }
 
     public void setProvider(String provider) {
@@ -76,15 +65,15 @@ class Order2 {
     }
 
     public void setConsumer(String consumer) {
-        this.consumer = consumer;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+        Consumer = consumer;
     }
 
     public void setDelivered(boolean delivered) {
         this.delivered = delivered;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setPaid(boolean paid) {
@@ -99,12 +88,16 @@ class Order2 {
         this.orderTotal = orderTotal;
     }
 
-    public void setItemsOrdered(ArrayList<FoodItem2> itemsOrdered) {
-        this.itemsOrdered = itemsOrdered;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
-    public void setDeliveryPerson(String deliveryPerson) {
-        this.deliveryPerson = deliveryPerson;
+    public void setorderItems(HashMap<String, Integer> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public String getProvider() {
@@ -112,15 +105,15 @@ class Order2 {
     }
 
     public String getConsumer() {
-        return consumer;
-    }
-
-    public boolean isCompleted() {
-        return completed;
+        return Consumer;
     }
 
     public boolean isDelivered() {
         return delivered;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public boolean isPaid() {
@@ -135,170 +128,94 @@ class Order2 {
         return orderTotal;
     }
 
-    public String getDeliveryPerson() {
-        return deliveryPerson;
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
-
-    public Order2(){
-
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public Order2(String provider, String consumer, boolean completed, boolean delivered, boolean paid, String orderTime, double orderTotal, ArrayList<FoodItem2> itemsOrdered, String deliveryPerson) {
+    public MassOrder2(String provider, String consumer, boolean delivered, String address, boolean paid, String orderTime, double orderTotal, String restaurantName, HashMap<String, Integer> orderItems, String orderDate) {
         this.provider = provider;
-        this.consumer = consumer;
-        this.completed = completed;
+        Consumer = consumer;
         this.delivered = delivered;
+        this.address = address;
         this.paid = paid;
         this.orderTime = orderTime;
         this.orderTotal = orderTotal;
-        this.itemsOrdered = itemsOrdered;
-        this.deliveryPerson = deliveryPerson;
+        this.restaurantName = restaurantName;
+        this.orderItems = orderItems;
+        this.orderDate = orderDate;
     }
 
-    public String getItemsOrdered() {
+    public String getOrderItems() {
         String result = "";
-        if(itemsOrdered.size() == 0){
+        if(orderItems.size() == 0){
             return result;
         }
-        for(int i=0; i<itemsOrdered.size(); i++){
-            if(itemsOrdered.get(i).itemNumber != 0) {
-                result = result + itemsOrdered.get(i).itemName + " ( " + itemsOrdered.get(i).itemNumber + " )  ";
-            }
+
+        for(Map.Entry item:orderItems.entrySet()){
+            result = result + item.getKey() + " ( " + item.getValue() + " )  ";
         }
-//        if(itemsOrdered.get(itemsOrdered.size() - 1).itemNumber != 0)
-//            result = result + itemsOrdered.get(itemsOrdered.size() - 1).itemName + ":" + itemsOrdered.get(itemsOrdered.size()-1).itemNumber;
 
 
         return result;
     }
 
-    public boolean equals(Order2 order2){
-        if(this.provider.equals(order2.provider) && this.consumer.equals(order2.consumer) && this.completed == order2.completed && this.delivered == order2.delivered && this.orderTime.equals(order2.orderTime) &&
-        this.orderTotal == order2.orderTotal && this.deliveryPerson.equals(order2.deliveryPerson) && this.itemsOrdered.equals(order2.itemsOrdered)){
+    public boolean equals(MassOrder2 order2){
+        if(this.provider.equals(order2.provider) && this.Consumer.equals(order2.Consumer) && this.delivered == order2.delivered && this.orderTime.equals(order2.orderTime) &&
+                this.orderTotal == order2.orderTotal){
             return true;
         }
         return false;
     }
 }
 
-class FoodItem2 {
 
-    String itemName;
-    float itemCost;
-    int itemNumber;
-
-    public FoodItem2(){
-
-    }
-
-    public FoodItem2(String itemName, float itemCost, int itemNumber) {
-        this.itemName = itemName;
-        this.itemCost = itemCost;
-        this.itemNumber = itemNumber;
-    }
-
-    public boolean equals(FoodItem2 item){
-        if(this.itemName.equals(item.itemName) && this.itemCost == item.itemCost && this.itemNumber == item.itemNumber){
-            return true;
-        }
-        return false;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public void setItemCost(float itemCost) {
-        this.itemCost = itemCost;
-    }
-
-    public void setItemNumber(int itemNumber) {
-        this.itemNumber = itemNumber;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public float getItemCost() {
-        return itemCost;
-    }
-
-    public int getItemNumber() {
-        return itemNumber;
-    }
-}
-
-public class CancelOrderFragment extends Fragment {
+public class MassOrderCancelActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     //private ArrayList<OrderInfo> mExampleList;
-    private ArrayList<Order2> orderInfos = new ArrayList<Order2>();
+    private ArrayList<MassOrder2> massOrderInfos = new ArrayList<MassOrder2>();
     private RecyclerView mRecyclerview;
-    private static final String TAG = "CANCELORDERFRAGMENT";
-    private CancelAdapter mAdapter;
+    private static final String TAG = "MASSCANCELORDERFRAGMENT";
+    private MassCancelAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     View v;
     String myconsumerID;
 
-    public CancelOrderFragment(){
 
-    }
-    public static CancelOrderFragment newInstance() {
-        CancelOrderFragment fragment = new CancelOrderFragment();
-        return fragment;
-    }
-    //    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_cancel);
-//        createExampleList();
-//        buildRecyclerView();
-//    }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mass_order_cancel);
         myconsumerID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.d("=======", "consumer id is " + myconsumerID);
-        v = inflater.inflate(R.layout.activity_cancel, container, false);
-        //createExampleList();
-        buildRecyclerView();
-        Button massOrderCancelButton = v.findViewById(R.id.btnCancelMassOrder);
-        massOrderCancelButton.setOnClickListener(new View.OnClickListener() {
+        Log.d("=======", "consumer id at mass order is " + myconsumerID);
+        Button btnGoBackFromMassCancelOrder = findViewById(R.id.btnGoBackFromMassCancelOrder);
+        btnGoBackFromMassCancelOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("========", "sent intent");
-                Intent intent = new Intent(v.getContext(), MassOrderCancelActivity.class);
-                v.getContext().startActivity(intent);
+                finish();
             }
         });
-        return v;
+        buildRecyclerView();
     }
-
-
-    public void goToMassOrderCancel(View view){
-        Intent intent = new Intent(v.getContext(), MassOrderCancelActivity.class);
-        v.getContext().startActivity(intent);
-
-    }
-
     public void removeItem(int position){
 
 
-        final Order2 currOrder = orderInfos.get(position);
-
+        final MassOrder2 currOrder = massOrderInfos.get(position);
 
         final int position1 = position;
 
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(getContext());//, android.R.style.Theme_Material_Dialog_Alert);
+            builder = new AlertDialog.Builder(this);//, android.R.style.Theme_Material_Dialog_Alert);
         } else {
-            builder = new AlertDialog.Builder(getContext());
+            builder = new AlertDialog.Builder(this);
         }
         builder.setTitle("Cancel Order")
-                .setMessage("Are you sure you want to cancel this order?")
+                .setMessage("Are you sure you want to cancel this mass order?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
@@ -306,7 +223,7 @@ public class CancelOrderFragment extends Fragment {
                         //---------------------------
                         Log.d("===========", "here");
 
-                        db.collection("Orders").whereEqualTo("consumer", myconsumerID).whereEqualTo("delivered", false).whereEqualTo("paid", true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        db.collection("Mass Orders").whereEqualTo("Consumer", myconsumerID).whereEqualTo("delivered", false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -319,14 +236,14 @@ public class CancelOrderFragment extends Fragment {
 //                        Log.d(TAG, document.getId() + " => " + document.getData());
 //                        HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
 
-                                        Order2 order2 = document.toObject(Order2.class);
+                                        MassOrder2 massOrder2 = document.toObject(MassOrder2.class);
                                         String documentID;
-                                        Log.d("===========", order2.getOrderTime() + " currorder " + currOrder.getOrderTime());
-                                        if(currOrder.equals(order2)) {
+                                        Log.d("===========", massOrder2.getOrderTime() + " currorder " + currOrder.getOrderTime());
+                                        if(currOrder.equals(massOrder2)) {
                                             documentID = document.getId();
 
                                             Log.d("============", "found order");
-                                            db.collection("Orders").document(documentID)
+                                            db.collection("Mass Orders").document(documentID)
                                                     .delete()
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
@@ -357,8 +274,8 @@ public class CancelOrderFragment extends Fragment {
 //-----------------------------------------
                         Log.d("===========", "here2");
 
-                        Log.d("==========",orderInfos.get(position1).toString());
-                        Log.d("=============",currOrder.provider + " " + currOrder.orderTotal + " " + currOrder.consumer);
+                        Log.d("==========",massOrderInfos.get(position1).toString());
+                        Log.d("=============",currOrder.provider + " " + currOrder.orderTotal + " " + currOrder.Consumer);
 
                         db.collection("Provider").document(currOrder.provider).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
@@ -368,14 +285,14 @@ public class CancelOrderFragment extends Fragment {
                             }
                         });
 
-                        db.collection("Consumer").document(currOrder.consumer).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        db.collection("Consumer").document(currOrder.Consumer).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 double cost = Double.parseDouble(documentSnapshot.getData().get("wallet").toString()) + currOrder.orderTotal;
-                                db.collection("Provider").document(currOrder.consumer).update("wallet",cost);
+                                db.collection("Provider").document(currOrder.Consumer).update("wallet",cost);
                             }
                         });
-                        orderInfos.remove(position1);
+                        massOrderInfos.remove(position1);
                         mAdapter.notifyItemRemoved(position1);
                         Log.d("============","Successfully cancelled order");
                         inform("Your money has been refunded to your wallet!");
@@ -394,32 +311,15 @@ public class CancelOrderFragment extends Fragment {
     }
 
 
-    //    public void changeItem(int position,String text){
-//        mExampleList.get(position).changeText1(text);
-//        mAdapter.notifyItemChanged(position);
-//    }
-//    public void createExampleList(){
-//        mExampleList=new ArrayList<>();
-//        mExampleList.add(new CancelItem("Line1","Line2","Line3"));
-//        mExampleList.add(new CancelItem("Line12","Line2","Line3"));
-//        mExampleList.add(new CancelItem("onDeleteClickLine1","Line2","Line3"));
-//        mExampleList.add(new CancelItem("Line25","Line2","Line3"));
-//        mExampleList.add(new CancelItem("Line1","Line2","Line3"));
-//        mExampleList.add(new CancelItem("Line12","Line2","Line3"));
-//        mExampleList.add(new CancelItem("Line1","Line2","Line3"));
-//        mExampleList.add(new CancelItem("Line25","Line2","Line3"));
-//(String) map.get("timeOrderPlaced")
-//
-//    }
     public void buildRecyclerView(){
         Log.d("===========", "building recycler view");
-        mRecyclerview=v.findViewById(R.id.recyclerview);
+        mRecyclerview=findViewById(R.id.massrecyclerview);
         mRecyclerview.setHasFixedSize(true);
-        mLayoutManager=new LinearLayoutManager(getActivity());
-        mAdapter=new CancelAdapter(orderInfos);
+        mLayoutManager=new LinearLayoutManager(this);
+        mAdapter=new MassCancelAdapter(massOrderInfos);
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListner(new CancelAdapter.OnItemClickListner() {
+        mAdapter.setOnItemClickListner(new MassCancelAdapter.OnItemClickListner() {
             @Override
             //public void onItemClick(int position) {
             //    changeItem(position," ");
@@ -430,7 +330,7 @@ public class CancelOrderFragment extends Fragment {
                 Log.d("=========", "position is " + position);
                 final int position2 = position;
 
-                Order2 orderToCancel = orderInfos.get(position);
+                MassOrder2 orderToCancel = massOrderInfos.get(position);
 
                 final String time_and_date = orderToCancel.orderTime;
                 final String orderDate = orderToCancel.orderDate;
@@ -440,6 +340,10 @@ public class CancelOrderFragment extends Fragment {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         HashMap<String, Object> map = (HashMap<String, Object>) documentSnapshot.getData();
+
+
+                        //////////-----------------------//////////////////////////////change here////////////--------------------------------
+
                         final int timeBeforeCancel = Integer.parseInt(map.get("timeBeforeCancel").toString());
 
                         int hour, mins, day, year, month;
@@ -450,7 +354,10 @@ public class CancelOrderFragment extends Fragment {
                         }
                         else {
                             hour = Integer.parseInt(time_and_date.substring(0, time_and_date.indexOf(':')));
-                            mins = Integer.parseInt(time_and_date.substring(time_and_date.indexOf(':') + 1));
+                            mins = Integer.parseInt(time_and_date.substring(time_and_date.indexOf(':') + 1, time_and_date.indexOf(' ')));
+                            if(time_and_date.substring(time_and_date.indexOf(' ') + 1).equals("pm")){
+                                hour += 12;
+                            }
                         }
 
                         if(orderDate.equals("")){
@@ -461,21 +368,21 @@ public class CancelOrderFragment extends Fragment {
                         else{
                             int index1 = 0, index2 = 0;
                             for(int i=0; i<orderDate.length(); i++){
-                                if(orderDate.charAt(i) == '/'){
+                                if(orderDate.charAt(i) == '-'){
                                     index1 = i;
                                     break;
                                 }
                             }
-                            day = Integer.parseInt(orderDate.substring(0, index1));
+                            year = Integer.parseInt(orderDate.substring(0, index1));
 
                             for(int i=index1 + 1; i < orderDate.length(); i++){
-                                if(orderDate.charAt(i) == '/'){
+                                if(orderDate.charAt(i) == '-'){
                                     index2 = i;
                                     break;
                                 }
                             }
                             month = Integer.parseInt(orderDate.substring(index1+1, index2));
-                            year = Integer.parseInt(orderDate.substring(index2+1, orderDate.length()));
+                            day = Integer.parseInt(orderDate.substring(index2+1, orderDate.length()));
                         }
                         Calendar calendar = Calendar.getInstance();
                         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -487,10 +394,10 @@ public class CancelOrderFragment extends Fragment {
                         Log.d("=========", "hour " + hour + " mins " + mins + " currentHour " + currentHour + " currentMinute " + currentMinute + " timeBeforeCancel " + timeBeforeCancel);
 
                         if(((currentDay-1)*1440 + (currentMonth-1)*43800 + /*(currentYear-1)*525600 + */ currentHour * 60 + currentMinute <
-                                (day-1)*1440 + (month-1)*43800 + /*+ (year-1)*525600 + */hour * 60 + mins + timeBeforeCancel)
-                                ) {
+                                (day-1)*1440 + (month-1)*43800 + /*+ (year-1)*525600 + */hour * 60 + mins - timeBeforeCancel)
+                        ) {
 
-                                removeItem(position2);
+                            removeItem(position2);
                         }
                         else{
                             inform("Sorry, too late to cancel this order.");
@@ -498,39 +405,26 @@ public class CancelOrderFragment extends Fragment {
                     }
                 });
 
-//                int hour = Integer.parseInt(time_and_date.substring(0, time_and_date.indexOf(':')));
-//                int mins = Integer.parseInt(time_and_date.substring(time_and_date.indexOf(':') + 1));
-//
-//                Calendar calendar = Calendar.getInstance();
-//                int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-//                int currentMinute = calendar.get(Calendar.MINUTE);
-//
-//                Log.d("=========", "hour " + hour + " mins " + mins + " currentHour " + currentHour + " currentMinute " + currentMinute + " timeBeforeCancel " + timeBeforeCancel);
-//
-//                if(currentHour * 60 + currentMinute < hour * 60 + mins + timeBeforeCancel) {
-//                    removeItem(position);
-//                }
-//                else{
-//                    inform("Sorry, too late to cancel this order.");
-//                }
+
             }
         });
 
-        db.collection("Orders").whereEqualTo("consumer", myconsumerID).whereEqualTo("delivered", false).whereEqualTo("paid", true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Mass Orders").whereEqualTo("Consumer", myconsumerID).whereEqualTo("delivered", false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                OrderInfo orderInfo;
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
 //                        Log.d(TAG, document.getId() + " => " + document.getData());
 //                        HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
 
-                        Order2 order2 = document.toObject(Order2.class);
+                        MassOrder2 massOrder2 = document.toObject(MassOrder2.class);
+                        Log.d("=========", document.getId());
+                        Log.d("========", "consumer "+ document.getData());
 
 //                        orderInfo = new OrderInfo(Integer.parseInt(map.get("Provider").toString()), Integer.parseInt(map.get("client").toString()), (Boolean) map.get("completed"), (Boolean) map.get("delivered"), Integer.parseInt(map.get("delivery_person").toString()), Integer.parseInt(map.get("orderID").toString()), (Boolean) map.get("paid"), (ArrayList) map.get("things_ordered"), (String) map.get("time_and_date"), Integer.parseInt(map.get("timeBeforeCancel").toString()), Float.parseFloat(map.get("total_cost").toString()));
-                        Log.d("==========", "object items are " + order2.getItemsOrdered());
-                        mAdapter.added(order2);
+                        Log.d("==========", "object items are " + massOrder2.getOrderItems());
+                        mAdapter.added(massOrder2);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -540,20 +434,20 @@ public class CancelOrderFragment extends Fragment {
     }
 
     public void inform(String string){
-        final Snackbar snack = Snackbar.make(getView()/*.findViewById(android.R.id.content)*/, string, Snackbar.LENGTH_INDEFINITE).setDuration(8000);
+        final Snackbar snack = Snackbar.make(findViewById(android.R.id.content), string, Snackbar.LENGTH_INDEFINITE).setDuration(8000);
 
         snack.setAction("Dismiss", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 snack.dismiss();
             }
-        }).setActionTextColor(getView()/*.findViewById(android.R.id.content)*/.getResources().getColor(R.color.white));
+        }).setActionTextColor(findViewById(android.R.id.content).getResources().getColor(R.color.white));
 
         View view = snack.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-        tv.setTextColor(getView()/*.findViewById(android.R.id.content)*/.getResources().getColor(R.color.white));
+        tv.setTextColor(findViewById(android.R.id.content).getResources().getColor(R.color.white));
 
-        view.setBackgroundColor(getView()/*.findViewById(android.R.id.content)*/.getResources().getColor(R.color.signupColor));
+        view.setBackgroundColor(findViewById(android.R.id.content).getResources().getColor(R.color.signupColor));
         snack.show();
     }
 }

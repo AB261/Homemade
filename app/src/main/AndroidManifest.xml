@@ -41,6 +41,7 @@
         <activity android:name=".SignUpSeller2" />
         <activity android:name=".EditConsumerDetails" />
         <activity android:name=".ForgotActivity" />
+        <activity android:name=".MassOrderCancelActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

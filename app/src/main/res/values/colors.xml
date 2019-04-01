@@ -29,5 +29,6 @@
     <color name="grey">#D3D1D1</color>
     <color name="green">#216621</color>
     <color name="green2">#259125</color>
-        <color name="loadingcolor">#259125</color>
+    <color name="loadingcolor">#259125</color>
+    <color name="coolBackground">#869f86</color>
 </resources>
