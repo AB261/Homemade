@@ -19,7 +19,7 @@ public class RestaurantModel {
     public RestaurantModel(String restaurantName, String description, ArrayList<String> review,  float distance, String imageResourceId,double rating,String userID) {
         this.restaurantName = restaurantName;
         this.description = description;
-        this.review = review;
+        this.review=new ArrayList<>(review);
         this.distance =  distance;
         this.imageResourceId = imageResourceId;
         this.rating = rating;

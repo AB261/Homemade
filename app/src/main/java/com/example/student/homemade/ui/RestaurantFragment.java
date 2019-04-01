@@ -704,10 +704,12 @@ public class RestaurantFragment extends Fragment {
                                     review.add("None");
                                 }
                                 Log.d(TAG,"Hey"+review.get(0));
-                                ArrayList<String> localReviews= new ArrayList<>();
-                                localReviews.addAll(review);
+                                ArrayList<String> localReviews = new ArrayList<>(review);
                                 if(localReviews.isEmpty()){
                                     localReviews.add("None");
+                                }
+                                for(String str: review){
+                                    Log.d(TAG,restaurantNames.get(0)+str);
                                 }
                                 RestaurantModel restaurantModel = new RestaurantModel(restaurantNames.get(0), descriptions.get(0), localReviews, distances.get(0), imageResourceIds.get(0), finalRating,document.getId());
                                 Log.d(TAG,"Model has"+restaurantModel.getReview().get(0));
@@ -729,9 +731,7 @@ public class RestaurantFragment extends Fragment {
                                 distances.clear();
                                 imageResourceIds.clear();
                                 userIDs.clear();
-                                finalRating=0;
                                 userNames.clear();
-                                review.clear();
                                 userIDs.clear();
                                 individualRating.clear();
 

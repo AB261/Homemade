@@ -152,6 +152,15 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
                 imageView.setImageBitmap(bm);
                 progressBar.setVisibility(View.GONE);
                 imageView.setVisibility(View.VISIBLE);
+                hView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ConsumerDetailsFragment fragment = new ConsumerDetailsFragment();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        mDrawer.closeDrawers();
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -194,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements ProviderUIFragmen
             try {
 
                 fragment = (Fragment) fragmentClass.newInstance();
+
 
             } catch (Exception e) {
 

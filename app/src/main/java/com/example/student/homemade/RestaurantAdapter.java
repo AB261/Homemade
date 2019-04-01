@@ -119,6 +119,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
                 RestaurantDialogFragment dialogFragment = new RestaurantDialogFragment();
                 Bundle args = new Bundle();
                 args.putString("stars", String.valueOf(restaurantModel.getRating()));
+                Log.d(TAG,"Rating here is "+restaurantModel.getRating());
                 args.putString("title", restaurantModel.getRestaurantName());
                 args.putStringArrayList("reviews", restaurantModel.getReview());
                 args.putString("description", restaurantModel.getDescription());
