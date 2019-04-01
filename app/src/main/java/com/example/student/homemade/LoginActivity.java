@@ -407,7 +407,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.commit();
 
                         Log.d("======", "-----------Successfully found user in Provider");
-                        //---------------------------Send intent to provider UI
+
                         Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
                         //mainIntent.putExtra("ProviderOrConsumer", 1);
                         startActivity(mainIntent);
