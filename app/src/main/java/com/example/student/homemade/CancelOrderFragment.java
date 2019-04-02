@@ -175,7 +175,7 @@ class Order2 {
 
     public boolean equals(Order2 order2){
         if(this.provider.equals(order2.provider) && this.consumer.equals(order2.consumer) && this.completed == order2.completed && this.delivered == order2.delivered && this.orderTime.equals(order2.orderTime) &&
-        this.orderTotal == order2.orderTotal && this.deliveryPerson.equals(order2.deliveryPerson) && this.itemsOrdered.equals(order2.itemsOrdered)){
+        this.orderTotal == order2.orderTotal && this.deliveryPerson.equals(order2.deliveryPerson) ){
             return true;
         }
         return false;
