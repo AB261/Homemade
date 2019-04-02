@@ -57,6 +57,7 @@ public class ViewExistingMassOrders extends AppCompatActivity {
                     for(QueryDocumentSnapshot massOrdersList : task.getResult()){
 
                         Map m = massOrdersList.getData();
+                        Log.d("------", "map is " +  m);
 
                         if(m.get("Consumer").toString().equals(FirebaseAuth.getInstance().getUid())){
 
