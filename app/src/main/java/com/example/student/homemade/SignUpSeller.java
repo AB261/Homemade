@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.LOCATION_HARDWARE;
 
 public class SignUpSeller extends AppCompatActivity {
 
@@ -116,9 +117,16 @@ public class SignUpSeller extends AppCompatActivity {
         signUpSellerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUpSellerBtn.setVisibility(View.INVISIBLE);
-                loadingProgress.setVisibility(View.VISIBLE);
-                confirmInput();
+
+                if(pickedImgUserUri!=null){
+                    signUpSellerBtn.setVisibility(View.INVISIBLE);
+                    loadingProgress.setVisibility(View.VISIBLE);
+                    confirmInput();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Pick an image please",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -276,6 +284,7 @@ public class SignUpSeller extends AppCompatActivity {
 
 
     public void confirmInput() {
+
         // validate password has been removed because of regex problems
         if(!validateEmail() || !validateUsername() || !validateRestaurantName() || !validatePassword()) {
             loadingProgress.setVisibility(View.INVISIBLE);
@@ -402,26 +411,30 @@ public class SignUpSeller extends AppCompatActivity {
 
                             StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("providers_photos");
                             final StorageReference imageFilePath1 = mStorage.child("profile_pictures").child(mAuth.getCurrentUser().getUid());
+                            if(pickedImgUserUri!=null){
+                                imageFilePath1.putFile(pickedImgUserUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        imageFilePath1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Log.d("Storage successful.", "Storage of " + textInputEmail.getText().toString() + " Successful");
+                                                loadingProgress.setVisibility(View.INVISIBLE);
+                                                signUpSellerBtn.setVisibility(View.VISIBLE);
 
-                            imageFilePath1.putFile(pickedImgUserUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    imageFilePath1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            Log.d("Storage successful.", "Storage of " + textInputEmail.getText().toString() + " Successful");
-                                            loadingProgress.setVisibility(View.INVISIBLE);
-                                            signUpSellerBtn.setVisibility(View.VISIBLE);
+                                                Toast.makeText(getApplicationContext(), "Successfull Sign Up. Now add Restaurant Images.", Toast.LENGTH_LONG).show();
 
-                                            Toast.makeText(getApplicationContext(), "Successfull Sign Up. Now add Restaurant Images.", Toast.LENGTH_LONG).show();
+                                                Intent part2Activity = new Intent(getApplicationContext(), SignUpSeller2.class);
+                                                startActivity(part2Activity);
+                                                finish();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
 
-                                            Intent part2Activity = new Intent(getApplicationContext(), SignUpSeller2.class);
-                                            startActivity(part2Activity);
-                                            finish();
-                                        }
-                                    });
-                                }
-                            });
+
+
                         }
                     });
                 }

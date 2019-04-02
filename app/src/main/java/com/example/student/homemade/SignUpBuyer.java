@@ -73,8 +73,6 @@ public class SignUpBuyer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_buyer);
-
-
         myFont = Typeface.createFromAsset(this.getAssets(), "fonts/PlayfairDisplay_Black.ttf");
         headText = findViewById(R.id.head_text);
         headText.setTypeface(myFont);
@@ -96,9 +94,15 @@ public class SignUpBuyer extends AppCompatActivity {
         signUpBuyerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUpBuyerBtn.setVisibility(View.INVISIBLE);
-                loadingProgress.setVisibility(View.VISIBLE);
-                confirmInput();
+
+                if(pickedImgUri!=null){
+                    signUpBuyerBtn.setVisibility(View.INVISIBLE);
+                    loadingProgress.setVisibility(View.VISIBLE);
+                    confirmInput();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Pick an image please",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -336,28 +340,36 @@ public class SignUpBuyer extends AppCompatActivity {
                                             Log.w("SignUP", "Signup of " + textInputEmail.getText().toString() + " failure.");
                                         }
                                     });
+                            if(pickedImgUri==null){
+                                Toast.makeText(getApplicationContext(), "Please add image before submitting", Toast.LENGTH_LONG).show();
 
-                            StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("consumers_photos");
-                            final StorageReference imageFilePath = mStorage.child(mAuth.getCurrentUser().getUid());
-                            imageFilePath.putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            Log.d("Storage successful.", "Storage of " + textInputEmail.getText().toString() + " Successful");
-                                            loadingProgress.setVisibility(View.INVISIBLE);
-                                            signUpBuyerBtn.setVisibility(View.VISIBLE);
 
-                                            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-                                            startActivity(mainActivity);
-                                            finish();
-                                        }
-                                    });
-                                }
-                            });
+                            }
+                            if(pickedImgUri!=null){
+                                StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("consumers_photos");
+                                final StorageReference imageFilePath = mStorage.child(mAuth.getCurrentUser().getUid());
+                                imageFilePath.putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Log.d("Storage successful.", "Storage of " + textInputEmail.getText().toString() + " Successful");
+                                                loadingProgress.setVisibility(View.INVISIBLE);
+                                                signUpBuyerBtn.setVisibility(View.VISIBLE);
 
-                            Toast.makeText(getApplicationContext(), "Successfull Sign Up. Enjoy", Toast.LENGTH_LONG).show();
+                                                Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                                                startActivity(mainActivity);
+                                                finish();
+                                            }
+                                        });
+                                    }
+                                });
+                                Toast.makeText(getApplicationContext(), "Successfull Sign Up. Enjoy", Toast.LENGTH_LONG).show();
+                            }
+
+
+
                         }
                     });
                 }

@@ -60,9 +60,16 @@ public class SignUpSeller2 extends AppCompatActivity {
         signUpSellerBtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUpSellerBtn2.setVisibility(View.INVISIBLE);
-                loadingProgress.setVisibility(View.VISIBLE);
-                confirmInput();
+
+                if(pickedImgRestaurantUri!=null){
+
+                    signUpSellerBtn2.setVisibility(View.INVISIBLE);
+                    loadingProgress.setVisibility(View.VISIBLE);
+                    confirmInput();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Pick an image please",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -132,27 +139,33 @@ public class SignUpSeller2 extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("providers_photos");
         final StorageReference imageFilePath2 = mStorage.child("restaurant_pictures").child(mAuth.getCurrentUser().getUid());
+        if(pickedImgRestaurantUri==null){
+            Toast.makeText(getApplicationContext(), "Please add image before submitting", Toast.LENGTH_LONG).show();
 
-        imageFilePath2.putFile(pickedImgRestaurantUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imageFilePath2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Log.d("Storage successful.", "Storage of Restaurant Image of " + user.getUid().toString() + " Successful");
-                        loadingProgress.setVisibility(View.INVISIBLE);
-                        signUpSellerBtn2.setVisibility(View.VISIBLE);
+        }
+        if(pickedImgRestaurantUri!=null){
+            imageFilePath2.putFile(pickedImgRestaurantUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imageFilePath2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d("Storage successful.", "Storage of Restaurant Image of " + user.getUid().toString() + " Successful");
+                            loadingProgress.setVisibility(View.INVISIBLE);
+                            signUpSellerBtn2.setVisibility(View.VISIBLE);
 
 
-                        Toast.makeText(getApplicationContext(), "Restaurant Registered Successfully, Welcome to our Platform!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Restaurant Registered Successfully, Welcome to our Platform!", Toast.LENGTH_LONG).show();
 
-                        Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(mainActivity);
-                        finish();
-                    }
-                });
-            }
-        });
+                            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(mainActivity);
+                            finish();
+                        }
+                    });
+                }
+            });
+        }
+
 
     }
 }
