@@ -111,8 +111,8 @@ public class MassCancelAdapter extends RecyclerView.Adapter<MassCancelAdapter.Vi
                 viewHolder1.line1.setText("" + restaurantName);
                 String orderTime = massOrderInfo.orderTime;
                 if(orderTime.equals("")) orderTime = "1:30 pm";
-                viewHolder1.line2.setText("Order to be delivered at: \n" + orderTime + " ,  " + massOrderInfo.orderDate);
-                viewHolder1.line3.setText("Order can be cancelled before 1 day");
+                viewHolder1.line2.setText("Delivery date:" + orderTime + " ,  " + massOrderInfo.orderDate);
+                viewHolder1.line3.setText("Order cancellable before 1 day of delivery");
                 viewHolder1.line4.setText("Items:  " + massOrderInfo.getOrderItems());
                 viewHolder1.line5.setText("Total Cost: " + massOrderInfo.getOrderTotal());
             }
