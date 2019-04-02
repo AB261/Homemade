@@ -75,7 +75,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 detailsMapConsumer = documentSnapshot.getData();
-                Toast.makeText(ListOfMassOrderItems.this,"Amount in wallet is " +  detailsMapConsumer.get("wallet").toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListOfMassOrderItems.this,"AMOUNT IN WALLET IS" +  detailsMapConsumer.get("wallet").toString(), Toast.LENGTH_SHORT).show();
               //  Toast.makeText(ListOfMassOrderItems.this, detailsMapConsumer.get("wallet").toString(), Toast.LENGTH_SHORT).show();
                }
         });
@@ -136,7 +136,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
 
                 if(  totalPrice > Double.parseDouble(detailsMapConsumer.get("wallet").toString()) )
                 {
-                    Toast.makeText(ListOfMassOrderItems.this, "Not enough money in wallet\nCash on delivery", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListOfMassOrderItems.this, "NOT ENOUGH MONEY IN WALLET\nCASH ON DELIVERY", Toast.LENGTH_SHORT).show();
                     paidStatus = false;
                     submitOrder();
                 }
@@ -153,7 +153,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
                             providerDetails.set(detailsMapProvider).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(ListOfMassOrderItems.this, "Payment done", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ListOfMassOrderItems.this, "PAYMENT DONE", Toast.LENGTH_SHORT).show();
                                     paidStatus = true;
                                     submitOrder();
                                 }
@@ -161,7 +161,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
 
-                                    Toast.makeText(ListOfMassOrderItems.this, "Payment cannot be done\nCash on delivery", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ListOfMassOrderItems.this, "PAYMENT CANNOT BE DONE\nCASH ON DELIVERY", Toast.LENGTH_SHORT).show();
                                     paidStatus = false;
                                 }
                             });
@@ -170,7 +170,7 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
                     }).addOnFailureListener(new OnFailureListener() {  /////consumer's failure
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ListOfMassOrderItems.this, "Payment cannot be done\nCash on delivery", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ListOfMassOrderItems.this, "PAYMENT CANNOT BE DONE\nCASH ON DELIVERY", Toast.LENGTH_SHORT).show();
                             paidStatus = false;
                         }
                     });
@@ -203,13 +203,13 @@ public class ListOfMassOrderItems extends AppCompatActivity implements Serializa
         providerRef.add(massOrder).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(ListOfMassOrderItems.this, "Successfully placed order", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListOfMassOrderItems.this, "SUCCESSFULLY ORDER PLACED", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ListOfMassOrderItems.this, "Sorry, order could not be placed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListOfMassOrderItems.this, "SORRY ORDER COULD NOT BE PLACED", Toast.LENGTH_SHORT).show();
 
             }
         });

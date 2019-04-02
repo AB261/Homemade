@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +52,7 @@ public class HistoricalOrdersFragment extends Fragment {
     ArrayList<Double> priceArrayList;
     ArrayList<Double> priceArrayListFinal;
     ListView historyOfOrdersListView;
-    // Button searchButton;
+    Button searchButton;
     EditText nameOfItem;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     CollectionReference ordersRef  = db.collection("Orders");
@@ -107,32 +105,15 @@ public class HistoricalOrdersFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_historical_orders, container, false);
 
-        // searchButton = v.findViewById(R.id.btnSearchForHistoryOfOrders);
+        searchButton = v.findViewById(R.id.btnSearchForHistoryOfOrders);
         nameOfItem = v.findViewById(R.id.etNameOfHistoryOfOrder);
         historyOfOrdersListView = (ListView) v.findViewById(R.id.lvHistory);
         loadHistoryOfOrders();
 
-//        searchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                repopulateTheListView();
-//
-//            }
-//        });
-
-        nameOfItem.addTextChangedListener(new TextWatcher() {
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onClick(View v) {
                 repopulateTheListView();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -150,7 +131,7 @@ public class HistoricalOrdersFragment extends Fragment {
         priceArrayList = new ArrayList<>();
         nameArrayList = new ArrayList<>();
         providerIDArrayList = new ArrayList<>();
-        // providersNameArrayList = new ArrayList<>();
+       // providersNameArrayList = new ArrayList<>();
 
         ///final array
         dateArrayListFinal = new ArrayList<>();
@@ -158,7 +139,7 @@ public class HistoricalOrdersFragment extends Fragment {
         priceArrayListFinal = new ArrayList<>();
         nameArrayListFinal = new ArrayList<>();
         providerIDArrayListFinal = new ArrayList<>();
-        //  providersNameArrayListFinal = new ArrayList<>();
+      //  providersNameArrayListFinal = new ArrayList<>();
 
 
         ordersRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -186,10 +167,10 @@ public class HistoricalOrdersFragment extends Fragment {
                                     priceArrayList.add( Double.valueOf(String.valueOf(orders.get(i).get("itemCost"))));
                                     if(map.get("provider")!= null){
                                         providerIDArrayList.add(map.get("provider").toString());
-                                    }
+                                        }
                                     else {
                                         providerIDArrayList.add("");
-                                        // providersNameArrayList.add("The Yellow Chilli");
+                                       // providersNameArrayList.add("The Yellow Chilli");
 
                                     }
 
@@ -307,7 +288,7 @@ public class HistoricalOrdersFragment extends Fragment {
             dateArrayListFinal.add(dateArrayList.get(i));
             priceArrayListFinal.add(priceArrayList.get(i));
             providerIDArrayListFinal.add(providerIDArrayList.get(i));
-            // providersNameArrayListFinal.add(providersNameArrayList.get(i));
+           // providersNameArrayListFinal.add(providersNameArrayList.get(i));
 
         }
         OrderAdapter customAdapter = new OrderAdapter();
@@ -322,7 +303,7 @@ public class HistoricalOrdersFragment extends Fragment {
         priceArrayListFinal = new ArrayList<>();
         nameArrayListFinal = new ArrayList<>();
         providerIDArrayListFinal = new ArrayList<>();
-        // providersNameArrayListFinal = new ArrayList<>();
+       // providersNameArrayListFinal = new ArrayList<>();
 
         if(nameOfItem.getText().toString().equals(""))
         {
@@ -333,11 +314,11 @@ public class HistoricalOrdersFragment extends Fragment {
                 dateArrayListFinal.add(dateArrayList.get(i));
                 priceArrayListFinal.add(priceArrayList.get(i));
                 providerIDArrayListFinal.add(providerIDArrayList.get(i));
-                //  providersNameArrayListFinal.add(providersNameArrayList.get(i));
+              //  providersNameArrayListFinal.add(providersNameArrayList.get(i));
 
             }
 
-            //  Toast.makeText(getActivity(), "Enter Something", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Enter Something", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -353,7 +334,7 @@ public class HistoricalOrdersFragment extends Fragment {
                 dateArrayListFinal.add(dateArrayList.get(i));
                 priceArrayListFinal.add(priceArrayList.get(i));
                 providerIDArrayListFinal.add(providerIDArrayList.get(i));
-                //     providersNameArrayListFinal.add(providersNameArrayList.get(i));
+           //     providersNameArrayListFinal.add(providersNameArrayList.get(i));
             }
         }
 
@@ -362,7 +343,7 @@ public class HistoricalOrdersFragment extends Fragment {
             historyOfOrdersListView.setAdapter(customAdapter);
         }
         else{
-            // Toast.makeText(getActivity(), "Cannot Find the Item", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Cannot Find the Item", Toast.LENGTH_SHORT).show();
             return;
         }
     }
@@ -396,7 +377,7 @@ public class HistoricalOrdersFragment extends Fragment {
             TextView price = view.findViewById(R.id.tvPriceOfFood);
             TextView date = view.findViewById(R.id.tvDateOfFood);
             TextView time = view.findViewById(R.id.tvTimeOfFood);
-            // TextView nameOfProvider = view.findViewById(R.id.tvNameOfResturant);
+           // TextView nameOfProvider = view.findViewById(R.id.tvNameOfResturant);
             Button reviewButton = view.findViewById(R.id.btnToReviewsPage);
 
             reviewButton.setOnClickListener(new View.OnClickListener() {
@@ -417,7 +398,7 @@ public class HistoricalOrdersFragment extends Fragment {
             price.setText(priceArrayListFinal.get(i).toString());
             date.setText(dateArrayListFinal.get(i));
             time.setText(timeArrayListFinal.get(i));
-            //  nameOfProvider.setText("Yellow");
+          //  nameOfProvider.setText("Yellow");
 
 
             return view;

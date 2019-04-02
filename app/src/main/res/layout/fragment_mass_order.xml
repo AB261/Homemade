@@ -129,7 +129,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/buttonstyle"
         android:fontFamily="@font/roboto_regular"
-        android:text="VIEW EXISTING MASS ORDERS"
+        android:text="VIEW EXESTING MASS ORDERS"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@android:color/white"
         android:textStyle="bold"
