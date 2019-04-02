@@ -68,7 +68,7 @@ public class CustomerConfirmActivity extends AppCompatActivity {
                 final String consumerID = order.get("consumer").toString();
                 Log.d("consumerID",consumerID);
                 final double orderTotal1 = Double.parseDouble(order.get("orderTotal").toString());
-                final boolean isMassOrder = Boolean.parseBoolean(order.get("isMassOrder").toString());
+//                final boolean isMassOrder = Boolean.parseBoolean(order.get("isMassOrder").toString());
 
                 provider.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override

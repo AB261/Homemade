@@ -53,7 +53,7 @@ public class RatingandReviewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         providerID = intent.getStringExtra("providerID");
-        Toast.makeText(this, providerID, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, providerID, Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Review");
         toolbar.setTitleTextColor(0xFFFFFFFF);

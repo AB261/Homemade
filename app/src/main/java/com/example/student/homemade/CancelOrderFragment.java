@@ -481,13 +481,13 @@ public class CancelOrderFragment extends Fragment {
                         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
                         int currentMinute = calendar.get(Calendar.MINUTE);
                         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-                        int currentMonth = calendar.get(Calendar.MONTH);
+                        int currentMonth = calendar.get(Calendar.MONTH) + 1;
                         int currentYear = calendar.get(Calendar.YEAR);
 
                         Log.d("=========", "hour " + hour + " mins " + mins + " currentHour " + currentHour + " currentMinute " + currentMinute + " timeBeforeCancel " + timeBeforeCancel);
 
-                        if(((currentDay-1)*1440 + (currentMonth-1)*43800 + /*(currentYear-1)*525600 + */ currentHour * 60 + currentMinute <
-                                (day-1)*1440 + (month-1)*43800 + /*+ (year-1)*525600 + */hour * 60 + mins + timeBeforeCancel)
+                        if(((currentDay-1)*1440 + (currentMonth)*43800 + /*(currentYear-1)*525600 + */ currentHour * 60 + currentMinute <
+                                (day-1)*1440 + (month)*43800 + /*+ (year-1)*525600 + */hour * 60 + mins + timeBeforeCancel)
                                 ) {
 
                                 removeItem(position2);

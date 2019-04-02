@@ -306,6 +306,94 @@ class Order {
         this.isMassOrder = isMassOrder;
         this.orderDate = orderDate;
     }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public void setConsumer(String consumer) {
+        this.consumer = consumer;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public void setDelivered(boolean delivered) {
+        this.delivered = delivered;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public void setOrderTotal(double orderTotal) {
+        this.orderTotal = orderTotal;
+    }
+
+    public void setItemsOrdered(ArrayList<FoodItem> itemsOrdered) {
+        this.itemsOrdered = itemsOrdered;
+    }
+
+    public void setDeliveryPerson(String deliveryPerson) {
+        this.deliveryPerson = deliveryPerson;
+    }
+
+    public void setMassOrder(boolean massOrder) {
+        isMassOrder = massOrder;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public String getConsumer() {
+        return consumer;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public boolean isDelivered() {
+        return delivered;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public double getOrderTotal() {
+        return orderTotal;
+    }
+
+    public ArrayList<FoodItem> getItemsOrdered() {
+        return itemsOrdered;
+    }
+
+    public String getDeliveryPerson() {
+        return deliveryPerson;
+    }
+
+    public boolean isMassOrder() {
+        return isMassOrder;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
 }
 
 class FoodItem {
@@ -320,6 +408,29 @@ class FoodItem {
         this.itemNumber = itemNumber;
     }
 
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setItemCost(float itemCost) {
+        this.itemCost = itemCost;
+    }
+
+    public void setItemNumber(int itemNumber) {
+        this.itemNumber = itemNumber;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public float getItemCost() {
+        return itemCost;
+    }
+
+    public int getItemNumber() {
+        return itemNumber;
+    }
 }
 
 class Provider {
@@ -483,7 +594,8 @@ public class OrderPageActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     TextView totalCost = findViewById(R.id.totalCost);
                                     double orderTotal = Double.parseDouble(totalCost.getText().toString());
-                                    String orderDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"/"+Calendar.getInstance().get(Calendar.MONTH)+"/"+Calendar.getInstance().get(Calendar.YEAR);
+                                    int currMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+                                    String orderDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"/"+currMonth+"/"+Calendar.getInstance().get(Calendar.YEAR);
                                     Order order = new Order(providerID,consumerID,false,false,false,"",orderTotal,foodItems,"",false,orderDate);
 
                                     DocumentReference docRef = db.collection("Orders").document();

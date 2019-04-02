@@ -181,11 +181,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 //----------login button prompt
 
-                if(etEmail.getText().toString().isEmpty()){
+                if(etEmail.getText().toString().trim().isEmpty()){
                     //Toast.makeText(getApplicationContext(), "Empty Username", Toast.LENGTH_LONG).show();
                     inform("Empty Username");
                 }
-                else if(etPass.getText().toString().isEmpty()){
+                else if(etPass.getText().toString().trim().isEmpty()){
                     //Toast.makeText(getApplicationContext(), "Empty Password", Toast.LENGTH_LONG).show();
                     inform("Empty Password");
                 }
@@ -195,11 +195,11 @@ public class LoginActivity extends AppCompatActivity {
                     //--------------firebase email password auth below
 
 
-                    mAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPass.getText().toString())
+                    mAuth.signInWithEmailAndPassword(etEmail.getText().toString().trim(), etPass.getText().toString().trim())
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    postLoginWithIntent(etEmail.getText().toString());
+                                    postLoginWithIntent(etEmail.getText().toString().trim());
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -317,7 +317,7 @@ public class LoginActivity extends AppCompatActivity {
 //                            postLoginWithIntent(user.getEmail());
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.e("Google Error", task.getException().toString());
+                            Log.e("Google Error", task.getException().toString().trim());
                             //Toast.makeText(LoginActivity.this, "Authentication error", Toast.LENGTH_LONG).show();
                             inform("Google Authentication Error");
                         }

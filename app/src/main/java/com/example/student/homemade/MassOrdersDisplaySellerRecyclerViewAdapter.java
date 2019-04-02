@@ -120,7 +120,6 @@ public class MassOrdersDisplaySellerRecyclerViewAdapter extends RecyclerView.Ada
 //            }
 //        }
 
-        if(total_number_of_orders > 20)
             viewHolder.things_ordered.append("" + item);
     }
 
