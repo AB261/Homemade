@@ -181,7 +181,6 @@
 //                                                     itemListView.setAdapter(itemAdapter);
 //                                                 }
 //                                             }else{
-//                                                 Log.d("fuck","the documentM doesn't exist");
 //                                             }
 //                                         }
 //                                     }
@@ -574,7 +573,7 @@ public class OrderPageActivity extends AppCompatActivity {
                                                                                 itemListView.setAdapter(itemAdapter);
                                                                             }
                                                                         }else{
-                                                                            Log.d("fuck","the documentM doesn't exist");
+                                                                            Log.d("cool","the documentM doesn't exist");
                                                                         }
                                                                     }
                                                                 }
