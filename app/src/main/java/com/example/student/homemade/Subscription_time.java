@@ -77,43 +77,7 @@ public class Subscription_time extends AppCompatActivity {
                 intent.putExtra("subscriptionTime", choices[0]);
 
                 Map<String, Object> sub = new HashMap<>();
-                Log.d("check", choices[0]);
-
-                choices[0] = choices[0].trim();
-
-
-                String oneMonth = "1556776295";
-                String threeMonth = "1562046695";
-                String sixMonth = "1569995495";
-                String nineMonth = "1577944295";
-                String twelveMonth = "1585806695";
-
-                String result = "";
-
-                if(choices[0].equals("1")){
-                    result = oneMonth;
-                }
-
-                if(choices[0].equals("3")){
-                    result = threeMonth;
-                }
-
-                if(choices[0].equals("6")){
-                    result = sixMonth;
-                }
-
-                if(choices[0].equals("9")){
-                    result = nineMonth;
-                }
-
-                if(choices[0].equals("12")){
-                    result = twelveMonth;
-                }
-
-
-
-//                sub.put(providerID, Math.round(Integer.parseInt(choices[0].trim())   * 3600 * 24 * 30 * 1000 + System.currentTimeMillis()));
-                sub.put(providerID, result);
+                sub.put(providerID, choices[0]);
                 HashMap<String,Object> m = new HashMap<>();
                 m.put("Subscription",sub);
 

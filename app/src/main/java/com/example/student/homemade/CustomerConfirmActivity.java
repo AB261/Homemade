@@ -91,18 +91,13 @@ public class CustomerConfirmActivity extends AppCompatActivity {
 //                                ///////////////////////////////////////////////////////////////////////////////
                                 /////////////////////////////////////CHANGES MADE/////////////////////////////////////////
                                 boolean iss = false;
-                                if(map.containsKey("Subscription")){
-                                    final HashMap<String,String> subscriptions = (HashMap<String,String>)(map.get("Subscription"));
-                                    if(subscriptions.get(providerID) != null){
+                                if(map.containsKey("Subscriptions")){
+                                    final HashMap<String,String> subscriptions = (HashMap<String,String>)(map.get("Subscriptions"));
+                                    if(subscriptions.containsKey(providerID)){
                                         long t = Long.parseLong(subscriptions.get(providerID).trim());
                                         long now = System.currentTimeMillis();
-                                        Log.d("now",now+"");
-                                        Log.d("t",t + " ");
                                         if( now <  t * 1000){
                                             iss = true;
-                                            Log.d("now",now+"");
-                                            Log.d("t",t + " ");
-                                            Log.d("fuck","working");
                                         }
                                     }
                                 }
